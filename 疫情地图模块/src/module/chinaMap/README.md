@@ -21,3 +21,6 @@ import Tag from '@ant-design/react-native/lib/tag';
 import {Button,Grid,Flex,WingBlank,Tag} from '@ant-design/react-native';
 ```
 
+# chinaProvince
+与全国地图用例一致，需要从echarts index目录修改导入对应对应省份的地图
+
