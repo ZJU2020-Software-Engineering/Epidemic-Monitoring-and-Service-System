@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { AppRegistry,Text, View, StyleSheet } from 'react-native';
+import Button from '@ant-design/react-native/lib/button';
+import Grid from '@ant-design/react-native/lib/grid';
 import Flex from '@ant-design/react-native/lib/flex';
 import WingBlank from '@ant-design/react-native/lib/wing-blank';
 import Tag from '@ant-design/react-native/lib/tag';
 
 //Class for displaying the number with colors.  
-class ShowNumBlock{
+export class ShowNumBlock{
   constructor(number,title,increasement,color){
     this.number=number;
     this.title=title;
@@ -18,7 +20,7 @@ class ShowNumBlock{
   render(){
     return (
     <View alignItems='center' style={{textAlign : 'center'}}>
-      <Text style={{fontSize: 30,
+      <Text style={{fontSize: 25,
                     fontStyle: 'normal',
                     fontWeight: '600',
                     color : this.color}}>
@@ -44,13 +46,13 @@ class ShowNumBlock{
 
 }
 
-const numbers=new Array(6);
-numbers[0]=new ShowNumBlock(80735,'累计确诊',145,'red'); 
-numbers[1]=new ShowNumBlock(23732,'现有确诊',-1569,'orange'); 
-numbers[2]=new ShowNumBlock(54,'境外输入确诊',16,'blue'); 
-numbers[3]=new ShowNumBlock(482,'疑似病例',102,'#B2C200'); 
-numbers[4]=new ShowNumBlock(53958,'治愈人数',1684,'green'); 
-numbers[5]=new ShowNumBlock(3045,'死亡人数',30,'black'); 
+// const numbers=new Array(6);
+// numbers[0]=new ShowNumBlock(80735,'累计确诊',145,'red'); 
+// numbers[1]=new ShowNumBlock(23732,'现有确诊',-1569,'orange'); 
+// numbers[2]=new ShowNumBlock(54,'境外输入确诊',16,'blue'); 
+// numbers[3]=new ShowNumBlock(482,'疑似病例',102,'#B2C200'); 
+// numbers[4]=new ShowNumBlock(53958,'治愈人数',1684,'green'); 
+// numbers[5]=new ShowNumBlock(3045,'死亡人数',30,'black'); 
 
 //A function for getting the date and day in correct format. 
 function getDateAndDay(){
@@ -86,41 +88,60 @@ function getDateAndDay(){
           date.toLocaleDateString().split("/")[2]+"日"+"  星期"+dayChinese);
 }
 
-export default class NumberDisplay extends Component {
+export class NumberDisplay extends Component {
+  
+  constructor(numbers){
+    super();
+    this.numbers=numbers;
+  }
+
+  showNumber(){
+    return(
+      <View>
+        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
+          <Flex>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[0].render()}  
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[1].render()}  
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[2].render()}  
+            </Flex.Item>
+          </Flex>
+        </WingBlank>
+        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
+          <Flex>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[3].render()}  
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[4].render()}  
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {this.numbers[5].render()}  
+            </Flex.Item>
+          </Flex>
+        </WingBlank>
+      </View>
+    );
+  }
+
+  showTitle(){
+    return(
+      <View style={[{ margin: 10 }]} alignItems='center' borderTopWidth="20" borderTopColor='transparent'> 
+        <Text style={styles.textStyle1}> </Text>
+        <Text>{getDateAndDay()}</Text>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View>
-        <View style={[{ margin: 10 }]} alignItems='center' borderTopColor='transparent'>
-          <Text style={styles.textStyle1}> 疫情地图</Text>
-          <Text>{getDateAndDay()}</Text>
-        </View>
-        
-        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
-          <Flex>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[0].render()}  
-            </Flex.Item>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[1].render()}  
-            </Flex.Item>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[2].render()}  
-            </Flex.Item>
-          </Flex>
-        </WingBlank>
-        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
-          <Flex>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[3].render()}  
-            </Flex.Item>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[4].render()}  
-            </Flex.Item>
-            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {numbers[5].render()}  
-            </Flex.Item>
-          </Flex>
-        </WingBlank>
+        {this.showTitle()}
+        {this.showNumber()}
       </View>
     ); 
   }
