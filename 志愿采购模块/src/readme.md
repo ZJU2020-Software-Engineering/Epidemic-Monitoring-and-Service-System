@@ -10,4 +10,4 @@ yarn add react-native-gesture-handler </br>
 yarn add react-navigation </br>
 yarn add react-navigation-stack </br>
 显示方式： </br>
-直接调用封装好的<RootStack />
+直接调用封装好的 RootStack
