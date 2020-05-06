@@ -27,3 +27,4 @@ yarn add @ant-design/react-native
 
 1. 项目包括入口文件App.js以及同一层级的CurrentOrder.js和HistoryOrder.js。
 2. 考虑到和订单类的交互，没有进行数据库操作。
+3. react-navigation 使用的版本是5.x，无法兼容低版本API。
