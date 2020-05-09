@@ -32,7 +32,7 @@ expo install react-native-gesture-handler react-native-reanimated
 
 #### 提供其他页面入口：
 
-1. 个人中心入口:  App.js line:58
+1. 个人中心入口:  App.js line:59
 2. 配送服务入口：EntryDisplay.js line:33
 3. 志愿认证入口:  EntryDisplay.js line:36
 4. 志愿报名入口：EntryDisplay.js line:39

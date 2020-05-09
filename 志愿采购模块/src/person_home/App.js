@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView,StatusBar,Text,View} from 'react-native'
 import { Card } from 'react-native-paper';
-import { WhiteSpace } from '@ant-design/react-native';
+import { WhiteSpace,Flex } from '@ant-design/react-native';
 import NumberDisplay from './NumberDisplay';
 import EntryDisplay from './EntryDisplay';
 import { Icon } from 'react-native-elements';
@@ -22,7 +22,11 @@ class Time extends React.Component{
     render(){
 
         return (
-            <Text style={{fontSize:16}}>{this.state.time}</Text>
+            <Flex>
+                <Text style={{fontSize:16}}>{this.state.time}</Text>
+                <Text style={{fontSize:16, right:2,position:'absolute'}} >数据来源：浙江大学后勤集团</Text>
+            </Flex>
+          
         )
     }
 }
@@ -47,9 +51,6 @@ export default function App(){
     return(
     
     <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight, paddingLeft:10, paddingRight:10, backgroundColor:'rgba(0,0,0,0)'}}>
-        {/* <Text style={{ paddingLeft: 20, fontSize:30, marginTop: 70}}>
-            志愿采购
-        </Text> */}
         <View style={{position:'absolute',right:20,top:20}}>
         <Icon 
             name='person'
@@ -60,7 +61,7 @@ export default function App(){
         </View>
 
         <Card style={{ marginTop:60, borderRadius: 15, elevation:3}}>
-            <Card.Title title={'浙江大学食堂拥挤情况'} />
+            <Card.Title title={'浙江大学食堂就餐拥挤指数'}/>
             <Card.Content>
                 <Time/>
                 <WhiteSpace/>
