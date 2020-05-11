@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { AppRegistry,Text, View, StyleSheet } from 'react-native';
-import Button from '@ant-design/react-native/lib/button';
-import Grid from '@ant-design/react-native/lib/grid';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 import Flex from '@ant-design/react-native/lib/flex';
 import WingBlank from '@ant-design/react-native/lib/wing-blank';
 import Tag from '@ant-design/react-native/lib/tag';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 //Class for displaying the number with colors.  
 export class ShowNumBlock{
@@ -35,139 +35,58 @@ export class ShowNumBlock{
     );
   }
 
-  setNumber(number,increasement){
-    this.number=number;
-    this.increasement=increasement;
-  }
-
   setColor(color){
     this.color=color;
   }
 
 }
-
-// const numbers=new Array(6);
-// numbers[0]=new ShowNumBlock(80735,'累计确诊',145,'red'); 
-// numbers[1]=new ShowNumBlock(23732,'现有确诊',-1569,'orange'); 
-// numbers[2]=new ShowNumBlock(54,'境外输入确诊',16,'blue'); 
-// numbers[3]=new ShowNumBlock(482,'疑似病例',102,'#B2C200'); 
-// numbers[4]=new ShowNumBlock(53958,'治愈人数',1684,'green'); 
-// numbers[5]=new ShowNumBlock(3045,'死亡人数',30,'black'); 
-
 //A function for getting the date and day in correct format. 
 function getDateAndDay(){
-  var dayChinese="错";
-  var date=new Date();
-  switch (new Date().getDay()) {
-    case 1:
-      dayChinese="一";
-      break;
-    case 2:
-      dayChinese="二";
-      break;
-    case 3:
-      dayChinese="三";
-      break;
-    case 4:
-      dayChinese="四";
-      break;
-    case 5:
-      dayChinese="五";
-      break;
-    case 6:
-      dayChinese="六";
-      break;
-    case 7:
-      dayChinese="日";
-      break;
-    default:
-      dayChinese="错";
-      break;
-  }
-  return (date.toLocaleDateString().split("/")[0]+"年"+date.toLocaleDateString().split("/")[1]+"月"+
-          date.toLocaleDateString().split("/")[2]+"日"+"  星期"+dayChinese);
+  moment.locale('zh-cn');
+  return moment().format('ll');
 }
 
-export class NumberDisplay extends Component {
-  
-  constructor(numbers){
-    super();
-    this.numbers=numbers;
-  }
-
-  showNumber(){
-    return(
+export function ShowNumber(numbers) {
+  return (
       <View>
         <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
           <Flex>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[0].render()}  
+              {numbers[0].render()}
             </Flex.Item>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[1].render()}  
+              {numbers[1].render()}
             </Flex.Item>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[2].render()}  
+              {numbers[2].render()}
             </Flex.Item>
           </Flex>
         </WingBlank>
         <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
           <Flex>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[3].render()}  
+              {numbers[3].render()}
             </Flex.Item>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[4].render()}  
+              {numbers[4].render()}
             </Flex.Item>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              {this.numbers[5].render()}  
+              {numbers[5].render()}
             </Flex.Item>
           </Flex>
         </WingBlank>
       </View>
-    );
-  }
-
-  showTitle(){
-    return(
-      <View style={[{ margin: 10 }]} alignItems='center' borderTopWidth="20" borderTopColor='transparent'> 
-        <Text style={styles.textStyle1}> </Text>
-        <Text>{getDateAndDay()}</Text>
-      </View>
-    );
-  }
-
-  render() {
-    return (
-      <View>
-        {this.showTitle()}
-        {this.showNumber()}
-      </View>
-    ); 
-  }
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  textStyle1: {
-    fontSize: 30,
-    fontStyle: 'normal',
-    fontWeight: '900'
-  },
-  textStyleBigNumber: {
-    fontSize: 20,
-    fontStyle: 'normal',
-    fontWeight: '400'
-  },
-  textStyle: {
-    fontSize: 20,
-    fontStyle: 'italic',
-    fontWeight: '300'
-  },
-  
-});
+export function NumberTitle() {
+  const [toggle, setToggle] = useState(false);
+  return(
+      <View style={[{ margin: 10, justifyContent: 'space-between', flexDirection: 'row' }]} borderTopWidth={20} borderTopColor='transparent'>
+        <Text style={{ textAlign: 'left', alignSelf: 'stretch', paddingLeft: 5 }}>截至{getDateAndDay()}</Text>
+        <Text onPress={() => setToggle(!toggle)} style={{ textAlign: 'right', alignSelf: 'stretch', paddingRight: 5, color: 'grey' }}>
+          { toggle ? "丁香医生实时疫情网站" : "数据来源" }
+        </Text>
+      </View>
+  );
+}

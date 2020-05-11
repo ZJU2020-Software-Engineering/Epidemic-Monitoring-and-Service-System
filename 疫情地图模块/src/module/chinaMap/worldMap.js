@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Dimensions,Text,StatusBar } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { ECharts } from "react-native-echarts-wrapper";
+import {SegmentedControl} from "@ant-design/react-native";
 
 const liaoning = {
     "options": [
@@ -2268,7 +2269,7 @@ const totalConfirm = {
             show: !0
         },
         title:{
-            text:"world疫情地图-累计确诊",
+            text:"世界疫情地图-累计确诊",
             top:'5%',
             left:'center',
             textStyle: {
@@ -2399,7 +2400,7 @@ const newConfirm = {
           show: !0
       },
       title:{
-          text:"world疫情地图-新增确诊",
+          text:"世界疫情地图-新增确诊",
           top:'5%',
           left:'center',
           textStyle: {
@@ -2530,7 +2531,7 @@ const totalCure = {
           show: !0
       },
       title:{
-          text:"world疫情地图-累计治愈",
+          text:"世界疫情地图-累计治愈",
           top:'5%',
           left:'center',
           textStyle: {
@@ -2662,7 +2663,7 @@ const totalDie = {
           show: !0
       },
       title:{
-          text:"world疫情地图-累计死亡",
+          text:"世界疫情地图-累计死亡",
           top:'5%',
           left:'center',
           textStyle: {
@@ -2720,68 +2721,30 @@ const totalDie = {
   options: liaoning.options
 
 }
+ 
+export default function WorldMap() {
+  const options = [newConfirm, totalConfirm, totalCure, totalDie];
 
+  let chart;
 
-const FirstRoute = () => (
-    <View style={[styles.scene]} >
-        <ECharts  option= {newConfirm}/>
-    </View>
-);
- 
-const SecondRoute = () => (
-    <View style={[styles.scene]} >
-        
-        <ECharts  option= {totalConfirm}/>
-    </View>
-);
+  const onRef = ref => {
+    if (ref) {
+      chart = ref;
+    }
+  };
 
-const ThirdRoute = () => (
-    <View style={[styles.scene]} >
-        
-        <ECharts  option= {totalCure}/>
-    </View>
-);
-
-const FourthRoute = () => (
-    <View style={[styles.scene]} >
-        <ECharts  option= {totalDie}/>
-    </View>
-);
- 
-const initialLayout = { width: Dimensions.get('window').width };
- 
-export default function TabViewExample() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: '新增确诊' },
-    { key: 'second', title: '累计确诊' },
-    {key:'third',title:'累计治愈'},
-    {key:'fourth',title:'累计死亡'}
-  ]);
- 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third:ThirdRoute,
-    fourth: FourthRoute
-  });
- 
   return (
-    
-    <View style={{ flex: 1, top:'2%' }}>
-       
-    <TabView 
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-    />
-    </View>
+      <View>
+        <SegmentedControl
+            values={['新增确诊', '累计确诊', '累计治愈', '累计死亡']}
+            onChange={e => {
+              chart.setOption(options[e.nativeEvent.selectedSegmentIndex]);
+            }}
+            style={{ marginLeft: 50, marginRight: 50}}
+        />
+        <View style={{ height: 700 }} >
+          <ECharts ref={onRef} option={options[0]} />
+        </View>
+      </View>
   );
 }
- 
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
-});

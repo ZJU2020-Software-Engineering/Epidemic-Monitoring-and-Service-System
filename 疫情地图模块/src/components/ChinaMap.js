@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { View, StyleSheet, Dimensions,Text,StatusBar } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import React from 'react';
+import { View } from 'react-native';
 import { ECharts } from "../module/react-native-echarts-wrapper";
+import {SegmentedControl} from "@ant-design/react-native";
 
 
   const all = {
@@ -1130,56 +1130,30 @@ const option3 = {
     options: all.options
 
 }
-const FirstRoute = () => (
-    <View style={[styles.scene]} >
-        
-        <ECharts option= {option1}/>
-    </View>
-);
- 
-const SecondRoute = () => (
-    <View style={[styles.scene]} >
-        
-        <ECharts option= {option2}/>
-    </View>
-);
-
-const ThirdRoute = () => (
-    <View style={[styles.scene]} >
-        
-        <ECharts option= {option3}/>
-    </View>
-  );
- 
-const initialLayout = { width: Dimensions.get('window').width };
  
 export default function ChinaMap() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: '全国现存' },
-    { key: 'second', title: '全国新增' },
-    {key:'third',title:'全国累计'}
-  ]);
- 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third:ThirdRoute
-  });
- 
+  const options = [option1, option2, option3];
+
+  let chart;
+
+  const onRef = ref => {
+      if (ref) {
+          chart = ref;
+      }
+  };
+
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-    />
+      <View>
+          <SegmentedControl
+              values={['现存', '新增', '累计']}
+              onChange={e => {
+                  chart.setOption(options[e.nativeEvent.selectedSegmentIndex]);
+              }}
+              style={{ marginLeft: 50, marginRight: 50}}
+          />
+          <View style={{ height: 500 }} >
+              <ECharts ref={onRef} option={options[0]} />
+          </View>
+      </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-    height: 500,
-  },
-});
