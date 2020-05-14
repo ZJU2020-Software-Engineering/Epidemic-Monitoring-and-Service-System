@@ -395,6 +395,7 @@ var styles = StyleSheet.create({
         height:120
     },
     destext:{
+        //flexDirection:'col',
         height:120
     },
     t1:{
