@@ -18,6 +18,8 @@ react-native-tab-view
 
 个人模块需要的server是DatabaseServer.js，而在具体文件中客户端连接server的url需要在：DatabaseClient、itemDisplay、itemList三个文件中同时修改。（这个会在这周整合到DatabaseClient一个文件里）
 
+**志愿者模块的整合内容主要放在personNavigator下，并在PersonHome菜单的对应button下写好回调函数**
+
 **值得注意的事情：**
 
 本文件夹下的Cache.js可以实现在界面之间的数据传递（静态），一些运行时缓存的数据可以放在里面，如使用者的id、账密等。基本的函数有
