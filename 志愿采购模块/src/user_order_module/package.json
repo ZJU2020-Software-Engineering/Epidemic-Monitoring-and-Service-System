@@ -1,0 +1,39 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@ant-design/react-native": "^3.3.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "axios": "^0.19.2",
+    "expo": "^37.0.11",
+    "lodash": "latest",
+    "moment": "^2.24.0",
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native-animatable": "^1.3.3",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
+    "react-native-paper": "^3.8.0",
+    "react-native-reanimated": "^1.7.1",
+    "react-native-safe-area-context": "^1.0.0",
+    "react-native-screens": "^2.7.0",
+    "react-native-tab-view": "^2.13.0",
+    "react-native-table-component": "^1.2.1",
+    "react-native-web": "~0.11.7",
+    "react-native-webview": "^9.0.2",
+    "react-navigation": "^4.3.9",
+    "react-navigation-stack": "^2.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-preset-expo": "~8.0.0"
+  },
+  "private": true
+}
