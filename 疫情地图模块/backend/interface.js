@@ -41,6 +41,28 @@ export var server_config = {
                 }
               }
         },
+        joinprovince:{ //获取全国省的具体信息联表
+            input:{
+                Return:"joinProvince",
+                Data:"YYYY-MM-DD"
+            },
+            output:{
+                result: 'Y',
+                message:[
+                    {province: "",
+                    newAddtionConfirmedNumber: 0,
+                    newAddtionDeathToll: 0,
+                    newAddtionCureNumber: 0,
+                    newAddtionSuspectedNumber: 0,
+                    grandTotalConfirmedNumber: 22,
+                    grandTotalDeathToll: 0,
+                    grandTotalCureNumber: 22,
+                    grandTotalSuspectedNumber: 0,
+                    existingConfirmedNumber: 0,
+                    existingSuspectedNumber: 0},{}
+                ]
+            }
+        },
         city:{ //获取某省某日所有市的具体信息
             input:{
                 Return:"city",
@@ -55,6 +77,29 @@ export var server_config = {
                   extance: []
                 }
               }
+        },
+        joincity:{ //获取省内各市的具体信息联表
+            input:{
+                Return:"joinCity",
+                Data:"YYYY-MM-DD",
+                Province:"省份"
+            },
+            output:{
+                result: 'Y',
+                message:[
+                    {city: "",
+                    newAddtionConfirmedNumber: 0,
+                    newAddtionDeathToll: 0,
+                    newAddtionCureNumber: 0,
+                    newAddtionSuspectedNumber: 0,
+                    grandTotalConfirmedNumber: 22,
+                    grandTotalDeathToll: 0,
+                    grandTotalCureNumber: 22,
+                    grandTotalSuspectedNumber: 0,
+                    existingConfirmedNumber: 0,
+                    existingSuspectedNumber: 0},{}
+                ]
+            }
         },
         compare:{ //获取全国当天同昨日的比较值
             input:{
@@ -146,6 +191,28 @@ export var server_config = {
                   extance: [{country:"",confirmedNumber: 0, suspectedNumber: 0},{}]
                 }
               }
-        }
+        },
+        joincountry:{ //获取全球各国的具体信息联表
+            input:{
+                Return:"joinCountry",
+                Data:"YYYY-MM-DD"
+            },
+            output:{
+                result: 'Y',
+                message:[
+                    {country: "",
+                    newAddtionConfirmedNumber: 0,
+                    newAddtionDeathToll: 0,
+                    newAddtionCureNumber: 0,
+                    newAddtionSuspectedNumber: 0,
+                    grandTotalConfirmedNumber: 22,
+                    grandTotalDeathToll: 0,
+                    grandTotalCureNumber: 22,
+                    grandTotalSuspectedNumber: 0,
+                    existingConfirmedNumber: 0,
+                    existingSuspectedNumber: 0},{}
+                ]
+            }
+        },
     }
 }

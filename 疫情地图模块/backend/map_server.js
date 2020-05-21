@@ -541,10 +541,47 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
             var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000), 'yyyy-MM-dd');
             var sltSqlParams = [today,yesterday];
             break;
+        case "joinCity":
+            var sltSql = 'SELECT * FROM (SELECT city, confirmedNumber AS newAddtionConfirmedNumber, deathToll AS newAddtionDeathToll, cureNumber AS newAddtionCureNumber, suspectedNumber AS newAddtionSuspectedNumber FROM chinaMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = ?) as a natural join (SELECT city, confirmedNumber AS grandTotalConfirmedNumber, deathToll AS grandTotalDeathToll, cureNumber AS grandTotalCureNumber, suspectedNumber AS grandTotalSuspectedNumber FROM chinaMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = ?) as b  natural join (SELECT city, confirmedNumber AS existingConfirmedNumber, suspectedNumber AS existingSuspectedNumber FROM chinaMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = ?) as c';
+            var sltSqlParams = [getObj.Data,getObj.Province,getObj.Data,getObj.Province,getObj.Data,getObj.Province];
+            break;
+        case "joinProvince":
+            var sltSql = 'SELECT * FROM (SELECT province, SUM(confirmedNumber) AS newAddtionConfirmedNumber, SUM(deathToll) AS newAddtionDeathToll, SUM(cureNumber) AS newAddtionCureNumber, SUM(suspectedNumber) AS newAddtionSuspectedNumber FROM chinaMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? GROUP BY province) as a natural join (SELECT province, SUM(confirmedNumber) AS grandTotalConfirmedNumber, SUM(deathToll) AS grandTotalDeathToll, SUM(cureNumber) AS grandTotalCureNumber, SUM(suspectedNumber) AS grandTotalSuspectedNumber FROM chinaMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? GROUP BY province) as b  natural join (SELECT province, SUM(confirmedNumber) AS existingConfirmedNumber, SUM(suspectedNumber) AS existingSuspectedNumber FROM chinaMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? GROUP BY province) as c';
+            var sltSqlParams = [getObj.Data,getObj.Data,getObj.Data];
+            break;
     }
     message = [];
-    for( i = 0 ; i < 3 ; i ++ ){
-        connection.query(sltSql[i], sltSqlParams, function (err,result) {
+    if( getObj.Return != "joinCity" && getObj.Return != "joinProvince"){
+        for( i = 0 ; i < 3 ; i ++ ){
+            connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                console.log(result);
+                if (err) {
+                    console.log('Select Error ', err.message);
+                    connection.end();
+                    return res.json(
+                        {
+                            result: 'N', message: err.message
+                        });
+                }
+                else {
+                    if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                    else message.push(result);
+                }
+            })
+        }
+        setTimeout(()=>{
+            return res.json({
+                result: 'Y', 
+                message:{
+                    newAddtion:message[0],
+                    total:message[1],
+                    extance:message[2]
+                }
+            });
+        },300)
+    }
+    else{
+        connection.query(sltSql, sltSqlParams, function (err,result) {
             console.log(result);
             if (err) {
                 console.log('Select Error ', err.message);
@@ -554,22 +591,14 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
                         result: 'N', message: err.message
                     });
             }
-            else {
-                if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
-                else message.push(result);
+            else{
+                return res.json({
+                    result: 'Y', 
+                    message: result
+            })
             }
         })
     }
-    setTimeout(()=>{
-        return res.json({
-            result: 'Y', 
-            message:{
-                newAddtion:message[0],
-                total:message[1],
-                extance:message[2]
-            }
-        });
-    },300)
 })
 
 //查询国外数据
@@ -596,10 +625,43 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
             var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000), 'yyyy-MM-dd');
             var sltSqlParams = [today,yesterday];
             break;
+        case "joinCountry":
+            var sltSql = 'SELECT * FROM (SELECT country, confirmedNumber AS newAddtionConfirmedNumber, deathToll AS newAddtionDeathToll, cureNumber AS newAddtionCureNumber, suspectedNumber AS newAddtionSuspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) as a natural join (SELECT country, confirmedNumber AS grandTotalConfirmedNumber, deathToll AS grandTotalDeathToll, cureNumber AS grandTotalCureNumber, suspectedNumber AS grandTotalSuspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) as b  natural join (SELECT country, confirmedNumber AS existingConfirmedNumber, suspectedNumber AS existingSuspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) as c';
+            var sltSqlParams = [getObj.Data,getObj.Data,getObj.Data];
+            break;
     }
     message = [];
-    for( i = 0 ; i < 3 ; i ++ ){
-        connection.query(sltSql[i], sltSqlParams, function (err,result) {
+    if( getObj.Return != "joinCountry"){
+        for( i = 0 ; i < 3 ; i ++ ){
+            connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                console.log(result);
+                if (err) {
+                    console.log('Select Error ', err.message);
+                    connection.end();
+                    return res.json(
+                        {
+                            result: 'N', message: err.message
+                        });
+                }
+                else {
+                    if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                    else message.push(result);
+                }
+            })
+        }
+        setTimeout(()=>{
+            return res.json({
+                result: 'Y', 
+                message:{
+                    newAddtion:message[0],
+                    total:message[1],
+                    extance:message[2]
+                }
+            });
+        },500)
+    }
+    else{
+        connection.query(sltSql, sltSqlParams, function (err,result) {
             console.log(result);
             if (err) {
                 console.log('Select Error ', err.message);
@@ -609,22 +671,14 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
                         result: 'N', message: err.message
                     });
             }
-            else {
-                if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
-                else message.push(result);
+            else{
+                return res.json({
+                    result: 'Y', 
+                    message: result
+            })
             }
         })
     }
-    setTimeout(()=>{
-        return res.json({
-            result: 'Y', 
-            message:{
-                newAddtion:message[0],
-                total:message[1],
-                extance:message[2]
-            }
-        });
-    },500)
 })
 
 //查询年龄数据
