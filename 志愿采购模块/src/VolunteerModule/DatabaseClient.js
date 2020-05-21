@@ -105,10 +105,13 @@ export async function GetOrderToSend(v_id) {
 
 ///////////////   更新订单状态为已经送达
 
-export async function UpdateOrderState(id) {
+
+export function UpdateOrderState(id) {
+    console.log("******************");
     let data = {id: id};
-    instance.post('/request/shoppingOrder/updateStat', data
+    instance.post('/request/shoppingOrder/update', data
     ).then(function (response) {
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhh");
         return response.data.message;
     }).catch(function (error) {
         console.log(error);
@@ -130,6 +133,21 @@ export async function GetTenantInfo(t_id) {
     return result;
 }
 
+
+
+////////////// 获取订单状态
+
+export async function GetOrderState(id) {
+    let data = {id: id};
+    let result = await instance.get('/request/shoppingOrder/getState', {
+        params: data
+    }).then(function (response) {
+        return response.data.message;
+    }).catch(function (error) {
+        console.log(error);
+    });
+    return result;
+}
 
 //////////////  获取商家信息
 
