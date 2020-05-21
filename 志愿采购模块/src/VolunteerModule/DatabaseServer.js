@@ -180,7 +180,27 @@ app.get('/request/volunteerActivity/detailinfo', function getActivityDetailInfo(
     })
 })
 
+//////////////////////  获取待配送订单列表
 
+app.get('/request/shoppingOrder/getState', function getOrderState(req, res) {
+    var getObj = req.query;
+    selectSQL = 'SELECT * FROM shoppingOrder WHERE id = ?';
+    selectParams = [getObj.id];
+    console.log(selectParams);
+    connection.query(selectSQL, selectParams, function (err, result) {
+        if (err) {
+            res.json({
+                result: 'N',
+                message: err.message
+            });
+        } else {
+            res.json({
+                result: 'Y',
+                message: result
+            });
+        }
+    })
+});
 
 
 
@@ -208,9 +228,10 @@ app.get('/request/shoppingOrder/selectToSendOrder', function selectToSendOrder(r
 
 ////////////////////  更新订单状态为已送达
 
-app.post('/request/shoppingOrder/updateStat', function UpdateStat(req, res) {
+app.post('/request/shoppingOrder/update', function UpdateStat(req, res) {
+    console.log('SSSSSSSSSSSSSSSSSSS\n');
     let getObj = req.body;
-    let updateSQL = "UPDATE shoppingOrder SET stat = \'arrived\' WHERE id = ? ";
+    let updateSQL = 'UPDATE shoppingOrder SET stat = \'gsjd\' WHERE id = ? ';
     let updateParams = [
         getObj.id,
     ];
@@ -223,6 +244,7 @@ app.post('/request/shoppingOrder/updateStat', function UpdateStat(req, res) {
                 message: err.message
             });
         } else {
+            console.log('Update SSSSSSSSSSSSSSSSSSS\n');
             res.json({
                 result: 'Y',
                 message: 'Success'
