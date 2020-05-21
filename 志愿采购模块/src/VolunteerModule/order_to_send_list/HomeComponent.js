@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, Image, TextInput, View, StyleSheet, StatusBar, KeyboardAvoidingView,ScrollView,Dimensions,ListView,FlatList,RefreshControl } from 'react-native'
+import { Text, Image, TextInput, View, StyleSheet, Alert , StatusBar, KeyboardAvoidingView,ScrollView,Dimensions,ListView,FlatList,RefreshControl } from 'react-native'
 import * as Animatable from "react-native-animatable";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GetOrderToSend,UpdateOrderState,GetMerchantInfo,GetTenantInfo} from '../DatabaseClient';
-import { response } from 'express';
+import { Button, List, WhiteSpace, WingBlank, Flex} from '@ant-design/react-native';
+import { GetOrderToSend,GetOrderState,UpdateOrderState,GetMerchantInfo,GetTenantInfo} from '../DatabaseClient';
+
 
 
 let windowWidth = Dimensions.get('window').width;
@@ -30,8 +31,85 @@ let touchlenth = windowWidth*0.8
 //     ];
 var data=[];
 
-var m_add,t_add,t_contact,t_account;
+class SignUpBtn extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state={
+                    hint: "送达",
+                    isDisabled: false,
+                    isMounted: false,
+                    
+                    
+                    
+                    
+                   };        
+        this.change = this.change.bind(this);
+    }
 
+    componentDidMount(){
+
+        this.setState({isMounted: true});
+
+        GetOrderState(this.state.order_id).then((response)=>{this.successShow(response[0])});
+    }
+
+    
+    successShow(response){
+        if(response[0].stat == "arrived"){
+            this.setState((state) => ({
+                hint: '已送达',
+                isDisabled: true
+            }));
+        }
+    }
+
+    
+
+    componentWillUnmount(){
+        this.state.isMounted=false;
+    }
+    change(id){
+        if (this.state.isMounted){
+            this.setState((state) => ({
+                hint: '已送达',
+                isDisabled: true
+            }));
+        }
+
+        UpdateOrderState(this.props.id);                     //////////// 更新订单状态
+       
+
+
+    }
+    
+
+
+
+    render(){
+        return (
+            <Button style={styles.button}
+                disabled={this.state.isDisabled}
+                onPress={() => {
+                    Alert.alert(
+                        "是否确认送达该订单?",
+                        "",
+                        [
+                            {text: '确认', onPress: () => {
+                                    console.log('OK Pressed');
+                                    this.change(this.props.id);
+                            }},
+                            {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                        ],
+                    )
+             }}>
+                {this.state.hint}
+            </Button>
+        );
+    }
+}
+
+
+var m_add,t_add,t_contact,t_account;
 export default class HomeComponent extends Component{
 
         constructor(props){
@@ -39,7 +117,7 @@ export default class HomeComponent extends Component{
           
           this.state = {
             
-            isMounted: false,
+            
             // v_id: props.navigation.state.params.v_id, //////////////////  需要父页面传递的志愿者id
             v_id:"01",
             
@@ -48,45 +126,46 @@ export default class HomeComponent extends Component{
         }
 
         componentDidMount(){
-            this.setState({isMounted: true});
+            
             GetOrderToSend(this.state.v_id).then((response)=>{this.successShow(response)});
         }
     
         successShow(response) {
             data = [];
-            
+             
             var i;
             i = 0;
             for(i=0;i<response.length;i++)
             {
+                
+                let single_ord= {key:"",start:"",end:"",buyer:"",contact:"",time:"",id:"",item_list:"",price:"",state:""};
+                
+                single_ord.key = response[i].id;i
+                single_ord.id = response[i].id;
+                
+                single_ord.time = response[i].expected_time.substring(0,5);
+                single_ord.itemlist = response[i].item_list;i
+                single_ord.price = String(response[i].total_price)+"元";
+                single_ord.state = response[i].stat;
                 GetTenantInfo(response[i].t_id).then((response)=>{
-                    t_add = response[0].address;
-                    t_contact = response[0].contact;
-                    t_account = response[0].account;
+                    single_ord.end = response[0].address;
+                    single_ord.contact = response[0].contact;
+                    single_ord.buyer = response[0].account;
+                    
                 });
                 GetMerchantInfo(response[i].t_id).then((response)=>{
-                    m_add = response[0].address;
-                });
-                single_ord = {key:"",start:"",end:"",buyer:"",contact:"",time:"",id:"",item_list:"",price:"",state:""};
-                single_ord.key = response[0].id;
-                single_ord.start = m_add;
-                single_ord.end = t_add;
-                single_ord.buyer = t_account;
-                single_ord.contact = t_account;
-                single_ord.time = response[0].expected_time;
-                single_ord.item_list = response[0].item_list;
-                single_ord.price = response[0].total_price;
-                single_ord.state = response[0].stat;
-               
-                data.push(single_ord);
+                    single_ord.start = response[0].address;
+                    console.log("hhhhhhhhhhhh");
+                    console.log(single_ord);
+                    data.push(single_ord);
+                   
+                });    
+                
                 
             }
            
         }
 
-        
-
-        
         render(){
           return (
             <View>
@@ -125,15 +204,12 @@ export default class HomeComponent extends Component{
         }
 
               _keyExtractor = (item, index) => item.key;
-
-              componentDidMount() {
-
-              }
             
 
               //列表的每一行
               renderItem({item,index}) {
                   return (
+                    <View style={styles.whole}>
                  <TouchableOpacity style={styles.touch}
                         onPress={ () => this.props.navigation.navigate("OrderDetailScreen",{
                             start:item.start,
@@ -143,7 +219,8 @@ export default class HomeComponent extends Component{
                             contact:item.contact,
                             itemlist:item.itemlist,
                             price:item.price,
-                            state:item.state
+                            state:item.state,
+                            id:item.id,
 
                         }) }
                     >
@@ -160,9 +237,16 @@ export default class HomeComponent extends Component{
 
 
                         </View>
+                       
                             
                         </View>
                     </TouchableOpacity>
+
+                            <SignUpBtn  
+                            id={item.id}
+                                    
+                            />
+                    </View>
                   )
               }
               //绘制列表的分割线
@@ -179,6 +263,16 @@ export default class HomeComponent extends Component{
   }
 
 var styles = StyleSheet.create({
+
+    whole:{
+        alignItems: 'flex-start',
+        flexDirection:'row',
+
+    },
+    button:{
+        marginTop:17,
+        marginLeft:10,
+    },
 
 
     destext:{
@@ -250,7 +344,7 @@ var styles = StyleSheet.create({
         borderBottomColor:"white",
         borderRadius:5,
         height:60,
-        width:windowWidth*0.9,
+        width:windowWidth*0.7,
         marginTop:10,
         
     },
