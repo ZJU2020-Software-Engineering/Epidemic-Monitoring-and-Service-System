@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, Image, TextInput, View, StyleSheet, StatusBar, KeyboardAvoidingView,Button,Dimensions } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Heading2, Paragraph } from './Text';
-import { UpdateOrderState} from '../DatabaseClient';
+import { UpdateOrderState,GetOrderState} from '../DatabaseClient';
 
 let windowWidth = Dimensions.get('window').width;
 let windowheight = Dimensions.get('window').height;
@@ -17,12 +17,25 @@ class OrderDetailComponent extends Component{
         };
     }
 
+    // componentDidMount(){
+            
+    //     GetOrderState(this.state.order_id).then((response)=>{this.successShow(response[0])});
+    // }
+    // successShow(response){
+    //     this.setState((state) => ({
+            
+    //         stateOrder: response.stat,
+    //     }));
+    // }
+
     onPressDone = ()=>{
-        
+        console.log(this.state.order_id);
         UpdateOrderState(this.state.order_id); //////////////  更改订单状态
         this.setState({stateOrder:"已送达"});
         alert("已更改订单状态")
     }
+
+    
 
 
 
