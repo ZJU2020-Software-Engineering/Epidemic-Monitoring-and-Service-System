@@ -512,7 +512,6 @@ app.post('/request/map/Gender/update', function updateGender(req, res) {
 
 //查询国内数据
 app.post('/request/map/chinaMap/select', function selectChina(req, res) {
-
     var getObj = req.body;
     //console.log(getObj.Data,getObj.City,getObj.Return)
     switch( getObj.Return ){
@@ -576,88 +575,56 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
 //查询国外数据
 app.post('/request/map/foreignMap/select', function selectForeign(req,res){
     var getObj = req.body;
-    var sltType = getObj.Return;
-	
-    switch (sltType) {
-        case 'increaseDiagnosis':
-            var sltSql = 'SELECT confirmedNumber AS num FROM foreignMapNewAddtion WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-            //sqlReturn('select');
+    switch( getObj.Return ){
+        case "sum":
+            var sltSql = ['SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll,  SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?',
+            'SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll,  SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?',
+            'SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?'];
+            var sltSqlParams = [getObj.Data];
+            console.log(sltSqlParams);
             break;
-        case 'increaseDeath':
-            var sltSql = 'SELECT deathToll AS num FROM foreignMapNewAddtion WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-            //sqlReturn('select');
+        case "country":
+            var sltSql = ['SELECT country, confirmedNumber, deathToll,  cureNumber, suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? ',
+            'SELECT country, confirmedNumber, deathToll, cureNumber, suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?',
+            'SELECT country, confirmedNumber, suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?'];
+            var sltSqlParams = [getObj.Data];
             break;
-        case 'increaseCure':
-            var sltSql = 'SELECT cureNumber AS num FROM foreignMapNewAddtion WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
+        case "compare":
+            var sltSql = ['SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal  WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber, today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday'];
+            var curDate = new Date();
+            var today = time.formatDate(curDate, 'yyyy-MM-dd');
+            var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000), 'yyyy-MM-dd');
+            var sltSqlParams = [today,yesterday];
             break;
-        case 'increaseSuspected':
-            var sltSql = 'SELECT suspectedNumber AS num FROM foreignMapNewAddtion WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-            break;
-        case 'totalDiagnosis':
-            var sltSql = 'SELECT confirmedNumber AS num FROM  foreignmapgrandtotal WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-            break;
-        case 'totalDeath':
-            var sltSql = 'SELECT deathToll AS num FROM foreignMapGrandTotal WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-            break;
-        case 'totalCure':
-            var sltSql = 'SELECT cureNumber AS num FROM foreignMapGrandTotal WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-            break;
-        case 'totalSuspected':
-            var sltSql = 'SELECT suspectedNumber AS num FROM foreignMapGrandTotal WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data,
-                ];
-            //sqlReturn('select');
-        case 'extanceDiagnosis':
-            var sltSql = 'SELECT confirmedNumber AS num FROM foreignMapExisting WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-        case 'extanceSuspected':
-            var sltSql = 'SELECT suspectedNumber AS num FROM foreignMapExisting WHERE date = ? and country = ?';
-            var sltSqlParams = [getObj.Data, getObj.Country];
-           // sqlReturn('select');
-            break;
-        default: break;
     }
-    connection.query(sltSql, sltSqlParams, function (err,result) {
+    message = [];
+    for( i = 0 ; i < 3 ; i ++ ){
+        connection.query(sltSql[i], sltSqlParams, function (err,result) {
+            console.log(result);
             if (err) {
                 console.log('Select Error ', err.message);
-                res.json(
+                connection.end();
+                return res.json(
                     {
                         result: 'N', message: err.message
                     });
-                return;
             }
             else {
-                if(result[0]){
-                    res = result[0];
-                	console.log(result[0].num);
-                	res.json(
-                	    {
-                	        result: 'Y', message: res
-                	    });
-                	return;
-                }
-                else{
-                	res.json(
-                	    {
-                	        result: 'N', message: 'empty'
-                	    });
-                	return;
-                }
+                if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                else message.push(result);
             }
         })
+    }
+    setTimeout(()=>{
+        return res.json({
+            result: 'Y', 
+            message:{
+                newAddtion:message[0],
+                total:message[1],
+                extance:message[2]
+            }
+        });
+    },500)
 })
 
 //查询年龄数据

@@ -35,48 +35,9 @@ export var server_config = {
             output:{
                 result: 'Y',
                 message: {
-                  newAddtion: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ],
-                  total: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ],
-                  extance: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ]
+                  newAddtion: [],
+                  total: [],
+                  extance: []
                 }
               }
         },
@@ -89,48 +50,9 @@ export var server_config = {
             output:{
                 result: 'Y',
                 message: {
-                  newAddtion: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ],
-                  total: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ],
-                  extance: [
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object], [Object], [Object],
-                    [Object]
-                  ]
+                  newAddtion: [],
+                  total: [],
+                  extance: []
                 }
               }
         },
@@ -158,6 +80,72 @@ export var server_config = {
               }
         }
     },
-    
-
+    GetForeign:{
+        url:'request/map/foreignMap/select',
+        sum:{ //获取全球某日统计数据
+            input:{
+                Return:"sum",
+                Data:"YYYY-MM-DD"
+            },
+            output:{
+                result: 'Y',
+                message: {
+                  newAddtion: {
+                    confirmedNumber: 0,
+                    deathToll: 0,
+                    cureNumber: 0,
+                    suspectedNumber: 0
+                  },
+                  total: {
+                    confirmedNumber: 166471,
+                    deathToll: 9279,
+                    cureNumber: 156975,
+                    suspectedNumber: 1558
+                  },
+                  extance: { confirmedNumber: 181, suspectedNumber: 0 }
+                }
+              }
+        },
+        compare:{ //获取全球当天同昨日的比较值
+            input:{
+                Return:"compare"
+            },
+            output:{
+                result: 'Y',
+                message: {
+                  newAddtion: {
+                    confirmedNumber: 0,
+                    deathToll: 0,
+                    cureNumber: 0,
+                    suspectedNumber: 0
+                  },
+                  total: {
+                    confirmedNumber: 0,
+                    deathToll: 0,
+                    cureNumber: 0,
+                    suspectedNumber: 0
+                  },
+                  extance: { confirmedNumber: 0, suspectedNumber: 0 }
+                }
+              }
+        },
+        country:{ //获取全球各国某日的具体信息
+            input:{
+                Return:"country",
+                Data:"YYYY-MM-DD"
+            },
+            output:{
+                result: 'Y',
+                message: {
+                  newAddtion: [{country:"",
+                  confirmedNumber: 0,
+                  deathToll: 0,
+                  cureNumber: 0,
+                  suspectedNumber: 0},{}],
+                  total: [],
+                  extance: [{country:"",confirmedNumber: 0, suspectedNumber: 0},{}]
+                }
+              }
+        }
+    }
 }
