@@ -30,7 +30,7 @@ import { GetActivityPerson,GetActivityDetailInfo} from '../DatabaseClient';
 //"yyyy-MM-dd hh:mm:ss"  -> Date()
 
 
-var Activity=[]
+// var Activity=[]
 
 
 function DateFromString(dateString) { 
@@ -90,6 +90,7 @@ export default class SignedScreen extends React.Component{
 					act_type:"",
 					
 					act_addr:"",
+					Activity:[]
                    };        
 		// this.change = this.change.bind(this);
 		
@@ -119,13 +120,16 @@ export default class SignedScreen extends React.Component{
 				single_act.address = response1[0].location;
 				single_act.type = response1[0].type;
 				Activity.push(single_act);
-				
-				});
+				console.log(Activity);
+				this.setState({
+					Activity: Activity
+				})
+			});
 						
 		}
 		console.log("#######################");
         console.log(Activity);
-      
+
         
 	}
 
@@ -140,11 +144,11 @@ export default class SignedScreen extends React.Component{
 		return (
 		  <View>
 		      <WingBlank>
-					<Text style={{marginTop:20,fontSize: 15}}> 当前已参与{Activity.length}个志愿活动</Text>
+					<Text style={{marginTop:20,fontSize: 15}}> 当前已参与{this.state.Activity.length}个志愿活动</Text>
 					<WhiteSpace size='xl'/>
 					<ScrollView> 
 					   <List>
-					        {Activity.map((activity) => {
+					        {this.state.Activity.map((activity) => {
 					            return(
 		                          <List.Item
 		                                 key={activity} 
