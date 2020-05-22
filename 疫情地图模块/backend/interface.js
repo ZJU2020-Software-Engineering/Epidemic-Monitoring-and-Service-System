@@ -182,11 +182,12 @@ export var server_config = {
             output:{
                 result: 'Y',
                 message: {
-                  newAddtion: [{country:"",
-                  confirmedNumber: 0,
-                  deathToll: 0,
-                  cureNumber: 0,
-                  suspectedNumber: 0},{}],
+                  newAddtion: [{
+                    country:"",
+                    confirmedNumber: 0,
+                    deathToll: 0,
+                    cureNumber: 0,
+                    suspectedNumber: 0},{}],
                   total: [],
                   extance: [{country:"",confirmedNumber: 0, suspectedNumber: 0},{}]
                 }
@@ -214,5 +215,19 @@ export var server_config = {
                 ]
             }
         },
+        topTen:{
+          input:{
+            Return:"topTen",
+            Data:"YYYY-MM-DD"
+          },
+          output:{
+            return: 'Y',
+            message:[ //按降序排列
+              {country:"",
+              confirmedNumber:5782},
+              {}
+            ]
+          }
+        }
     }
 }
