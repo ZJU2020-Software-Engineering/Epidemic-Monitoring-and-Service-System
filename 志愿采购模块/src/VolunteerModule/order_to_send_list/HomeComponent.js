@@ -37,11 +37,7 @@ class SignUpBtn extends React.Component {
         this.state={
                     hint: "送达",
                     isDisabled: false,
-                    isMounted: false,
-                    
-                    
-                    
-                    
+                    isMounted: false,                    
                    };        
         this.change = this.change.bind(this);
     }
@@ -50,12 +46,14 @@ class SignUpBtn extends React.Component {
 
         this.setState({isMounted: true});
 
-        GetOrderState(this.state.order_id).then((response)=>{this.successShow(response[0])});
+        GetOrderState(this.props.id).then((response)=>{this.successShow(response[0])});
     }
 
     
     successShow(response){
-        if(response[0].stat == "arrived"){
+        console.log(response.stat);
+        if(response.stat == "arrived"){
+            console.log("arrived");
             this.setState((state) => ({
                 hint: '已送达',
                 isDisabled: true
@@ -126,7 +124,7 @@ export default class HomeComponent extends Component{
         }
 
         componentDidMount(){
-            
+            console.log(this.state.v_id);
             GetOrderToSend(this.state.v_id).then((response)=>{this.successShow(response)});
         }
     
@@ -159,8 +157,8 @@ export default class HomeComponent extends Component{
                     console.log(single_ord);
                     data.push(single_ord);
                    
-                });    
-                
+                });  
+               
                 
             }
            

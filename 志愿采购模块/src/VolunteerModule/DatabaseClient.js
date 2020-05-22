@@ -1,10 +1,42 @@
-var axios =  require('axios');
-var instance=axios.create({
-    baseURL:'http://10.181.177.8:4000',//改成服务器的url
-    
+const URL = 'http://10.181.166.167:4000';
+
+import Axios from 'axios';
+
+let instance = Axios.create({
+    baseURL: URL,
     timeout: 10000,
-    headers: {'X-Custom-Header': 'foobar'}
+    headers: {
+        'X-Custom-Header': 'foobar'
+    }
 });
+
+
+
+export async function GetUserInfo(username) {
+    let data = {username: username};
+    console.log('Hello, world0');
+    let result = await instance.get('/request/personaluserinfo/select', {
+        params: data
+    }).then(function (response) {
+        console.log('Hello, world1');
+        return response.data.message;
+    }).catch(function (error) {
+        console.log(error);
+        console.log('Hello, world2');
+    });
+    return result;
+}
+
+export function ChangeStat(username, status) {
+    let data = {username: username, status: status};
+    instance.post('/request/personaluserinfo/updateStat', data
+    ).then(function (response) {
+        return response.data.message;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
 
 ////////////////  报名志愿活动，更新已报名人数
 
@@ -93,6 +125,7 @@ export async function CheckActivityPerson(v_id,va_id) {
 ////////////////  获取待配送订单列表
 export async function GetOrderToSend(v_id) {
     let data = {v_id: v_id};
+    console.log(data);
     let result = await instance.get('/request/shoppingOrder/selectToSendOrder', {
         params: data
     }).then(function (response) {
@@ -139,9 +172,12 @@ export async function GetTenantInfo(t_id) {
 
 export async function GetOrderState(id) {
     let data = {id: id};
+    console.log("get order state");
     let result = await instance.get('/request/shoppingOrder/getState', {
         params: data
     }).then(function (response) {
+        console.log("success222");
+        console.log('response'+ response.data.message[0].stat);
         return response.data.message;
     }).catch(function (error) {
         console.log(error);
@@ -162,6 +198,5 @@ export async function GetMerchantInfo(m_id) {
     });
     return result;
 }
-
 
 

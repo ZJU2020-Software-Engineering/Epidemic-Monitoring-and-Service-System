@@ -33,6 +33,51 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+app.get('/request/personaluserinfo/select', function selectUser(req, res) {
+    var getObj = req.query;
+    selectSQL = 'SELECT * FROM personaluserinfo WHERE username = ?';
+    selectParams = [getObj.username];
+    console.log(selectParams);
+    connection.query(selectSQL, selectParams, function (err, result) {
+        if (err) {
+            res.json({
+                result: 'N',
+                message: err.message
+            });
+        } else {
+            res.json({
+                result: 'Y',
+                message: result
+            });
+        }
+    })
+});
+
+app.post('/request/personaluserinfo/updateStat', function changeUserStat(req, res) {
+    let getObj = req.body;
+    let updateSQL = "UPDATE personaluserinfo SET status = ? " + "WHERE username = ? ";
+    let updateParams = [
+        getObj.status,
+        getObj.username
+    ];
+    console.log(updateParams);
+    console.log(updateSQL);
+    //database
+    connection.query(updateSQL, updateParams, function (err, result) {
+        if (err) {
+            console.log('Update Error\n');
+            res.json({
+                result: 'N',
+                message: err.message
+            });
+        } else {
+            res.json({
+                result: 'Y',
+                message: 'Success'
+            });
+        }
+    })
+});
 
 //////////////////  活动报名 修改人数
 
@@ -184,6 +229,7 @@ app.get('/request/volunteerActivity/detailinfo', function getActivityDetailInfo(
 
 app.get('/request/shoppingOrder/getState', function getOrderState(req, res) {
     var getObj = req.query;
+    console.log("server");
     selectSQL = 'SELECT * FROM shoppingOrder WHERE id = ?';
     selectParams = [getObj.id];
     console.log(selectParams);
@@ -231,7 +277,7 @@ app.get('/request/shoppingOrder/selectToSendOrder', function selectToSendOrder(r
 app.post('/request/shoppingOrder/update', function UpdateStat(req, res) {
     console.log('SSSSSSSSSSSSSSSSSSS\n');
     let getObj = req.body;
-    let updateSQL = 'UPDATE shoppingOrder SET stat = \'gsjd\' WHERE id = ? ';
+    let updateSQL = 'UPDATE shoppingOrder SET stat = \'arrived\' WHERE id = ? ';
     let updateParams = [
         getObj.id,
     ];

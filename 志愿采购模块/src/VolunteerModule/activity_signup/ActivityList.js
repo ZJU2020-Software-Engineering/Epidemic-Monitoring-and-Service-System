@@ -19,9 +19,9 @@ import { GetActivityList,SignUpActivity,CheckActivityPerson,ChangeActivityListPe
 //     },
 // ];
 
-var activities=[
-    {id:"aa",title:"aa", time:"aa", address:"aa", type:"aa"},
-]
+// var activities=[
+//     {id:"aa",title:"aa", time:"aa", address:"aa", type:"aa"},
+// ]
 
 class SignUpBtn extends React.Component {
     constructor(props) {
@@ -106,7 +106,7 @@ export default class ActivityList extends Component {
         super(props);
         
         this.state = {
-          
+          activities: []
         };
       }
     componentDidMount() {
@@ -135,8 +135,10 @@ export default class ActivityList extends Component {
         }
 
         console.log(acts);
-        activities=acts;
-
+        // activities=acts;
+        this.setState({
+            activities: acts
+        })
     
     }
     render(){
@@ -148,7 +150,7 @@ export default class ActivityList extends Component {
             <WhiteSpace />
             <ScrollView>
                 <List>
-                    {activities.map((activity) => {
+                    {this.state.activities.map((activity) => {
                         return(
                             <List.Item
                                 key={activity} 
@@ -162,7 +164,10 @@ export default class ActivityList extends Component {
                                 onPress={
                                     () => {
                                         this.props.navigation.navigate('ActivityDetail',{
-                                            info: activity,
+                                            title: activity.title,
+                                            time: activity.time,
+                                            location: activity.address,
+                                            type: activity.type
                                         });
                                     }
                                 }
