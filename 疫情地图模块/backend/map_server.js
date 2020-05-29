@@ -33,188 +33,113 @@ app.all('*', function (req, res, next) {
 // 创建 application/x-www-form-urlencoded 编码解析
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
+
 //插入国内数据
 app.post('/request/map/chinaMap/insert', function insertChina(req, res)
 {
     var getObj = req.body;
-    if (getObj.increaseDiagnosis!=-1) {//插入到第一张表
-        addSql = 'INSERT INTO chinaMapNewAddtion(date,province,city,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?,?)';
-        addSqlParams =[getObj.Data,
+    if (getObj.Return=="newAddtion") {//插入到第一张表
+        var Sql = 'INSERT INTO chinaMapNewAddtion(date,province,city,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?,?)';
+        var Params =[getObj.Data,
             getObj.Province,
             getObj.City,
             getObj.increaseDiagnosis,
             getObj.increaseDeath,
             getObj.increaseCure,
             getObj.increaseSuspected];
-        //sqlReturn('insert');
-         connection.query(addSql, addSqlParams, function (err, result) {
-            if (err) {
-                console.log('Insert Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Insert Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Insert Success'
-                    });
-                return;
-            }
-        })
+        //sqlReturn('insert');        
     }
-    if (getObj.totalDiagnosis!=-1) {//插入到第二张表
-        addSql = 'INSERT INTO chinaMapGrandTotal(date,province,city,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?,?)';
-        addSqlParams = [getObj.Data,
+    else if (getObj.Return=="total") {//插入到第二张表
+        var Sql = 'INSERT INTO chinaMapGrandTotal(date,province,city,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?,?)';
+        var Params = [getObj.Data,
             getObj.Province,
             getObj.City,
             getObj.totalDiagnosis,
             getObj.totalDeath,
             getObj.totalCure,
             getObj.totalSuspected];
-        //sqlReturn('insert');
-         connection.query(addSql, addSqlParams, function (err, result) {
-            if (err) {
-                console.log('Insert Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Insert Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Insert Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.extanceDiagnosis!=-1) {//插入到第三张表
-        addSql = 'INSERT INTO chinaMapExisting(date,province,city,confirmedNumber,suspectedNumber) VALUES(?,?,?,?,?)';
-        addSqlParams = [getObj.Data,
+    else if (getObj.Return=='extance') {//插入到第三张表
+        var Sql = 'INSERT INTO chinaMapExisting(date,province,city,confirmedNumber,suspectedNumber) VALUES(?,?,?,?,?)';
+        var Params = [getObj.Data,
             getObj.Province,
             getObj.City,
             getObj.extanceDiagnosis,
             getObj.extanceSuspected];
-            //sqlReturn('insert');
-			connection.query(addSql, addSqlParams, function (err, result) {
-			        if (err) {
-			            console.log('Insert Error ', err.message);
-			            res.json(
-			                {
-			                    result: 'N', message: err.message
-			                });
-			            return;
-			        }
-			        else {
-			            console.log('Insert Success');
-			            res.json(
-			                {
-			                    result: 'Y', message: 'Insert Success'
-			                });
-			            return;
-			        }
-			    })
     }
-
- 
+	//console.log(Sql);
+	//console.log(Params);
+    connection.query(Sql, Params, function (err, result) {
+        if (err) {
+            console.log('Insert Error ', err.message);
+            res.json(
+                {
+                    result: 'N', message: err.message
+                });
+            return;
+        }
+        else {
+            console.log('Insert Success');
+            res.json(
+                {
+                    result: 'Y', message: 'Insert Success'
+                });
+            return;
+        }
+    })
+    
 })
 
 //插入国外数据
 app.post('/request/map/foreignMap/insert', function insertForeign(req, res)
 {
     var getObj = req.body;
-    if (getObj.increaseDiagnosis!=-1) {
-        addSql = 'INSERT INTO foreignMapNewAddtion(date,country,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?)';
-        addSqlParams = [getObj.Data,
+    if (getObj.Return=="newAddtion") {
+        var Sql = 'INSERT INTO foreignMapNewAddtion(date,country,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?)';
+        var Params = [getObj.Data,
             getObj.Country,
             getObj.increaseDiagnosis,
             getObj.increaseDeath,
             getObj.increaseCure,
             getObj.increaseSuspected];
         //sqlReturn('insert');
-        connection.query(addSql, addSqlParams, function (err, result) {
-            if (err) {
-                console.log('Insert Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Insert Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Insert Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.totalDiagnosis!=-1) {
-        addSql = 'INSERT INTO foreignMapGrandTotal(date,country,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?)';
-        addSqlParams = [getObj.Data,
+    else if (getObj.Return=="total") {
+        var Sql = 'INSERT INTO foreignMapGrandTotal(date,country,confirmedNumber,deathToll,cureNumber,suspectedNumber) VALUES(?,?,?,?,?,?)';
+        var Params = [getObj.Data,
             getObj.Country,
             getObj.totalDiagnosis,
             getObj.totalDeath,
             getObj.totalCure,
             getObj.totalSuspected];
         //sqlReturn('insert');
-        connection.query(addSql, addSqlParams, function (err, result) {
-            if (err) {
-                console.log('Insert Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Insert Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Insert Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.extanceDiagnosis!=-1) {
-        addSql = 'INSERT INTO foreignMapExisting(date,country,confirmedNumber,suspectedNumber) VALUES(?,?,?,?)';
-        addSqlParams = [getObj.Data,
+    else if (getObj.Return=='extance') {
+        var Sql = 'INSERT INTO foreignMapExisting(date,country,confirmedNumber,suspectedNumber) VALUES(?,?,?,?)';
+        var Params = [getObj.Data,
             getObj.Country,
             getObj.extanceDiagnosis,
             getObj.extanceSuspected];
-        //sqlReturn('insert');
-        connection.query(addSql, addSqlParams, function (err, result) {
-            if (err) {
-                console.log('Insert Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Insert Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Insert Success'
-                    });
-                return;
-            }
-        })
-    }
-
-    
-    
+        //sqlReturn('insert');    
+    }    
+	connection.query(Sql, Params, function (err, result) {
+	    if (err) {
+	        console.log('Insert Error ', err.message);
+	        res.json(
+	            {
+	                result: 'N', message: err.message
+	            });
+	        return;
+	    }
+	    else {
+	        console.log('Insert Success');
+	        res.json(
+	            {
+	                result: 'Y', message: 'Insert Success'
+	            });
+	        return;
+	    }
+	})
 })
 
 //插入年龄数据
@@ -250,9 +175,10 @@ app.post('/request/map/Age/insert', function insertAge(req, res) {
 //插入性别数据
 app.post('/request/map/Gender/insert', function insertGender(req, res) {
     var getObj = req.body;
-    addSql = 'INSERT INTO mapMaleToFemaleRatio(cureRatio,deathRatio) VALUES(?,?)';
+    addSql = 'INSERT INTO mapMaleToFemaleRatio(cureRatio,deathRatio,confirmedRatio) VALUES(?,?,?)';
     addSqlParams = [getObj.ratioCure,
-        getObj.ratioDeath];
+        getObj.ratioDeath,
+		getObj.ratioConfirmed];
     //sqlReturn('insert');
     connection.query(addSql, addSqlParams, function (err, result) {
             if (err) {
@@ -278,7 +204,7 @@ app.post('/request/map/Gender/insert', function insertGender(req, res) {
 //更新国内数据
 app.post('/request/map/chinaMap/update', function updateChina(req, res) {
     var getObj = req.body;
-    if (getObj.increaseDiagnosis!=-1) {
+    if (getObj.Return=="newAddtion") {
         var updSql = 'UPDATE chinaMapNewAddtion SET confirmedNumber = ?,deathToll = ?,cureNumber = ?,suspectedNumber = ? WHERE date = ? and province = ? and city = ?';
         var updSqlParams = [getObj.increaseDiagnosis,
             getObj.increaseDeath,
@@ -288,26 +214,8 @@ app.post('/request/map/chinaMap/update', function updateChina(req, res) {
             getObj.Province,
             getObj.City];
         //sqlReturn('update');
-        connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.totalDiagnosis!=-1) {
+    else if (getObj.Return=="total") {
         var updSql = 'UPDATE chinaMapGrandTotal SET confirmedNumber = ?,deathToll = ?,cureNumber = ?,suspectedNumber = ? WHERE date = ? and province = ? and city = ?';
         var updSqlParams = [getObj.totalDiagnosis,
             getObj.totalDeath,
@@ -317,60 +225,41 @@ app.post('/request/map/chinaMap/update', function updateChina(req, res) {
             getObj.Province,
             getObj.City];
        //sqlReturn('update');
-       connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.extanceDiagnosis!=-1) {
+    else if (getObj.Return=='extance') {
         var updSql = 'UPDATE chinaMapExisting SET confirmedNumber = ?,suspectedNumber = ? WHERE date = ? and province = ? and city = ?';
         var updSqlParams = [getObj.extanceDiagnosis,
             getObj.extanceSuspected,
             getObj.Data,
             getObj.Province,
             getObj.City];
-        //sqlReturn('update');
-        connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
+        //sqlReturn('update');       
     }
-     
-
+	connection.query(updSql, updSqlParams, function (err, result) {
+	    if (err) {
+	        console.log('Update Error ', err.message);
+	        res.json(
+	            {
+	                result: 'N', message: err.message
+	            });
+	        return;
+	    }
+	    else {
+	        console.log('Update Success');
+	        res.json(
+	            {
+	                result: 'Y', message: 'Update Success'
+	            });
+	        return;
+	    }
+	})
+    
 })
 
 //更新国外数据
 app.post('/request/map/foreignMap/update', function updateForeign(req, res) {
     var getObj = req.body;
-    if (getObj.increaseDiagnosis!=-1) {
+    if (getObj.Return=="newAddtion") {
         var updSql = 'UPDATE foreignMapNewAddtion SET confirmedNumber = ?,deathToll = ?,cureNumber = ?,suspectedNumber = ? WHERE date = ? and country = ?';
         var updSqlParams = [getObj.increaseDiagnosis,
             getObj.increaseDeath,
@@ -379,26 +268,8 @@ app.post('/request/map/foreignMap/update', function updateForeign(req, res) {
             getObj.Data,
             getObj.Country];
         //sqlReturn('update');
-        connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.totalDiagnosis!=-1) {
+    else if (getObj.Return=="total") {
         var updSql = 'UPDATE foreignMapGrandTotal SET confirmedNumber = ?,deathToll = ?,cureNumber = ?,suspectedNumber = ? WHERE date = ? and country = ?';
         var updSqlParams = [getObj.totalDiagnosis,
             getObj.totalDeath,
@@ -406,53 +277,33 @@ app.post('/request/map/foreignMap/update', function updateForeign(req, res) {
             getObj.totalSuspected,
             getObj.Data,
             getObj.Country];
-        //sqlReturn('update');
-        connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
     }
-    if (getObj.extanceDiagnosis!=-1) {
+    else if (getObj.Return=='extance') {
         var updSql = 'UPDATE foreignMapExisting SET confirmedNumber = ?,suspectedNumber = ? WHERE date = ? and country = ?';
         var updSqlParams = [getObj.extanceDiagnosis,
             getObj.extanceSuspected,
             getObj.Data,
             getObj.Country];
-        //sqlReturn('update');
-        connection.query(updSql, updSqlParams, function (err, result) {
-            if (err) {
-                console.log('Update Error ', err.message);
-                res.json(
-                    {
-                        result: 'N', message: err.message
-                    });
-                return;
-            }
-            else {
-                console.log('Update Success');
-                res.json(
-                    {
-                        result: 'Y', message: 'Update Success'
-                    });
-                return;
-            }
-        })
+        //sqlReturn('update');        
     }
-     
+    connection.query(updSql, updSqlParams, function (err, result) {
+        if (err) {
+            console.log('Update Error ', err.message);
+            res.json(
+                {
+                    result: 'N', message: err.message
+                });
+            return;
+        }
+        else {
+            console.log('Update Success');
+            res.json(
+                {
+                    result: 'Y', message: 'Update Success'
+                });
+            return;
+        }
+    }) 
 })
 
 //更新年龄数据
@@ -486,9 +337,10 @@ app.post('/request/map/Age/update', function updateAge(req, res) {
 //更新性别数据
 app.post('/request/map/Gender/update', function updateGender(req, res) {
     var getObj = req.body;
-    var updSql = 'UPDATE mapMaleToFemaleRatio SET cureRatio = ?,deathRatio = ?';
+    var updSql = 'UPDATE mapMaleToFemaleRatio SET cureRatio = ? and deathRatio = ? and confirmedRatio=?';
     var updSqlParams = [getObj.ratioCure,
-        getObj.ratioDeath];
+        getObj.ratioDeath,
+		getObj.ratioConfirmed];
    // sqlReturn('update');
     connection.query(updSql, updSqlParams, function (err, result) {
             if (err) {
@@ -549,6 +401,14 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
             var sltSql = 'SELECT * FROM (SELECT province, confirmedNumber AS newAddtionConfirmedNumber, deathToll AS newAddtionDeathToll, cureNumber AS newAddtionCureNumber, suspectedNumber AS newAddtionSuspectedNumber FROM chinaMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) as a natural join (SELECT province, confirmedNumber AS grandTotalConfirmedNumber, deathToll AS grandTotalDeathToll, cureNumber AS grandTotalCureNumber, suspectedNumber AS grandTotalSuspectedNumber FROM chinaMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) as b  natural join (SELECT province, confirmedNumber AS existingConfirmedNumber, suspectedNumber AS existingSuspectedNumber FROM chinaMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) as c';
             var sltSqlParams = [getObj.Data,getObj.Data,getObj.Data];
             break;
+		case "singleCity":
+		   var sltSql = [
+			   'SELECT city, confirmedNumber, deathToll, cureNumber, suspectedNumber FROM chinaMapNewAddtion WHERE date = ? and city = ?',
+               'SELECT confirmedNumber, deathToll, cureNumber, suspectedNumber FROM chinaMapGrandTotal WHERE date = ? and city = ? ',
+               'SELECT confirmedNumber, suspectedNumber FROM chinaMapExisting WHERE date = ? and city = ?'
+           ]
+		   var sltSqlParams = [getObj.Data,getObj.City];
+		   break;
     }
     message = [];
     if( getObj.Return != "joinCity" && getObj.Return != "joinProvince"){
@@ -564,7 +424,7 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
                         });
                 }
                 else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return =="singleCity") message.push(result[0]);
                     else message.push(result);
                 }
             })
@@ -618,6 +478,12 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
             'SELECT country, confirmedNumber, suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?'];
             var sltSqlParams = [getObj.Data];
             break;
+		case "singleCountry":
+		    var sltSql = ['SELECT country, confirmedNumber, deathToll,  cureNumber, suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and country= ?',
+		    'SELECT country, confirmedNumber, deathToll, cureNumber, suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and country= ?',
+		    'SELECT country, confirmedNumber, suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and country= ?'];
+		    var sltSqlParams = [getObj.Data,getObj.Country];
+		    break;
         case "compare":
             var sltSql = ['SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal  WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber, today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday'];
             var curDate = new Date();
@@ -632,9 +498,13 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
         case "topTen":
             var sltSql = 'Select country, confirmedNumber from foreignMapNewAddtion where DATE_FORMAT(date,"%Y-%m-%d") = ? order by -confirmedNumber limit 10';
             var sltSqlParams = [getObj.Data];
+			break;
+		case "topSeries":
+		    var sltSql = 'Select date, country, confirmedNumber from foreignMapNewAddtion where country= ? or country= ? or country=? or country=? or country=? order by date';
+		    var sltSqlParams = getObj.Countries;
     }
     message = [];
-    if( getObj.Return != "joinCountry" && getObj.Return != "topTen" ){
+    if( getObj.Return != "joinCountry" && getObj.Return != "topTen"&& getObj.Return != "topSeries" ){
         for( i = 0 ; i < 3 ; i ++ ){
             connection.query(sltSql[i], sltSqlParams, function (err,result) {
                 console.log(result);
@@ -647,7 +517,7 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
                         });
                 }
                 else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return == "singleCountry")message.push(result[0]);
                     else message.push(result);
                 }
             })
@@ -700,11 +570,19 @@ app.post('/request/map/Age/select', function selectAge(req, res) {
             }
             else {
                 console.log(result);
-                res.json(
-                    {
-                        result: 'Y', message: result
-                    });
-                return;
+                if (result){
+                	res.json(
+                	    {
+                	        result: 'Y', message: result
+                	    });
+                	return;
+                }else{
+                	res.json(
+                	    {
+                	        result: 'N', message: 'empty'
+                	    });
+                	return;
+                }
             }
         })
 })
@@ -725,11 +603,19 @@ app.post('/request/map/Gender/select', function selectGender(req, res) {
             }
             else {
                 console.log(result);
-                res.json(
-                    {
-                        result: 'Y', message: result
-                    });
-                return;
+				if (result){
+                	res.json(
+                	    {
+                	        result: 'Y', message: result
+                	    });
+                	return;
+                }else{
+                	res.json(
+                	    {
+                	        result: 'N', message: 'empty'
+                	    });
+                	return;
+                }
             }
         })
 })
