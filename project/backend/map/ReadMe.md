@@ -11,7 +11,7 @@
 
 ## crawler ##
 
-1. **需要安装的pthon库**：bs4，requests
+1. **需要安装的python库**：bs4，requests
 2. **运行** 运行main.py, 保持运行，每30min将更新一次数据
 
   
