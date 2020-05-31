@@ -22,19 +22,20 @@ class Crawler:
         self.ChinaMap=[]
         self.ForeignMap=[]
 
-
     # 更新
     def run(self):
-        # self.age(); #提交年龄数据
-        # self.sex(); #提交性别数据
+         #self.age(); #提交年龄数据
+         #self.sex(); #提交性别数据
+
 
         while True:
-            #try:
-                self.crawler()
-                # 爬取新数据
-                time.sleep(60 * 30)  # 30分钟更新数据
-            #except BaseException:
-                #continue
+        #try:
+            self.crawler()
+            # 爬取新数据
+            time.sleep(60 * 30)  # 30分钟更新数据
+        #except BaseException:
+            #continue
+
 
     # 爬取信息
     def crawler(self):
@@ -81,17 +82,18 @@ class Crawler:
                     "Data": self.date,
                     "Province": area[ 'provinceShortName'],
                     "City": area[  'provinceShortName'],
-                    "increaseDiagnosis":0,
-                    "increaseDeath":0,
-                    "increaseCure":0,
-                    "increaseSuspected":0,
+                    "increaseDiagnosis":-10000,
+                    "increaseDeath":-10000,
+                    "increaseCure":-10000,
+                    "increaseSuspected":-10000,
                     "totalDiagnosis":area['confirmedCount'],
                     "totalDeath":area['deadCount'],
                     "totalCure":area[ 'curedCount'],
                     "totalSuspected":area['suspectedCount'],
                     "extanceDiagnosis":area['currentConfirmedCount'],
                     "extanceSuspected":0,
-                    "id":area[ 'locationId']
+                    "id":area[ 'locationId'],
+                    "Return":None
                 })
                 continue
             else:
@@ -100,17 +102,18 @@ class Crawler:
                     "Data": self.date,
                     "Province": area['provinceShortName'],
                     "City": area['provinceShortName'],
-                    "increaseDiagnosis": 0,
-                    "increaseDeath": 0,
-                    "increaseCure": 0,
-                    "increaseSuspected": 0,
+                    "increaseDiagnosis": -10000,
+                    "increaseDeath": -10000,
+                    "increaseCure": -10000,
+                    "increaseSuspected": -10000,
                     "totalDiagnosis": area['confirmedCount'],
                     "totalDeath": area['deadCount'],
                     "totalCure": area['curedCount'],
                     "totalSuspected": area['suspectedCount'],
                     "extanceDiagnosis": area['currentConfirmedCount'],
                     "extanceSuspected": 0,
-                    "id": area['locationId']
+                    "id": area['locationId'],
+                    "Return":None
                 })
                 #城市
                 for city in area[ 'cities']:
@@ -128,15 +131,15 @@ class Crawler:
                         "totalSuspected": city['suspectedCount'],
                         "extanceDiagnosis": city['currentConfirmedCount'],
                         "extanceSuspected": 0,
-                        "id": city['locationId']
+                        "id": city['locationId'],
+                        "Return":None
                     }
                     #北京卫健委未明确大部分治愈与死亡病例的分区归属，因此北京市下辖分区的现存确诊暂无法获取
                     if t["Province"]=="北京":
-                        t["extanceDiagnosis"]=-2
+                        t["extanceDiagnosis"]=-10000
 
                     self.ChinaMap.append(t)
         #print(self.ChinaMap)
-
 
         # 提交
         headers = {
@@ -146,140 +149,90 @@ class Crawler:
         print("China")
         for item in self.ChinaMap:
             # 查询数据
-            checkExisit = {
+            checkQuery = {
                 "Data": item["Data"],
                 "City": item['City'],
-                "Return": 'extanceDiagnosis'
+                "Return": 'singleCity'
             }
-            checkTotal = {
-                "Data": item["Data"],
-                "City": item['City'],
-                "Return": 'totalDiagnosis'
-            }
-            checkInc = {
-                "Data": item["Data"],
-                "City": item['City'],
-                "Return": 'increaseDiagnosis'
-            }
-            LastDiagnosis={
+            LastQuery={
                 "Data": self.yesterday,
                 "City": item['City'],
-                "Return": 'extanceDiagnosis'
-            }
-            LastDeath={
-                "Data": self.yesterday,
-                "City": item['City'],
-                "Return": 'totalDeath'
-            }
-            LastCure = {
-                "Data": self.yesterday,
-                "City": item['City'],
-                "Return": 'totalCure'
+                "Return": 'singleCity'
             }
 
+
             # 每日新增数目
-            # Diagnosis
-            data = (json.dumps(LastDiagnosis, ensure_ascii=False)).encode('utf-8')
+            data = (json.dumps(LastQuery, ensure_ascii=False)).encode('utf-8')
             checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
                                      data=data, headers=headers)
             last=json.loads(checkres.content)
             print(last['result'], last['message'])
-            if last['result'] == 'Y' and last['message']!=None:
-                item['increaseDiagnosis']=item['extanceDiagnosis']-last['message']
-                print("increaseDiagnosis:",item['increaseDiagnosis'])
+            if last['result'] == 'Y' and 'extance' in last['message'].keys() and last['message']['extance']!=None:
+                item['increaseDiagnosis']=item['extanceDiagnosis']-last['message']['extance']['confirmedNumber']
+            if last['result'] == 'Y' and 'total' in last['message'].keys() and last['message']['total'] != None:
+                item['increaseDeath'] = item['totalDeath'] - last['message']['total']['deathToll']
+                item['increaseCure'] = item['totalCure'] - last['message']['total']['cureNumber']
+            print("increaseDiagnosis:",item['increaseDiagnosis'])
+            print("increaseDeath:", item['increaseDeath'])
+            print("increaseCure:", item['increaseCure'])
 
-            #dead
-            data = (json.dumps(LastDeath, ensure_ascii=False)).encode('utf-8')
+            #查询数据是否存在
+            data = (json.dumps(checkQuery, ensure_ascii=False)).encode('utf-8')
             checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
                                      data=data, headers=headers)
-            last = json.loads(checkres.content)
-            print(last['result'], last['message'])
-            if last['result'] == 'Y' and last['message'] != None:
-                item['increaseDeath'] = item['totalDeath'] - last['message']
-                print("increaseDeath:",  item['increaseDeath'])
-
-            #cure
-            data = (json.dumps(LastCure, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
-                                     data=data, headers=headers)
-            last = json.loads(checkres.content)
-            print(last['result'], last['message'])
-            if last['result'] == 'Y' and last['message'] != None:
-                item['increaseCure'] = item['totalCure'] - last['message']
-                print("increaseCure:", item['increaseCure'])
+            result = json.loads(checkres.content)
+            print(result)
 
             print(item)
-            item1 = copy.deepcopy(item)
-            item2 = copy.deepcopy(item)
-            item3 = copy.deepcopy(item)
-
-            #total
-            item1["increaseDiagnosis"]=-1
-            item1["extanceDiagnosis"] = -1
-            city1 = json.dumps(item1, ensure_ascii=False)
-            data = (json.dumps(checkTotal, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
-                                   data=data,headers=headers)
-            totalres=json.loads(checkres.content)
-            print(totalres['result'],totalres['message'])
-            if totalres['result']=='Y' and totalres['message']:
-                #update
+            # 提交数据
+            # total
+            item["Return"] = "total"
+            city = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'total' in result['message'].keys() and result['message']['total']!=None:
+                # update
                 print("update total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city1.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
-            elif totalres['result'] == 'N':
-                #insert
+            else:
+                # insert
                 print("insert total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city1.encode('utf-8'),
-                                                headers=headers)
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
+                                    headers=headers)
             print(res.text)
 
-
-            #increase
-            item2["totalDiagnosis"] = -1
-            item2["extanceDiagnosis"] = -1
-            city2 = json.dumps(item2, ensure_ascii=False)
-            data = (json.dumps(checkInc, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
-                                     data=data, headers=headers)
-            incRes = json.loads(checkres.content)
-            print(incRes['result'], incRes['message'])
-            if incRes['result'] == 'Y':
+            # increase
+            item['Return']='newAddtion'
+            city = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message']['newAddtion']!=None:
                 # update
                 print("update increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city2.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
-            elif incRes['result'] == 'N':
+            else:
                 # insert
                 print("insert increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city2.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
-            #exsisting
-            item3["increaseDiagnosis"] = -1
-            item3["totalDiagnosis"] = -1
-            city3 = json.dumps(item3, ensure_ascii=False)
-            data = (json.dumps(checkExisit, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
-                                     data=data, headers=headers)
-            exiRes = json.loads(checkres.content)
-            print(exiRes['result'], exiRes['message'])
-            if exiRes['result'] == 'Y':
+            # exsisting
+            item['Return']='extance'
+            city = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'extance' in result['message'].keys() and result['message']['extance']!= None:
                 # update
                 print("update")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city3.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
-            elif exiRes['result'] == 'N':
+            else:
                 # insert
                 print("insert")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city3.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
-
+    """
         # 写入
-        """ChinaFile = json.dumps(self.ChinaMap, indent=4, ensure_ascii=False)
+        ChinaFile = json.dumps(self.ChinaMap, indent=4, ensure_ascii=False)
         with open('ChinaFile.json', 'w', encoding='utf-8') as json_file:
             json_file.write(ChinaFile)
         print("China success")
@@ -298,9 +251,9 @@ class Crawler:
             self.ForeignMap.append({
                 "Data": self.date,
                 "Country": country['provinceName'],
-                "increaseDiagnosis": country["incrVo"]["currentConfirmedIncr"],
-                "increaseDeath": country["incrVo"]["deadIncr"],
-                "increaseCure": country["incrVo"]["curedIncr"],
+                "increaseDiagnosis": 0,
+                "increaseDeath": 0,
+                "increaseCure": 0,
                 "increaseSuspected": 0,
                 "totalDiagnosis": country['confirmedCount'],
                 "totalDeath": country['deadCount'],
@@ -308,9 +261,11 @@ class Crawler:
                 "totalSuspected": country['suspectedCount'],
                 "extanceDiagnosis": country['currentConfirmedCount'],
                 "extanceSuspected": 0,
-                "id": country['id']
+                "id": country['id'],
+                "Return":None
             })
         # print(self.ForeignMap)
+
 
         #提交
         headers = {
@@ -320,102 +275,98 @@ class Crawler:
         print("foreign")
         for item in self.ForeignMap:
             # 查询数据
-            checkExisit = {
+            checkQuery = {
                 "Data": item["Data"],
                 "Country": item['Country'],
-                "Return": 'extanceDiagnosis'
+                "Return": 'singleCountry'
             }
-            checkTotal = {
-                "Data": item["Data"],
+            LastQuery = {
+                "Data": self.yesterday,
                 "Country": item['Country'],
-                "Return": 'totalDiagnosis'
-            }
-            checkInc = {
-                "Data": item["Data"],
-                "Country": item['Country'],
-                "Return": 'increaseDiagnosis'
+                "Return": 'singleCountry'
             }
 
-            print(item)
-            item1 = item
-            item2 = item
-            item3 = item
-            item1 = copy.deepcopy(item)
-            item2 = copy.deepcopy(item)
-            item3 = copy.deepcopy(item)
 
-            # total
-            item1["increaseDiagnosis"] = -1
-            item1["extanceDiagnosis"] = -1
-            country1 = json.dumps(item1, ensure_ascii=False)
-            data = (json.dumps(checkTotal, ensure_ascii=False)).encode('utf-8')
+            # 每日新增数目
+            # Diagnosis
+            data = (json.dumps(LastQuery, ensure_ascii=False)).encode('utf-8')
             checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
                                      data=data, headers=headers)
-            totalres = json.loads(checkres.content)
-            print(totalres['result'], totalres['message'])
-            if totalres['result'] == 'Y' and totalres['message']:
+            last = json.loads(checkres.content)
+            print(last['result'], last['message'])
+
+            if last['result'] == 'Y' and 'extance' in last['message'].keys() and last['message']['extance']!=None:
+                item['increaseDiagnosis']=item['extanceDiagnosis']-last['message']['extance']['confirmedNumber']
+            if last['result'] == 'Y' and 'total' in last['message'].keys() and last['message']['total'] != None:
+                item['increaseDeath'] = item['totalDeath'] - last['message']['total']['deathToll']
+                item['increaseCure'] = item['totalCure'] - last['message']['total']['cureNumber']
+            print("increaseDiagnosis:", item['increaseDiagnosis'])
+            print("increaseDeath:", item['increaseDeath'])
+            print("increaseCure:", item['increaseCure'])
+
+            print(item)
+
+            # 查询数据是否存在
+            data = (json.dumps(checkQuery, ensure_ascii=False)).encode('utf-8')
+            checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
+                                     data=data, headers=headers)
+            result = json.loads(checkres.content)
+
+            # total
+            item["Return"] = 'total'
+            country = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'total' in result['message'].keys() and result['message']['total']!=None:
                 # update
                 print("update total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country1.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
                                     headers=headers)
-            elif totalres['result'] == 'N':
+            else:
                 # insert
                 print("insert total")
                 res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
-                                    data=country1.encode('utf-8'),
+                                    data=country.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
             # increase
-            item2["totalDiagnosis"] = -1
-            item2["extanceDiagnosis"] = -1
-            country2 = json.dumps(item2, ensure_ascii=False)
-            data = (json.dumps(checkInc, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
-                                     data=data, headers=headers)
-            incRes = json.loads(checkres.content)
-            print(incRes['result'], incRes['message'])
-            if incRes['result'] == 'Y':
+            item["Return"] = 'newAddtion'
+            country = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message']['newAddtion']!=None:
                 # update
                 print("update increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country2.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
                                     headers=headers)
-            elif incRes['result'] == 'N':
+            else:
                 # insert
                 print("insert increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert', data=country2.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert', data=country.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
             # exsisting
-            item3["increaseDiagnosis"] = -1
-            item3["totalDiagnosis"] = -1
-            country3 = json.dumps(item3, ensure_ascii=False)
-            data = (json.dumps(checkExisit, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
-                                     data=data, headers=headers)
-            exiRes = json.loads(checkres.content)
-            print(exiRes['result'], exiRes['message'])
-            if exiRes['result'] == 'Y':
+            item["Return"] = 'extance'
+            country = json.dumps(item, ensure_ascii=False)
+            if result['result'] == 'Y' and 'extance' in result['message'].keys() and result['message']['extance'] != None:
                 # update
                 print("update existance")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country3.encode('utf-8'),
+                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
                                     headers=headers)
-            elif exiRes['result'] == 'N':
+            else:
                 # insert
                 print("insert")
                 res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
-                                    data=country3.encode('utf-8'),
+                                    data=country.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
-
+        """
         # 写入
         foreignFile = json.dumps(self.ForeignMap, indent=4, ensure_ascii=False)
         with open('foreignFile.json', 'w', encoding='utf-8') as json_file:
                 json_file.write(foreignFile)
 
         print("Foreign success")
+        """
 
     #提交年龄数据
     def age(self):
@@ -437,23 +388,37 @@ class Crawler:
         };
         for item in data:
             age = json.dumps(item, ensure_ascii=False)
-            # data = age.encode('utf-8')
-            res = requests.post(url='http://127.0.0.1:8081/request/map/Age/insert', data=age, headers=headers)
             print(age)
+            # data = age.encode('utf-8')
+            # 查询是否存在
+            res = requests.post(url='http://127.0.0.1:8081/request/map/Age/select', data={}, headers=headers)
+            ageData=json.loads(res.content)
+            # 更新/插入
+            if ageData['result']=='Y' and ageData['message']!=None:
+                res = requests.post(url='http://127.0.0.1:8081/request/map/Age/update', data=age, headers=headers)
+            elif ageData['result']=='N' and ageData['message']=='empty':
+                res = requests.post(url='http://127.0.0.1:8081/request/map/Age/insert', data=age, headers=headers)
             print(res.text)
 
     # 提交性别数据
     def sex(self):
-        data={"ratioCure":0.587,
-              "ratioDeath":0.708}   #男性占比
+        data={"ratioCure":-1,
+              "ratioDeath":63.7,
+              "ratioConfirmed":51.1
+        }   #男性占比
         headers = {
             "content-type": "application/json; charset=UTF-8",
             "user-agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0'
         };
         sex=json.dumps(data,ensure_ascii=False)
-        res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/insert', data=sex,headers=headers)
         print("sex:")
+
+        # 查询是否存在
+        res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/select', data={}, headers=headers)
+        sexData = json.loads(res.content)
+        # 更新/插入
+        if sexData['result'] == 'Y' and sexData['message'] != None:
+            res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/update', data=sex, headers=headers)
+        elif ageData['result'] == 'N' and ageData['message'] == 'empty':
+            res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/insert', data=sex, headers=headers)
         print(res.text)
-
-
-
