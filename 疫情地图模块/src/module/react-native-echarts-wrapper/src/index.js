@@ -56,6 +56,7 @@ class ECharts extends Component {
                 ${getMinifiedEChartsFramework()}
             </script>
             <script src="https://gallery.echartsjs.com/dep/echarts/map/js/china.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/world.js"></script>
         </head>
 
         <body>
