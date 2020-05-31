@@ -10,6 +10,7 @@ import TabNavigator from 'react-native-tab-navigator'
 
 // 將你們各自模塊的首頁加進來
 import Profile from '../basic/Profile';
+import PersonHome from '../purchase/PersonHome';
 
 var navigation = null;
 export default class TabBar  extends React.Component{
@@ -46,7 +47,7 @@ export default class TabBar  extends React.Component{
         <TabNavigator>
 
           {this._renderTabarItems('Profile',require('../assets/mine.jpg'),require('../assets/mine.jpg'),Profile)}
-         
+          {this._renderTabarItems('志愿采购', require('../assets/shopping.png'),require('../assets/shopping.png'), PersonHome)}
        
         </TabNavigator>
       </View>

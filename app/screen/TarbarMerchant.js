@@ -9,11 +9,12 @@ import {
 import TabNavigator from 'react-native-tab-navigator';
 
 import ProfileMerchant from '../basic_M/ProfileMerchant';
-
+import {SplashComponent} from '../purchase_M/SplashComponent';
+import Cache from '../purchase_M/Cache';
 
 var navigation = null;
 
-export default class TabBar  extends React.Component{
+export default class TarBarMerchant extends React.Component{
     
     constructor(props){
         super(props);
@@ -41,21 +42,20 @@ export default class TabBar  extends React.Component{
   }
 
     render() {
+      Cache.set('username', this.state.username);
     return (
       <View style={styles.container}>
         <TabNavigator>
          
-          {this._renderTabarItems('ProfileMerchant',require('../assets/mine.jpg'),require('../assets/mine.jpg'),ProfileMerchant)}
-          
+          {this._renderTabarItems('ProfileMerchant',require('../assets/mine.jpg'),require('../assets/mine.jpg'), ProfileMerchant)}
+          {this._renderTabarItems('志愿采购模块',require('../assets/volun.png'),require('../assets/volun.png'), SplashComponent, {name: this.state.username})}
+
 
         </TabNavigator>
       </View>
     );
   }
 }
-
-
-
 
 const styles = StyleSheet.create({
     container: {
