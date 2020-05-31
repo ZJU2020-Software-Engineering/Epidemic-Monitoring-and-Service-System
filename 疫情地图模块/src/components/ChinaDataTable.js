@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { DataTable } from 'react-native-paper';
 import { ScrollView, StyleSheet} from 'react-native';
+import time from './tools/time';
+import axios from 'axios'
+import {server_config} from '../config'
 
 const max_number = 100000000;
 
@@ -10,20 +13,10 @@ var new_confirm = new Array();
 var total_confirm = new Array();
 var total_cure = new Array();
 var total_die = new Array();
+var provinces = new Array();
 // get from back end
-var provinces_length = 33;
-var provinces = ["湖北", "香港", "台湾", "北京", "广东", "福建", "天津",
- "浙江", "澳门", "内蒙古", "江苏", "山东", "甘肃", "四川", "辽宁", "陕西", "云南",
- "河北", "吉林", "山西", "重庆", "河南", "黑龙江", "广西", "贵州", "江西", "海南",
- "西藏", "湖南", "安徽", "宁夏", "青海", "新疆"];
-for (var i=0; i<provinces_length; i++) {
-  cur_confirm[i] = Math.floor(Math.random()*100);
-  new_confirm[i] = Math.floor(Math.random()*100);
-  total_confirm[i] = Math.floor(Math.random()*100);
-  total_cure[i] = Math.floor(Math.random()*100);
-  total_die[i] = Math.floor(Math.random()*100);
-}
-
+var provinces_length = 34;
+var curDate = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000), 'yyyy-MM-dd');
 // for table view
 var idx_ = new Array();
 for (var i=0; i<provinces_length; i++) {
@@ -37,8 +30,25 @@ export default class ChinaDataTable extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {idx: idx_};
-  }
+    this.state = {idx: idx_,Update:true};
+    axios
+        .post(`${server_config.backend_url}/${server_config.GetChina.url}`,{'Return':'joinProvince','Data':curDate}) 
+        .then((res)=>{  
+            if(res.data.result=='Y'){ 
+               console.log('已更新国内各省信息')
+               //  console.log(res.data.message) 
+                for (var i=0; i<res.data.message.length; i++) {
+                    provinces[i] = res.data.message[i].province;
+                    cur_confirm[i] = res.data.message[i].existingConfirmedNumber;
+                    new_confirm[i] = res.data.message[i].newAddtionConfirmedNumber;
+                    total_confirm[i] = res.data.message[i].grandTotalConfirmedNumber;
+                    total_cure[i] = res.data.message[i].grandTotalCureNumber;
+                    total_die[i] = res.data.message[i].grandTotalDeathToll;
+                }   
+                //console.log(provinces);
+                this.setState({Update:false},()=>{})
+        }});
+  } 
   // get descending or increasing order of attr_num, store them into idx
   // idx as state, can refresh table automatically
   my_sort(attr_num, attr_name) {
