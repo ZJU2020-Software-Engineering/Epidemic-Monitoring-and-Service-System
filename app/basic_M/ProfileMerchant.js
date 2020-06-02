@@ -37,7 +37,7 @@ export default class ProfileMerchant extends React.Component {
         axios.post(ip+'/request/info/merchantUserInfo/select', data,{headers:token}) 
         .then((res) => { //alert(JSON.stringify(res.data));
                 if(res.data.result=='L'){
-                  alert('token expired,please login again!') 
+                  alert('令牌过期，请重新登录!') 
                   const { navigate } = this.props.navigation;  
                   navigate('Home');
                 }
@@ -75,7 +75,7 @@ export default class ProfileMerchant extends React.Component {
                   title={"  "+this.state.name}
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   subtitleStyle={{ color: 'white' }}
-                  subtitle="  username"
+                  subtitle="  用户名"
                   chevron={{ color: '#796edb' }}
                   //onPress={  () => this.props.navigation.navigate( 'ChangeMerchantName',{username:this.state.username})}
                    onPress={()=>this.props.navigation.navigate('ChangeMerchantName',{
@@ -94,7 +94,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  PhoneNumber'}
+                  title={'  电话'}
                   bottomDivider
                   rightTitle={this.state.phoneNumber}
                   chevron={true}
@@ -113,7 +113,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  Email'}
+                  title={'  邮箱'}
                   bottomDivider
                   rightTitle={this.state.email}
                   chevron={true}
@@ -132,7 +132,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  BusinessLicense'}
+                  title={'  营业执照'}
                   bottomDivider
                   rightTitle={this.state.businessLicense}
               />
@@ -142,7 +142,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  CorporateIdentity'}
+                  title={'  法人身份'}
                   bottomDivider
                   rightTitle={this.state.corporateIdentity}
               />
@@ -151,7 +151,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  Category'}
+                  title={'  经营品类'}
                   bottomDivider
                   rightTitle={this.state.category}
                   chevron={true}
@@ -170,7 +170,7 @@ export default class ProfileMerchant extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  collectionInformation'}
+                  title={'  收款信息'}
                   bottomDivider
                   rightTitle={this.state.collectionInformation}
               />
@@ -191,7 +191,7 @@ export default class ProfileMerchant extends React.Component {
                   }}
                   ViewComponent={LinearGradient} 
                   leftIcon={{ type: 'font-awesome', name: 'lock',color: 'white' }}
-                  title=" Account and Security"
+                  title=" 账户与安全"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb' }}
                   onPress={  () => this.props.navigation.navigate( 'ChangeMerchantPassword',{username:this.state.username,token:this.state.token,})}
@@ -209,7 +209,7 @@ export default class ProfileMerchant extends React.Component {
                   }}
                   ViewComponent={LinearGradient} // Only if no expo
                   leftIcon={{ type: 'font-awesome', name: 'tasks',color: 'white' }}
-                  title=" About"
+                  title=" 关于"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb' }}
                   onPress={  () => this.props.navigation.navigate( 'About',{username:this.state.username,token:this.state.token,})}
@@ -228,7 +228,7 @@ export default class ProfileMerchant extends React.Component {
                   ViewComponent={LinearGradient} // Only if no expo
                   //leftAvatar={{ rounded: true, source: {uri:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' } }}
                   leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
-                  title=" Help"
+                  title=" 帮助"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb'}}
                   onPress={  () => this.props.navigation.navigate( 'Help',{username:this.state.username,token:this.state.token,})}
@@ -248,7 +248,7 @@ export default class ProfileMerchant extends React.Component {
                   //leftAvatar={{ rounded: true, source: {uri:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' } }}
                   //leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
                   leftIcon={{ type: 'font-awesome', name: 'angle-left',color: 'white' }}
-                  title="  Sign out"
+                  title="  注销"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb'}}
                   onPress={  () => this.props.navigation.navigate( 'Home')}
