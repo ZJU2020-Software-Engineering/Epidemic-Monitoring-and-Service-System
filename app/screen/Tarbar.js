@@ -18,7 +18,8 @@ export default class TabBar  extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedTab: 'Profile',
+          selectedTab: 'Otherpage',
+           //selectedTab: 'Profile',
             //username:this.props.navigation.getParam( 'username', 'No username provided'),
             
         };
@@ -46,7 +47,7 @@ export default class TabBar  extends React.Component{
       <View style={styles.container}>
         <TabNavigator>
 
-          {this._renderTabarItems('Profile',require('../assets/mine.jpg'),require('../assets/mine.jpg'),Profile)}
+          {this._renderTabarItems('个人中心',require('../assets/mine.jpg'),require('../assets/mine.jpg'),Profile)}
           {this._renderTabarItems('志愿采购', require('../assets/shopping.png'),require('../assets/shopping.png'), PersonHome)}
        
         </TabNavigator>
