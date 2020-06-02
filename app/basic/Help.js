@@ -20,7 +20,7 @@ export default class Help extends React.Component {
     return (
       
       <View style={styles.container}>
-        <Text>Hello from Help!</Text> 
+        <Text>欢迎!</Text> 
         <Text>{this.state.username}</Text>     
       </View>
     );
