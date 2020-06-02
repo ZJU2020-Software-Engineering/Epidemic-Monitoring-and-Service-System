@@ -47,7 +47,7 @@ export default class TarBarMerchant extends React.Component{
       <View style={styles.container}>
         <TabNavigator>
          
-          {this._renderTabarItems('ProfileMerchant',require('../assets/mine.jpg'),require('../assets/mine.jpg'), ProfileMerchant)}
+          {this._renderTabarItems('商家个人中心',require('../assets/mine.jpg'),require('../assets/mine.jpg'), ProfileMerchant)}
           {this._renderTabarItems('志愿采购模块',require('../assets/volun.png'),require('../assets/volun.png'), SplashComponent, {name: this.state.username})}
 
 
