@@ -42,7 +42,7 @@ export default class ChangeName extends React.Component {
         axios.post(ip+'/request/info/personalUserInfo/update',data,{headers:token}) 
         .then((res) => { //alert(JSON.stringify(res.data));
             if(res.data.result=='Y'){
-               alert('Change Success!')
+               alert('修改成功!')
                const {navigate,goBack,state} = this.props.navigation;
                 state.params.callback(this.state.name);
                 this.props.navigation.goBack();  
@@ -50,12 +50,12 @@ export default class ChangeName extends React.Component {
                //this.props.navigation.goback();
              }
              else if(res.data.result=='L'){
-              alert('token expired,please login again!') 
+              alert('令牌过期，请重新登录!') 
               const { navigate } = this.props.navigation;  
               navigate('Home');
              }
             else
-               alert('Change Failed!') 
+               alert('修改失败!') 
                 })
         .catch((error) => { console.log(error) });
       
@@ -72,15 +72,15 @@ export default class ChangeName extends React.Component {
       <View style={styles.container}>
       
         <Input
-             placeholder="new name"
-             label='New name'
+             placeholder="新姓名"
+             label='新姓名'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              onChangeText={value => this.state.name=value}
             /> 
 
            <TouchableOpacity style={styles.button}  onPress={ this.change } >
-              <Text style={styles.buttonText}> submit </Text>
+              <Text style={styles.buttonText}> 提交 </Text>
            </TouchableOpacity> 
 
          
