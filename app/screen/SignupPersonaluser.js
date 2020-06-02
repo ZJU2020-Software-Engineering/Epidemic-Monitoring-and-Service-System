@@ -10,14 +10,16 @@ export default class SignupPersonaluser extends React.Component {
 
   constructor(props){
         super(props)
-        this.state = ({ status:'true'
-          
-                      })
+        this.state = ({ 
+          status:'true',
+        password:'',
+        confirmedpassword:''  
+                     })
        
     } 
           username ='username';
-          password='password';
-          confiredpassword='confiredpassword';
+          //password='';
+         // confirmedpassword='';
           name='name';
           gender='gender';
           identityCardNumber='identityCardNumber';
@@ -38,7 +40,8 @@ export default class SignupPersonaluser extends React.Component {
 
     var data={
         'username': this.username,
-        'password': this.password, 
+        'password': this.state.password, 
+        
         'name': this.name,
         'gender':this.gender,
         'identityCardNumber': this.identityCardNumber,
@@ -50,15 +53,37 @@ export default class SignupPersonaluser extends React.Component {
         'email':this.email, 
     }
     //http 請求
-    axios.post(ip+'/users/personalUserInfo/insert',data) 
-     .then((res) => {  // alert(JSON.stringify(res.data));
-                         if(res.data.message=='Success')
-                            this.props.navigation.navigate( 'Home')
-                         else
-                          alert(res.data.message)
-                            //this.setState({register:'false'});
-                        })
-    .catch((error) => {});
+    
+                      if(this.email.length < 50){
+                        if(this.address.length < 50){
+                          if(this.phoneNumber.length < 50){
+                            if(this.identityCardNumber.length < 50){
+                              if(this.name.length < 20){
+                                if(this.state.password.length < 100){  
+                                  if(this.username.length < 30){
+                                    if(this.username != 'username' && this.password != 'password'  && this.name != 'name' && this.identityCardNumber != 'identityCardNumber' && this.phoneNumber != 'phoneNumber' && this.address != 'address' && this.healthStatus != 'healthStatus' && this.healthCode != 'healthCode' && this.email != 'email'){
+                                      if(this.healthStatus =='健康' || this.healthStatus =='疑似' || this.healthStatus =='确诊' || this.healthStatus =='重症' || this.healthStatus =='出院'){
+                                        if(this.healthCode =='绿码' || this.healthCode =='黄码' || this.healthCode =='红码'){
+                                          if(this.state.password == this.state.confirmedpassword){
+                                            axios.post(ip+'/users/personalUserInfo/insert',data) 
+                                                .then((res) => {  // alert(JSON.stringify(res.data));
+                                            alert("注册成功")
+                                            this.props.navigation.navigate( 'Home')
+                                                                                  })
+                                            .catch((error) => {});
+                                          }
+                                          else alert("注册失败 密码与确认密码不同")}  
+                                        else alert("注册失败 健康码应从绿码、黄码、红码中选择填写")}
+                                      else alert("注册失败 健康状态应从健康、疑似、确诊、重症、出院中选择填写")}   
+                                    else alert("注册失败 请检查是否有未填项")}
+                                  else alert("用户名过长")}
+                                else alert("密码过长")}
+                              else alert("姓名过长")}
+                            else alert("证件号码过长")}
+                          else alert("电话号码过长")}
+                        else alert("地址过长")}
+                      else alert("电子邮件过长")
+                    
   }
     
   render() {
@@ -67,87 +92,87 @@ export default class SignupPersonaluser extends React.Component {
       <Text  style={ {fontSize:12}}> </Text>    
       <View style={styles.container}>
        <Input
-             placeholder="username"
-             label='Username'
+             placeholder="用户名"
+             label='用户名'
              leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              onChangeText={value => this.username=value}
         />
         <Input
-             placeholder="password"
-             label='Password'
+             placeholder="密码"
+             label='密码'
              leftIcon={{ type: 'font-awesome', name: 'unlock' }}
              style={styles}
              secureTextEntry={true}  
-             onChangeText={value => this.password=value}
+             onChangeText={value => this.state.password=value}
             />
         <Input
-             placeholder="confirmedpassword"
-             label='Confirmedpassword'
+             placeholder="确认密码"
+             label='确认密码'
              leftIcon={{ type: 'font-awesome', name: 'unlock' }}
              style={styles}
              secureTextEntry={true}  
-             onChangeText={value => this.confirmedpassword=value}
+             onChangeText={value => this.state.confirmedpassword=value}
             />      
 
             <View style={styles.rowcontainer}>
-            <Text style={styles.text}>  Gender</Text>
+            <Text style={styles.text}>  性别</Text>
             <CheckBox
-              title='male  '
+              title='男  '
               checked={this.state. status}
               onPress={() => this.setState({ status: !this.state.status})}
             />
              <CheckBox
-              title='female'
+              title='女'
               checked={!this.state. status}
               onPress={() => this.setState({ status: !this.state.status})}
             />
             </View> 
              <Text  style={ {fontSize:12}}> </Text>           
          <Input
-             placeholder="name"
-             label='Name'
+             placeholder="姓名"
+             label='姓名'
              style={styles}
              onChangeText={value => this.name=value}
         />
          <Input
-             placeholder="identityCardNumber"
-             label='IdentityCardNumber'
+             placeholder="身份证号"
+             label='身份证号'
              style={styles}
              onChangeText={value => this.identityCardNumber=value}
         />
          <Input
-             placeholder="phoneNumber"
-             label='PhoneNumber'
+             placeholder="电话"
+             label='电话'
              style={styles}
              onChangeText={value => this.phoneNumber=value}
         />
          <Input
-             placeholder="address"
-             label='Address'
+             placeholder="地址"
+             label='地址'
              style={styles}
              onChangeText={value => this.address=value}
         />
          <Input
-             placeholder="email"
-             label='Email'
+             placeholder="邮箱"
+             label='邮箱'
              style={styles}
              onChangeText={value => this.email=value}
         />
          <Input
-             placeholder="healthStatus"
-             label='HealthStatus'
+             placeholder="健康状态"
+             label='健康状态'
              style={styles}
              onChangeText={value => this.healthStatus=value}
         />
          <Input
-             placeholder="healthCode"
-             label='HealthCode'
+             placeholder="健康码"
+             label='健康码'
              style={styles}
              onChangeText={value => this.healthCode=value}
         />
         <TouchableOpacity style={styles.button}  onPress={ this.signup} >
-              <Text style={styles.buttonText}> Sign up </Text>
+              <Text style={styles.buttonText}> 注册 </Text>
         </TouchableOpacity>           
         <Text  style={ {fontSize:20}}> </Text>           
       </View>
