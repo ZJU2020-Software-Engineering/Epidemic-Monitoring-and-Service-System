@@ -30,6 +30,7 @@ export default class Home extends React.Component {
         axios.post(ip+'/users/personalUserInfo/login',data) 
         .then((res) => { //alert(JSON.stringify(res.data));
             if(res.data.result=='Y'){
+              alert("登陆成功")
               this.setState({token:res.data.token})
               this.props.navigation.navigate( 'Tarbar',{username:this.state.username,token:res.data.token})
               //this.props.navigation.navigate( 'Profile',{username:this.state.username})
@@ -54,15 +55,15 @@ export default class Home extends React.Component {
       axios.post(ip+'/users/merchantuserInfo/login',data) 
       .then((res) => { //alert(JSON.stringify(res.data));
           if(res.data.result=='Y'){
-            alert("login success")
+            alert("登录成功")
             this.props.navigation.navigate( 'TarbarMerchant',{username:this.state.username,token:res.data.token})
             //this.props.navigation.navigate( 'Profile',{username:this.state.username})
            }
           else if(res.data.result=='W'){
-              alert("wrong password")
+              alert("密码错误")
           }
           else{
-             alert("This user doesn't exist.")
+             alert("用户不存在")
              }  
               })
       .catch((error) => { console.log(error) });
@@ -125,34 +126,34 @@ export default class Home extends React.Component {
     return (
       <View style={styles.container}> 
        <View style={styles.columncontainer1}>  
-         <Text  style={ {fontSize:60}}> Welcome!</Text>
-         <Text  style={ {fontSize:20}}> Epidemic-Monitoring-and-Service-System</Text>
+         <Text  style={ {fontSize:60}}> 欢迎!</Text>
+         <Text  style={ {fontSize:20}}> 疫情监测与服务系统</Text>
         </View>
 
           <View style={styles.columncontainer2}>
             <View style={styles.rowcontainer}>
-            <Text style={styles.text}>  Status</Text>
+            <Text style={styles.text}>  身份</Text>
             <CheckBox
-              title='PersonalUser'
+              title='个人用户'
               checked={this.state.ifpersonalUser}
               onPress={() => this.setState({ ifpersonalUser: !this.state.ifpersonalUser})}
             />
              <CheckBox
-              title='Merchant    '
+              title='商家用户    '
               checked={!this.state.ifpersonalUser}
               onPress={() => this.setState({ ifpersonalUser: !this.state.ifpersonalUser})}
             />
             </View>
             <Input
-             placeholder="username"
-             label='username'
+             placeholder="用户名"
+             label='用户名'
              leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              onChangeText={value => this.state.username = value}
             />
              <Input
-             placeholder="password"
-             label='password'
+             placeholder="密码"
+             label='密码'
              leftIcon={{ type: 'font-awesome', name: 'unlock' }}
              style={styles}
              secureTextEntry={true}  
@@ -160,10 +161,10 @@ export default class Home extends React.Component {
             />
             <View style={styles.buttoncontainer}>
             <TouchableOpacity style={styles.button}   onPress={this.login} >
-              <Text style={styles.buttonText}> Sign in </Text>
+              <Text style={styles.buttonText}> 登录 </Text>
            </TouchableOpacity>
            <TouchableOpacity style={styles.button}  onPress={  () => this.props.navigation.navigate( 'Signup')} >
-              <Text style={styles.buttonText}> Sign up </Text>
+              <Text style={styles.buttonText}> 注册 </Text>
            </TouchableOpacity>         
           </View>
           </View>
