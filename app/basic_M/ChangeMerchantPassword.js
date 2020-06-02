@@ -46,12 +46,12 @@ export default class ChangeMerchantPassword extends React.Component {
                      alert(res.data.message)
                      ) 
                      else if(res.data.result=='L'){
-                      alert('token expired,please login again!') 
+                      alert('令牌过期，请重新登录!') 
                       const { navigate } = this.props.navigation;  
                       navigate('Home');
                      } 
                      else{
-                       alert('Change Success!')
+                       alert('修改成功!')
                        const {navigate,goBack,state} = this.props.navigation;
                         this.props.navigation.goBack();  
                      }
@@ -59,7 +59,7 @@ export default class ChangeMerchantPassword extends React.Component {
              .catch((error) => { console.log(error) });
          }
      else{
-       alert('newpassword and confirmednewpassword should be the same!')
+       alert('新密码和确认新密码应该相同!')
      }    
 
  }
@@ -100,24 +100,24 @@ export default class ChangeMerchantPassword extends React.Component {
       <View style={styles.container}>
       
         <Input
-             placeholder="old password"
-             label='Old password'
+             placeholder="原密码"
+             label='原密码'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              secureTextEntry={true}  
              onChangeText={value => this.state.oldpassword=value}
             /> 
         <Input
-             placeholder="new password"
-             label='New password'
+             placeholder="新密码"
+             label='新密码'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              secureTextEntry={true}  
              onChangeText={value => this.state.newpassword=value}
             />
         <Input
-             placeholder=" confirmed new password"
-             label='Confirmed new password'
+             placeholder=" 确认新密码"
+             label='确信新密码'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              secureTextEntry={true}  
@@ -125,7 +125,7 @@ export default class ChangeMerchantPassword extends React.Component {
             />                  
 
            <TouchableOpacity style={styles.button}  onPress={ this.checkpassword } >
-              <Text style={styles.buttonText}> submit </Text>
+              <Text style={styles.buttonText}> 提交 </Text>
            </TouchableOpacity> 
 
          
