@@ -20,7 +20,7 @@ export default class About extends React.Component {
     return (
       
       <View style={styles.container}>
-        <Text>Hello from About!</Text> 
+        <Text>欢迎!</Text> 
         <Text>{this.state.username}</Text>     
       </View>
     );
