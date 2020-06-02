@@ -18,14 +18,14 @@ const basicNavigator_M = createStackNavigator( {
   TarbarMerchant: {
     screen: TarbarMerchant,
     navigationOptions: {  
-        headerTitle: 'Epidemic-Monitoring-and-Service-System',  
+        headerTitle: '疫情检测与服务系统',  
     }
   },
 
   ProfileMerchant: {
     screen: ProfileMerchant,
     navigationOptions: {  
-        headerTitle: 'ProfileMerchant',  
+        headerTitle: '商家个人中心',  
     }
   },
   
@@ -33,49 +33,49 @@ const basicNavigator_M = createStackNavigator( {
   ChangeMerchantName: {
     screen:  ChangeMerchantName,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantName',  
+        headerTitle: '修改商家姓名',  
     }
   },
   ChangeMerchantAddress: {
     screen:  ChangeMerchantAddress,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantAddress',  
+        headerTitle: '修改商家地址',  
     }
   },
   ChangeMerchantCategory: {
     screen:  ChangeMerchantCategory,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantCategory',  
+        headerTitle: '修改经营品类',  
     }
   },
   ChangeMerchantPhonenumber: {
     screen:  ChangeMerchantPhonenumber,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantPhonenumber',  
+        headerTitle: '修改商家电话',  
     }
   },
   ChangeMerchantEmail: {
     screen:  ChangeMerchantEmail,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantEmail',  
+        headerTitle: '修改商家邮箱',  
     }
   },
   ChangeMerchantPassword: {
     screen:  ChangeMerchantPassword,
     navigationOptions: {  
-        headerTitle: 'ChangeMerchantPassword',  
+        headerTitle: '修改密码',  
     }
   },
    About: {
     screen:  About,
     navigationOptions: {  
-        headerTitle: 'About',  
+        headerTitle: '关于',  
     }
   },
    Help: {
     screen:   Help,
     navigationOptions: {  
-        headerTitle: ' Help',  
+        headerTitle: ' 帮助',  
     }
   },
 
