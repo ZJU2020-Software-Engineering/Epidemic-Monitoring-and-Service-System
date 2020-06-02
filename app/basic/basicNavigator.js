@@ -17,56 +17,56 @@ const basicNavigator = createStackNavigator( {
   Tarbar: {
     screen: Tarbar,
     navigationOptions: {  
-        headerTitle: 'Epidemic-Monitoring-and-Service-System', 
+        headerTitle: '疫情监测与服务系统', 
         headerBackTitle:null 
     }
   }, 
     Profile: {
       screen: Profile,
       navigationOptions: {  
-          headerTitle: 'Profile',  
+          headerTitle: '个人中心',  
       }
     },
     ChangeName: {
       screen:  ChangeName,
       navigationOptions: {  
-          headerTitle: 'ChangeName',  
+          headerTitle: '修改姓名',  
       }
     },
     ChangePhonenumber: {
       screen:  ChangePhonenumber,
       navigationOptions: {  
-          headerTitle: 'ChangePhonenumber',  
+          headerTitle: '修改电话',  
       }
     },
     ChangeEmail: {
       screen:  ChangeEmail,
       navigationOptions: {  
-          headerTitle: 'ChangeEmail',  
+          headerTitle: '修改邮箱',  
       }
     },
     ChangeAddress: {
       screen:  ChangeAddress,
       navigationOptions: {  
-          headerTitle: 'ChangeAddress',  
+          headerTitle: '修改地址',  
       }
     },
     ChangePassword: {
       screen:  ChangePassword,
       navigationOptions: {  
-          headerTitle: 'ChangePassword',  
+          headerTitle: '修改密码',  
       }
     },
      About: {
       screen:  About,
       navigationOptions: {  
-          headerTitle: 'About',  
+          headerTitle: '关于',  
       }
     },
      Help: {
       screen:   Help,
       navigationOptions: {  
-          headerTitle: ' Help',  
+          headerTitle: ' 帮助',  
       }
     },
   
