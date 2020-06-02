@@ -19,7 +19,7 @@ export default class Otherpage extends React.Component {
     return (
       
       <View style={styles.container}>
-        <Text>Hello from Otherpage!</Text> 
+        <Text>欢迎!</Text> 
         <Text>{this.state.username}</Text>     
       </View>
     );
