@@ -32,22 +32,22 @@ export default class Feed extends React.Component {
         <View style={styles.columncontainer2}>  
           </View> 
         <View style={styles.columncontainer1}>  
-           <Text  style={ {fontSize:20}}> Firstly , choose your status.......</Text>
+           <Text  style={ {fontSize:20}}> 首先 , 选择您的身份.......</Text>
                    <View style={styles.rowcontainer}>
-                      <Text style={styles.text}>  Status</Text>
+                      <Text style={styles.text}>  身份</Text>
                       <CheckBox
-                        title='PersonalUser'
+                        title='个人用户'
                         checked={this.state.  ifpersonalUser}
                         onPress={() => this.setState({  ifpersonalUser: !this.state. ifpersonalUser})}
                       />
                        <CheckBox
-                        title='Merchant    '
+                        title='商家用户    '
                         checked={!this.state.  ifpersonalUser}
                         onPress={() => this.setState({  ifpersonalUser: !this.state. ifpersonalUser})}
                       />
                     </View>
            <TouchableOpacity style={styles.button}  onPress={this.signup} >
-              <Text style={styles.buttonText}> Next </Text>
+              <Text style={styles.buttonText}> 下一步 </Text>
            </TouchableOpacity>                     
         </View>
          <View style={styles.columncontainer2}>  
