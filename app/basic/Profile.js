@@ -40,7 +40,7 @@ export default class Profile extends React.Component {
         axios.post(ip+'/request/info/personalUserInfo/select',data,{headers:token} ) 
         .then((res) => { //alert(JSON.stringify(res.data));
                 if(res.data.result=='L'){
-                  alert('token expired,please login again!') 
+                  alert('令牌过期，请重新登录！') 
                   const { navigate } = this.props.navigation;  
                   navigate('Home');
                 }
@@ -106,7 +106,7 @@ export default class Profile extends React.Component {
                   title={"  "+this.state.name}
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   subtitleStyle={{ color: 'white' }}
-                  subtitle="  username"
+                  subtitle="  用户名"
                   chevron={{ color: '#796edb' }}
                   onPress={()=>this.props.navigation.navigate('ChangeName',{
                                username:this.state.username,token:this.state.token,
@@ -124,7 +124,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  Gender'}
+                  title={'  性别'}
                   bottomDivider
                   rightTitle={this.state.gender}
                   //chevron={l.chevron}
@@ -134,7 +134,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  IdentityCardNumber'}
+                  title={'  身份证号'}
                   bottomDivider
                   rightTitle={this.state.identityCardNumber}
                   //chevron={l.chevron}
@@ -144,7 +144,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  PhoneNumber'}
+                  title={'  电话'}
                   bottomDivider
                   rightTitle={this.state.phoneNumber}
                   chevron={true}
@@ -163,7 +163,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  Email'}
+                  title={'  邮箱'}
                   bottomDivider
                   rightTitle={this.state.email}
                   chevron={true}
@@ -182,7 +182,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  Address'}
+                  title={'  地址'}
                   bottomDivider
                   rightTitle={this.state.address}
                   chevron={true}
@@ -201,7 +201,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  HealthStatus'}
+                  title={'  健康状态'}
                   bottomDivider
                   rightTitle={this.state.healthStatus}
                   //chevron={l.chevron}
@@ -211,7 +211,7 @@ export default class Profile extends React.Component {
                   friction={90} //
                   tension={100} // These props are passed to the parent component (here TouchableScale)
                   activeScale={0.95} //
-                  title={'  HealthCode'}
+                  title={'  健康码'}
                   bottomDivider
                   rightTitle={this.state.healthCode}
                   //chevron={l.chevron}
@@ -231,7 +231,7 @@ export default class Profile extends React.Component {
                   }}
                   ViewComponent={LinearGradient} 
                   leftIcon={{ type: 'font-awesome', name: 'lock',color: 'white' }}
-                  title=" Account and Security"
+                  title=" 账户与安全"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb' }}
                   onPress={  () => this.props.navigation.navigate( 'ChangePassword',{username:this.state.username,token:this.state.token,})}
@@ -249,7 +249,7 @@ export default class Profile extends React.Component {
                   }}
                   ViewComponent={LinearGradient} // Only if no expo
                   leftIcon={{ type: 'font-awesome', name: 'tasks',color: 'white' }}
-                  title=" About"
+                  title=" 关于"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb' }}
                   onPress={  () => this.props.navigation.navigate( 'About',{username:this.state.username,token:this.state.token,})}
@@ -268,7 +268,7 @@ export default class Profile extends React.Component {
                   ViewComponent={LinearGradient} // Only if no expo
                   //leftAvatar={{ rounded: true, source: {uri:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' } }}
                   leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
-                  title=" Help"
+                  title=" 帮助"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb'}}
                   onPress={  () => this.props.navigation.navigate( 'Help',{username:this.state.username,token:this.state.token,})}
@@ -288,7 +288,7 @@ export default class Profile extends React.Component {
                   //leftAvatar={{ rounded: true, source: {uri:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' } }}
                   //leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
                   leftIcon={{ type: 'font-awesome', name: 'angle-left',color: 'white' }}
-                  title="  Sign out"
+                  title="  注销"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   chevron={{ color: '#796edb'}}
                   onPress={  () => this.props.navigation.navigate( 'Home')}
