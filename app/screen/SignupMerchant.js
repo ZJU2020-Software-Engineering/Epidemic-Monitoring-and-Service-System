@@ -10,13 +10,15 @@ export default class Feed extends React.Component {
    constructor(props){
         super(props)
         this.state = ({
-          status:'true' //true:personalUSer    false:Merchant
+          status:'true',//true:personalUSer    false:Merchant
+          password:'',
+         confirmedpassword:''
                      })
     } 
 
     username ='username';
-    password='password';
-    confirmedpassword='confirmedpassword';
+    password='';
+    confirmedpassword='';
     name='name';
     phoneNumber='phoneNumber';
     email='email';
@@ -29,7 +31,8 @@ export default class Feed extends React.Component {
   signup= () =>{
     var data={
         'username': this.username,
-        'password': this.password, 
+        password: this.state.password, 
+        
         'name': this.name,
         'phoneNumber': this.phoneNumber, 
         'address': this.address, 
@@ -39,21 +42,40 @@ export default class Feed extends React.Component {
         'category':this.category,
         'collectionInformation':this.collectionInformation,
     }
-    if(this.password==this.confirmedpassword){
     //http 請求
-    axios.post(ip+'/users/merchantUserInfo/insert',data) 
-     .then((res) => {   //alert(JSON.stringify(res.data));
-                         if(res.data.message=='Success')
-                            this.props.navigation.navigate( 'Home')
-                         else
-                          alert(res.data.message)
-                            //this.setState({register:'false'});
-                        })
-    .catch((error) => {});
-    }
-    else{
-        alert("password and confiredpassword should be the same!")
-    }
+    
+                      if(this.collectionInformation.length < 40){
+                        if(this.category.length < 20){
+                          if(this.corporateIdentity.length < 20){
+                            if(this.email.length < 40){
+                              if(this.address.length < 20){
+                                if(this.phoneNumber.length < 20){
+                                  if(this.businessLicense.length < 20){
+                                    if(this.name.length < 20){
+                                      if(this.state.password.length < 100){  
+                                        if(this.username.length < 20){
+                                          if(this.username != 'username' && this.password != 'password' && this.name != 'name' && this.businessLicense != 'businessLicense' && this.phoneNumber != 'phoneNumber' && this.address != 'address' && this.corporateIdentity != 'corporateIdentity' && this.category != 'category' && this.email != 'email' && this.collectionInformation != 'collectionInformation'){
+                                            if(this.state.password == this.state.confirmedpassword){
+                                              axios.post(ip+'/users/merchantUserInfo/insert',data) 
+                                                  .then((res) => {   //alert(JSON.stringify(res.data));
+                                              alert("注册成功")
+                                              this.props.navigation.navigate( 'Home')})
+                                                  .catch((error) => {});
+                                            }
+                                            else alert("注册失败 密码与确认密码不同")}    
+                                          else alert("注册失败 请检查是否有未填项")}
+                                        else alert("用户名过长")}
+                                      else alert("密码过长")}
+                                    else alert("姓名过长")}
+                                  else alert("营业执照过长")}
+                                else alert("电话号码过长")}
+                              else alert("地址过长")}
+                            else alert("电子邮件过长")}
+                          else alert("法人身份信息过长")}
+                        else alert("经营品类过长")}
+                      else alert("收款信息过长")    
+                    
+    
   }  
 
 
@@ -63,78 +85,78 @@ export default class Feed extends React.Component {
       <Text  style={ {fontSize:12}}> </Text> 
       <View style={styles.container}>
        <Input
-             placeholder="username"
-             label='Username'
+             placeholder="用户名"
+             label='用户名'
              leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              onChangeText={value => this.username=value}
         />
          <Input
-             placeholder="password"
-             label='Password'
+             placeholder="密码"
+             label='密码'
              leftIcon={{ type: 'font-awesome', name: 'unlock' }}
              style={styles}
              secureTextEntry={true}  
-             onChangeText={value => this.password=value}
+             onChangeText={value => this.state.password=value}
         />
          <Input
-             placeholder="confirmedpassword"
-             label='Confirmedpassword'
+             placeholder="确认密码"
+             label='确认密码'
              leftIcon={{ type: 'font-awesome', name: 'unlock' }}
              style={styles}
              secureTextEntry={true}  
-             onChangeText={value => this.confirmedpassword=value}
+             onChangeText={value => this.state.confirmedpassword=value}
         />
          <Input
-             placeholder="name"
-             label='Name'
+             placeholder="姓名"
+             label='姓名'
              style={styles}
              onChangeText={value => this.name=value}
         />
         <Input
-             placeholder="phoneNumber"
-             label='PhoneNumber'
+             placeholder="电话"
+             label='电话'
              style={styles}
              onChangeText={value => this.phoneNumber=value}
         />
          <Input
-             placeholder="address"
-             label='Address'
+             placeholder="地址"
+             label='地址'
              style={styles}
              onChangeText={value => this.address=value}
         />
         <Input
-             placeholder="email"
-             label='Email'
+             placeholder="邮箱"
+             label='邮箱'
              style={styles}
              onChangeText={value => this.email=value}
         />
          <Input
-             placeholder="businessLicense"
-             label='BusinessLicense'
+             placeholder="营业执照"
+             label='营业执照'
              style={styles}
              onChangeText={value => this.businessLicense=value}
         />
          <Input
-             placeholder="corporateIdentity"
-             label='CorporateIdentity'
+             placeholder="法人身份"
+             label='法人身份'
              style={styles}
              onChangeText={value => this.corporateIdentity=value}
         />
         <Input
-             placeholder="category"
-             label='Category'
+             placeholder="经营品类"
+             label='经营品类'
              style={styles}
              onChangeText={value => this.category=value}
         />
         <Input
-             placeholder="collectionInformation"
-             label='CollectionInformation'
+             placeholder="收款信息"
+             label='收款信息'
              style={styles}
              onChangeText={value => this.collectionInformation=value}
         />
         <TouchableOpacity style={styles.button}  onPress={ this.signup} >
-              <Text style={styles.buttonText}> Sign up </Text>
+              <Text style={styles.buttonText}> 注册 </Text>
         </TouchableOpacity>           
         <Text  style={ {fontSize:20}}> </Text>
       </View>
