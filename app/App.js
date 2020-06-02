@@ -1,6 +1,4 @@
-
-
-import Home from './screen/Home'
+import Home from './screen/Home'  
 import Signup from './screen/Signup'
 import SignupPersonaluser from './screen/SignupPersonaluser'
 import SignupMerchant from './screen/SignupMerchant'
@@ -10,32 +8,30 @@ import { createStackNavigator} from 'react-navigation-stack';
 // import 你們模塊的 navigator
 import basicNavigator_M from './basic_M/basicNavigator_M'
 import basicNavigator from './basic/basicNavigator'
-import PersonNavigator from './purchase/PersonNavigator'
-import {PurchaseNavigator_M} from './purchase_M/RootStack'
 
 const InfoStack = createStackNavigator( {
      Home: {
       screen: Home,
       navigationOptions: {  
-          headerTitle: 'Home',  
+          headerTitle: '登录页',  
       }
     },
     Signup: {
       screen: Signup,
       navigationOptions: {  
-          headerTitle: 'Signup',  
+          headerTitle: '注册',  
       }
     },
     SignupPersonaluser: {
       screen: SignupPersonaluser,
       navigationOptions: {  
-          headerTitle: ' Signup for PersonalUser',  
+          headerTitle: ' 个人用户注册',  
       }
     },
     SignupMerchant: {
       screen:  SignupMerchant,
       navigationOptions: {  
-          headerTitle: 'Signup for Merchant',  
+          headerTitle: '商家用户注册',  
       }
     },
 })
@@ -45,9 +41,8 @@ const InfoStack = createStackNavigator( {
   {
     InfoStack,
     basicNavigator,
-    basicNavigator_M,
-    PersonNavigator,
-    PurchaseNavigator_M,
+    basicNavigator_M
+
     
   },
   {
