@@ -31,19 +31,19 @@ export default class ChangeMerchantPhonenumber extends React.Component {
         axios.post(ip+'/request/info/merchantUserInfo/update',data,{headers:token}) 
         .then((res) => { //alert(JSON.stringify(res.data));
             if(res.data.result=='Y'){
-               alert('Change Success!')
+               alert('修改成功!')
                //this.props.navigation.navigate('ProfileMerchant',{ username:this.state.username ,phonenumber:this.state.phonenumber} );
                 const {navigate,goBack,state} = this.props.navigation;
                 state.params.callback(this.state.phonenumber);
                 this.props.navigation.goBack();
              }
              else if(res.data.result=='L'){
-              alert('token expired,please login again!') 
+              alert('令牌过期，请重新登录!') 
               const { navigate } = this.props.navigation;  
               navigate('Home');
              }
             else
-               alert('Change Failed!') 
+               alert('修改失败!') 
                 })
         .catch((error) => { console.log(error) });
     } 
@@ -56,15 +56,15 @@ export default class ChangeMerchantPhonenumber extends React.Component {
       <View style={styles.container}>
       
         <Input
-             placeholder="new phonenumber"
-             label='New phonenumber'
+             placeholder="新电话"
+             label='新电话'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              onChangeText={value => this.state.phonenumber=value}
             /> 
 
            <TouchableOpacity style={styles.button}  onPress={ this.change } >
-              <Text style={styles.buttonText}> submit </Text>
+              <Text style={styles.buttonText}> 提交 </Text>
            </TouchableOpacity> 
 
          
