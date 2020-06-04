@@ -11,7 +11,8 @@
 
 ## crawler ##
 
-1. **需要安装的python库**：bs4，requests
+1. **需要安装的pthon库**：bs4，requests
+2. **需要文件**：将user.py,ChinaCrawler.py, ForeignCrawler.py,CountryList.py放置于文件夹下
 2. **运行** 运行main.py, 保持运行，每30min将更新一次数据
 
   
@@ -58,8 +59,7 @@ successfully crawed表示一次存取成功，休眠等待第二次更新存取
         "totalCure": 17,
         "totalSuspected": 0,
         "extanceDiagnosis": 0,
-        "extanceSuspected": 0,
-        "id": 230900
+        "extanceSuspected": 0
     },
     {...},
     ...]`
@@ -81,16 +81,18 @@ successfully crawed表示一次存取成功，休眠等待第二次更新存取
 
 
 ## 数据说明 ##
-通过Crawler类从丁香医生实时疫情网站爬取相关信息。
+国内数据通过ChinaCrawler类从丁香医生实时疫情网站爬取相关信息。
 [https://ncov.dxy.cn/ncovh5/view/pneumonia](https://ncov.dxy.cn/ncovh5/view/pneumonia)
 
+国外数据通过ForeignCrawler类从约翰霍普金斯大学统计网站获取数据
+[https://coronavirus.jhu.edu/map.html](https://coronavirus.jhu.edu/map.html)
 
 
-- 每30分钟从网站重新爬取数据并更新数据库中的数据，据观察，网站数据基本两小时之内会更新
+- 每30分钟从网站重新爬取数据并更新数据库中的数据，据观察，网站数据基本两小时之内会更新，
 
 
 
-- 其中，疑似人数已经停止维护，所以数据库中多数都存储0
+- 其中，疑似人数已经停止维护，所以数据库中存储默认值-10000
 
 
 - 新增人数中，新增人数通过与前一日存储数据相减得到，如果前一日未存储，则为默认值-10000
