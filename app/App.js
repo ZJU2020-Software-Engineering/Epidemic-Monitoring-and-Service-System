@@ -8,6 +8,7 @@ import { createStackNavigator} from 'react-navigation-stack';
 // import 你們模塊的 navigator
 import basicNavigator_M from './basic_M/basicNavigator_M'
 import basicNavigator from './basic/basicNavigator'
+import Map from './map/map'
 
 const InfoStack = createStackNavigator( {
      Home: {
@@ -41,7 +42,8 @@ const InfoStack = createStackNavigator( {
   {
     InfoStack,
     basicNavigator,
-    basicNavigator_M
+    basicNavigator_M,
+    Map
 
     
   },
