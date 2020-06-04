@@ -144,17 +144,22 @@ class ForeignCrawler:
             # increase
             item["Return"] = 'newAddtion'
             country = json.dumps(item, ensure_ascii=False)
-            if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message']['newAddtion']!=None:
-                # update
-                print("update increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
-                                    headers=headers)
-            else:
-                # insert
-                print("insert increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert', data=country.encode('utf-8'),
-                                    headers=headers)
-            print(res.text)
+            #存在有意义的新增数据
+            if item["increaseDiagnosis"]!=-10000 or item["increaseCure"]!=-10000 or item["increaseDeath"]!=-10000:
+                if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message'][
+                    'newAddtion'] != None:
+                    # update
+                    print("update increase")
+                    res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update',
+                                        data=country.encode('utf-8'),
+                                        headers=headers)
+                else:
+                    # insert
+                    print("insert increase")
+                    res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
+                                        data=country.encode('utf-8'),
+                                        headers=headers)
+                print(res.text)
 
             # exsisting
             item["Return"] = 'extance'
@@ -179,10 +184,5 @@ class ForeignCrawler:
         with open('foreignFile.json', 'w', encoding='utf-8') as json_file:
                 json_file.write(foreignFile)
         """
-
-
-
-
-
 
 
