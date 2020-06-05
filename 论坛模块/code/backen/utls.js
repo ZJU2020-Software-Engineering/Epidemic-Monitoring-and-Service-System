@@ -26,11 +26,13 @@ async function login(username){
     return promise;
 }
 
-async function mailCreate(userID, receiver, content){
-    let sql = "insert into mail (user_id, receiver, content) values (" + userID + "," + receiver + "," + "'" + content +"'" + ")";
+async function mailCreate(userID, username,receiver, content){
+    let sql = "insert into mail (user_id,user_name, receiver, content) values (" + userID + "," + "'"+username +"'" +"," + receiver + "," + "'" + content +"'" + ")";
+    console.log(sql)
     var promise = new Promise((resolve, reject) => {
         connection.query(sql, (err, rows, fields) => {
             if (err) {
+                console.log(err)
                 reject(err)
             }
             else{
@@ -42,7 +44,7 @@ async function mailCreate(userID, receiver, content){
 }
 
 async function mailList(userID){
-    let sql = "select id, user_id, create_date from mail where receiver=" + userID ;
+    let sql = "select * from mail where receiver=" + userID ;
     var promise = new Promise((resolve, reject) => {
         connection.query(sql, (err, rows, fields) => {
             if (err) {
@@ -165,6 +167,35 @@ async function searchData(num,keyWords){
     
 }
 
+async function mySearchData(num,keyWords){
+    let keyword = keyWords[0];
+    let sql = 'select * from post where title like '+"'%"+keyword+"%'" +'or content like '+"'%"+keyword+"%'";
+    console.log(sql)
+    if(keyWords.length==1 && keyWords[0]==""){
+        return [];
+    }
+    else{ //关键词不同，取新的结果
+        searchPage = 0;
+        lastKeywords = new Array(keyWords);
+        let keyString = keyWords.join(' ');
+        let pageOffset = searchPage*100;
+        return new Promise((resolve,reject)=>{
+            connection.query(sql, (err,rows,fields)=>{
+                if(err){
+                    console.log("重新搜索的时候发生错误：",err);
+                    reject([]);
+                }
+                preparedSearchData = rows;
+                let returnData = preparedSearchData.slice(0,num);
+                preparedSearchData = preparedSearchData.slice(num);
+                console.log("preparedSearchData剩下：",preparedSearchData.length);
+                resolve(returnData);
+            })
+        });
+    }
+    
+}
+
 function checkSameKeywords(keyWords){
     if(keyWords.length != lastKeywords.length){
         return false;
@@ -185,5 +216,6 @@ module.exports = {
     mailList,
     mailDetail,
     searchData,
+    mySearchData,
     getData
 }

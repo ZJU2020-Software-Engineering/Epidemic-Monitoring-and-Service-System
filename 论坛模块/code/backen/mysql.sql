@@ -11,13 +11,14 @@ create table if not exists user (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+) character set = utf8;
 
 create table if not exists post (
     id int auto_increment,
     title varchar(100) not null,
     type int default 0,
     user_id int not null,
+    user_name varchar(100) not null,
     content varchar(200) not null,
     view_num int default 0,
     reply_num int default 0,
@@ -26,32 +27,35 @@ create table if not exists post (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+) character set = utf8;
 
 create table if not exists reply (
     id int auto_increment,
     post_id int not null,
     user_id int not null,
+    user_name varchar(100) not null,
     level int not null,
     reference int default 0,
     reference_id int default 0,
+    reference_name varchar(100) default '',
     content varchar(200) not null,
     like_num int default 0,
     dislike_num int default 0,
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists mail (
     id int auto_increment,
     user_id int not null,
+    user_name varchar(100) not null,
     receiver int not null,
     content varchar(200) not null,
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists favor (
     id int auto_increment,
@@ -60,7 +64,7 @@ create table if not exists favor (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists favor (
     id int auto_increment,
@@ -69,7 +73,7 @@ create table if not exists favor (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists attention (
     id int auto_increment,
@@ -78,7 +82,7 @@ create table if not exists attention (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists report (
     id int auto_increment,
@@ -92,7 +96,7 @@ create table if not exists report (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists blacklist (
     id int auto_increment,
@@ -104,7 +108,7 @@ create table if not exists blacklist (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
 
 create table if not exists operation (
     id int auto_increment,
@@ -114,7 +118,9 @@ create table if not exists operation (
     create_date timestamp default CURRENT_TIMESTAMP ,
     update_date timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     primary key (id)
-);
+)character set = utf8;
+
+ALTER TABLE post ADD FULLTEXT INDEX ft_index (title,content);
 
 
 

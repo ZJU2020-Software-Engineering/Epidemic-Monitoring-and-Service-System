@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-export var host = "http://172.20.10.11";
+export var host = "http://192.168.31.59";
 export var port = 3000;
 
 export function randomString(len) {
@@ -20,7 +20,12 @@ function formatDateString(timestamp) {
 	return (`${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`);
 }
 
+export function formatDate(str){
+	return str.split('T')[0]
+}
+
 export async function makeFetch(url, method, data) {
+	console.log(url)
 	try {
 		let response = await fetch(url, {
 			method: method,
@@ -37,7 +42,7 @@ export async function makeFetch(url, method, data) {
 	}
 }
 
-export function httpRequest(url, method, data) {
+export async function httpRequest(url, method, data) {
 	console.log(url, method);
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.open(method, url, true);

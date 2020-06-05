@@ -1,4 +1,4 @@
-let {login, mailCreate, mailList, mailDetail, searchData, getData} = require('./utls')
+let { login, mailCreate, mailList, mailDetail, searchData, getData ,mySearchData } = require('./utls')
 const express = require('express')
 const app = express()
 const port = 3000
@@ -6,128 +6,142 @@ const port = 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 // ================ Set Route ================ //
-app.get('/forum',(req,res)=>{
+app.get('/forum', (req, res) => {
     res.send('This is forum');
 })
 
 //login
-app.post('/forum/login',(req, res)=>{
+app.post('/forum/login', (req, res) => {
     console.log("login");
     console.log(req.body);
     var username = req.body.username
     var password = req.body.password
     var promise = login(username)
-    promise.then((value) =>{
+    promise.then((value) => {
         console.log(value)
         let new_password = value[0].password;
         let userID = value[0].id;
-        if (new_password==password){
+        if (new_password == password) {
             console.log('password correct')
             res.send({
                 state: "success",
-                userID:userID
+                userID: userID
             })
         }
-        else{
+        else {
             console.log('password wrong')
             res.send({
                 state: "failure",
-                userID:0
+                userID: 0
             })
         }
-    }, (error) =>{
+    }, (error) => {
         console.log('login error')
         res.send({
             state: "failure",
-            userID:0
-        }) 
+            userID: 0
+        })
     })
 })
 
 //mail
-app.post('/forum/mail/create',(req, res)=>{
+app.post('/forum/mail/create', (req, res) => {
     console.log("mail create");
     var userID = req.body.userID
+    var username = req.body.username
     var receiver = req.body.receiver
     var content = req.body.content
-    var promise = mailCreate(userID, receiver, content)
+    var promise = mailCreate(userID, username, receiver, content)
     promise.then((value) => {
         res.send({
             state: "success",
         })
-    }, (error) =>{
+    }, (error) => {
+        console.log(error)
         res.send({
             state: "failure",
         })
     })
 })
 
-app.post('/forum/mail', (req, res)=>{
+app.post('/forum/mail', (req, res) => {
     console.log('mail');
     var userID = req.body.userID
     var promise = mailList(userID)
-    promise.then((value) =>{
+    promise.then((value) => {
+        console.log(value)
         res.send({
-            state:'success',
-            mails:value
-        })    
-    }, (error) =>{
+            state: 'success',
+            mails: value
+        })
+    }, (error) => {
         res.send({
-            state:'failure'
+            state: 'failure'
         })
     })
 
 })
 
-app.post('/forum/mail/detail', (req, res)=>{
+app.post('/forum/mail/detail', (req, res) => {
     console.log('mail detail');
     var mailID = req.body.mailID
     var promise = mailDetail(mailID)
     promise.then((value) => {
         res.send({
-            state:'success',
-            content:value,
+            state: 'success',
+            content: value,
         })
-    },(error) =>{
+    }, (error) => {
         res.send({
-            state:'failure',
+            state: 'failure',
         })
     })
 })
 
 //home
-app.post('/forum/post/list', async (req,res)=>{
+app.post('/forum/post/list', async (req, res) => {
     console.log('收到请求')
     console.log(req.body)
     let data = await getData(req.body.num)
+    //console.log(data)
+    res.send(data)
+})
+
+app.post('/forum/search', async (req, res) => {
+    console.log('收到搜索请求')
+    console.log(req.body)
+    console.log('keywords:', req.body.num)
+    let data = await mySearchData(req.body.num, req.body.keywords)
     console.log(data)
     res.send(data)
 })
 
-app.post('/forum/search', async (req,res)=>{
-    console.log('收到搜索请求')
-    console.log(req.params)
-    console.log('keywords:',req.body.num)
-    let data = await searchData(req.body.num,req.body.keywords)
-    console.log(data)
-    res.send(data)
+const mysql = require('mysql')
+const connection = mysql.createConnection({
+    host: '47.100.237.232',
+    user: 'root',
+    password: 'root',
+    database: 'forum',
+    port: 3306
 })
+
+connection.connect()
 
 //创建帖子请求
 app.post('/forum/post/create', function createPost(req, res) {
+    console.log('post create')
+    console.log(req.body)
     var getObj = req.body;
-    var postTime = moment();
-    var postIdArr = [postTime.format('YYYYMMDDHHmmss'), getObj.user_id];
-    var id = postIdArr.join();
-    var addSql = 'INSERT INTO post(id,title,type,user_id,user_name,content) VALUES(?,?,?,?,?,?)';
+    //var postIdArr = [postTime.format('YYYYMMDDHHmmss'), getObj.user_id];
+    //var id = postIdArr.join();
+    var addSql = 'INSERT INTO post (title,type,user_id,user_name,content) VALUES(?,?,?,?,?)';
     var addSqlParams = [
-        id,
         getObj.post_title,
         getObj.post_type,
         getObj.user_id,
         getObj.user_name,
         getObj.post_content,
-       ];
+    ];
     connection.query(addSql, addSqlParams, function (err, result) {
         if (err) {
             console.log('Insert Error ', err.message);
@@ -140,7 +154,7 @@ app.post('/forum/post/create', function createPost(req, res) {
             console.log('Insert Success');
             res.json(
                 {
-                    state: 'Y', post_id: id
+                    state: 'Y'
                 });
         }
     })
@@ -152,7 +166,7 @@ app.post('/forum/post/delete', function deletePost(req, res) {
     var delSql = 'DELETE FROM post WHERE id = ?';
     var delSqlParams = [
         getObj.id,
-        ];
+    ];
     connection.query(delSql, delSqlParams, function (err, result) {
         if (err) {
             console.log('Delete Error ', err.message);
@@ -183,55 +197,37 @@ app.post('/forum/post/delete', function deletePost(req, res) {
 
 //创建回复请求
 app.post('/forum/reply/create', function createPost(req, res) {
+    console.log('reply create')
     var getObj = req.body;
-    var postTime = moment();
-    var floor ;
-    var sltSql = 'SELECT floor_num FROM post WHERE id =?';
+    var state = 'N';
+    var sltSql = 'SELECT reply_num FROM post WHERE id =?';
     var sltSqlParams = [
-        getObj.id
+        getObj.post_id
     ];
-    connection.query(sltSql, sltSqlParams, function (err, result) {
+    console.log(getObj)
+    var updSql = 'UPDATE post SET reply_num=reply_num+1 where id =?';
+    connection.query(updSql, sltSqlParams, function (err, result) {
         if (err) {
-            res.json(
-                {
-                    state: 'N'
-                });
+            console.log(err)
         }
         else {
-            floor = result.floor_num+1;
         }
     })
-    var replyIdArr = [getObj.post_id, floor];
-    var id = replyIdArr.join();
-    var updSql = 'UPDATE post SET floor_num=floor_num+1,reply_num=reply_num+1';
-    connection.query(updSql, function (err, result) {
-        if (err) {
-            res.json(
-                {
-                    state: 'N'
-                });
-        }
-    })
-
-
-    var addSql = 'INSERT INTO reply(id, post_id, user_id,user_name,level,is_reference,reference_id,content) VALUES(?,?,?,?,?,?,?,?)';
+    var addSql = 'INSERT INTO reply(post_id, user_id,user_name,level,reference,reference_id,reference_name,content) VALUES(?,?,?,?,?,?,?,?)';
     var addSqlParams = [
-        id,
         getObj.post_id,
         getObj.user_id,
-        getObj.user_name,
-        floor,
-        getObj.is_reference,
+        getObj.username,
+        getObj.level,
+        getObj.reference,
         getObj.reference_id,
+        getObj.reference_name,
         getObj.content,
-        ];
+    ];
     connection.query(addSql, addSqlParams, function (err, result) {
         if (err) {
             console.log('Insert Error ', err.message);
-            res.json(
-                {
-                    state: 'N'
-                });
+
         }
         else {
             console.log('Insert Success');
@@ -241,6 +237,7 @@ app.post('/forum/reply/create', function createPost(req, res) {
                 });
         }
     })
+
 })
 
 //删除回复请求
@@ -275,50 +272,46 @@ app.post('/forum/reply/delete', function deletePost(req, res) {
                 });
         }
     })
-    
+
 })
 
 //帖子详情请求
 app.post('/forum/post/detail', function postDetail(req, res) {
+    console.log("post detail")
     var getObj = req.body;
     var postDetail = {
-        state:'',
-        post:'',
-        replies:''
+        state: 'N',
+        post: '',
+        replies: ''
     }
-    var sltSql = 'SELECT title, type, user_id, user_name, content, view_num, reply_num,floor_num, favor_num,FROM_UNIXTIME(create_date) as time_stamp FROM post WHERE id =?';
+    console.log(getObj)
+    var sltSql = 'SELECT * FROM post WHERE id =?';
     var sltSqlParams = [
-        getObj.id
-       ];
+        getObj.post_id
+    ];
     connection.query(sltSql, sltSqlParams, function (err, result) {
         if (err) {
-            res.json(
-                {
-                    state: 'N'
-                });
-        }
-        else
-        {
-            postDetail.post = result;
-        }
-    })
-    var sltSql2 = 'SELECT level, content, user_id, user_name,is_reference,reference_id, FROM_UNIXTIME(create_date) as time_stamp FROM reply WHERE post_id =?';
-    
-    connection.query(sltSql2, sltSqlParams, function (err, result) {
-      
-        if (err) {
-            res.json(
-                {
-                    state: 'N'
-                });
+            console.log(err)
         }
         else {
+            //console.log(result)
+            postDetail.post = result[0];
+        }
+    })
+    var sltSql2 = 'SELECT * FROM reply WHERE post_id =?';
+    connection.query(sltSql2, sltSqlParams, function (err, result) {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            //console.log(result)
             postDetail.state = 'Y';
             postDetail.replies = result;
+            //console.log(postDetail)
             res.json(postDetail);
         }
     })
 
 })
 
-app.listen(port,()=>console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))

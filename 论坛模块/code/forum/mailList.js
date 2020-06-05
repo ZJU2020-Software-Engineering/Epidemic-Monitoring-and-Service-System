@@ -1,30 +1,53 @@
 import React, { Component, useState, useRef } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
-import { makeFetch, host, port, httpRequest } from './utls';
+import { AppLoading } from 'expo';
+import { makeFetch, host, port, httpRequest, formatDate } from './utls';
 import MailCell from './mailCell';
 
-var data = [
-    { name: 'aaa', date: '2020-5-1', content: 'this is test 1' },
-    { name: 'bbb', date: '2020-5-2', content: 'this is test 2' },
-    { name: 'ccc', date: '2020-5-3', content: 'this is test 3' },
-    { name: 'ddd', date: '2020-5-4', content: 'this is test 4' },
-];
+export default function mailList({ navigation, route }) {
+    const [isReady, setReady] = useState(false);
+    const [data, setData] = useState(null);
+    const [refresh, setRefresh] = useState(false)
+    console.log('mail list')
+    console.log(route.params)
+    let url = host + ':' + port + '/forum/mail';
+    let user_id = route.params.userID;
+    let user_name = route.params.username
+    let response = makeFetch(url, 'POST', { userID: user_id })
 
-export default function mailList({ navigation }) {
-    return (
-        <View style={styles.container}>
-            <FlatList
-                data={data}
-                renderItem={({ item }) => (
-                    <View >
-                        <MailCell data={item} />
-                    </View>
-                )
-                }
-            />
-            <Button title="Create" onPress={() => navigation.navigate('mailCreate')}></Button>
-        </View>
-    )
+    if (!isReady || refresh) {
+        response.then((value) => {
+            console.log(value)
+            if (value.state == 'success') {
+                setData(value.mails)
+                setReady(true)
+                setRefresh(false)
+            }
+        })
+    }
+    if (isReady) {
+        return (
+            <View style={styles.container}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => (
+                        <View >
+                            <MailCell data={item} />
+                        </View>
+                    )
+                    }
+                    refreshing={refresh}
+                    onRefresh={() => {
+                        setRefresh(true);
+                    }}
+                />
+                <Button title="Create" onPress={() => navigation.navigate('mailCreate')}></Button>
+            </View>
+        )
+    }
+    else {
+        return (<AppLoading />)
+    }
 }
 
 const styles = StyleSheet.create({

@@ -21,6 +21,7 @@ import {
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Feather } from "@expo/vector-icons";
+import { AppLoading } from 'expo';
 import HomePageTab from "./HomePageTab";
 import SearchPage from "./SearchPage";
 import { getToken } from "./utls";
@@ -58,45 +59,53 @@ function MySearchComponent() {
 export default function HomePage() {
 	const [username, changeUsername] = React.useState("");
 	const [userID, changeUserID] = React.useState("");
+	const [isReady, setReady] = React.useState(false)
 
 	let token = getToken();
 	token.then(function (result) {
 		let [username, password, userID] = result.split('&')
 		changeUsername(username)
 		changeUserID(userID)
+		setReady(true)
 	})
-
-	return (
-		<NavigationContainer>
-			<Stack.Navigator initialRouteName="SearchPage">
-				<Stack.Screen
-					name="HomePageStack"
-					component={HomePageTab}
-					options={{
-						title: "健康论坛",
-						headerStyle: {
-							height: 64,
-						},
-						headerRight: () => <MySearchComponent />,
-					}}
-				/>
-				<Stack.Screen name="Search" component={SearchPage} />
-				<Stack.Screen
-					name="PostDetail"
-					initialParams={{ username: username, userID: userID }}
-					component={PostDetail}
-				/>
-				<Stack.Screen
-					name="PostPage"
-					initialParams={{ username: username, userID: userID }}
-					component={AddPost} />
-				<Stack.Screen
-					name="mailCreate"
-					initialParams={{ username: username, userID: userID }}
-					component={mailCreate} />
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+	if(isReady){
+		console.log(username, userID)
+		return (
+			<NavigationContainer>
+				<Stack.Navigator initialRouteName="SearchPage">
+					<Stack.Screen
+						name="HomePageStack"
+						component={HomePageTab}
+						initialParams={{ username: username, userID: userID }}
+						options={{
+							title: "健康论坛",
+							headerStyle: {
+								height: 64,
+							},
+							headerRight: () => <MySearchComponent />,
+						}}
+					/>
+					<Stack.Screen name="Search" component={SearchPage} />
+					<Stack.Screen
+						name="PostDetail"
+						initialParams={{ username: username, userID: userID }}
+						component={PostDetail}
+					/>
+					<Stack.Screen
+						name="PostPage"
+						initialParams={{ username: username, userID: userID }}
+						component={AddPost} />
+					<Stack.Screen
+						name="mailCreate"
+						initialParams={{ username: username, userID: userID }}
+						component={mailCreate} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		);
+	}
+	else{
+		return (<AppLoading />)
+	}
 }
 
 const styles = StyleSheet.create({

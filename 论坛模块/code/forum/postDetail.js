@@ -2,44 +2,50 @@ import React, { Component, useState } from 'react';
 import { FlatList, Button, View, Text, TextInput, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { host, port } from "./utls";
+import { AppLoading } from 'expo';
 
 
 export default function PostDetail({ navigation, route }) {
 	const [refresh, setRefresh] = useState(false);
 	console.log(route.params)
 	let post_id = route.params.post_id;
-	let user_id = route.params.post_id;
+	let user_id = route.params.userID;
+	let username = route.params.username;
 	const [post_content, setPost_content] = useState(null);
 	const [replies, setReplies] = useState(null);
 	const [reply_content, setReply_content] = useState('');
-
-	_keyExtractor = (item, index) => item.floor_num;
+	const [isReady, changeReady] = useState(false)
+	function _keyExtractor(item, index) { item.floor_num; }
 
 	//请求帖子详情的数据
-	fetch('/forum/post/detail', {
-		method: 'POST',
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": 'application/json',
-			"Connection": "close",
-		},
-		body: JSON.stringify(post_id),
-	}).then((response) => {
-		return response.json();
-	}).then((json) => {
-		setPost_content(json.post)
-		setReplies(json.replies)
-	})
-		.catch((error) => { console.error(error) })
-
-	console.log(post)
+	let url = host + ':' + port + '/forum/post/detail'
+	if (!isReady || refresh) {
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": 'application/json',
+			},
+			body: JSON.stringify({ post_id: post_id, user_id: user_id })
+		}).then((response) => {
+			console.log('get detail')
+			return response.json();
+		}).then((json) => {
+			console.log(json)
+			setPost_content(json.post)
+			setReplies(json.replies)
+			setReply_content('')
+			changeReady(true)
+			setRefresh(false)
+		})
+			.catch((error) => { console.error(error) })
+	}
 
 	//flatlist头部组件帖子内容
-	_header = function () {
+	function _header() {
 		return (
 			<View style={{ flex: 1, flexDirection: 'column', paddingBottom: 20 }}>
-
 				<Text style={styles.title_text}>
 					{post_content.title}
 				</Text>
@@ -132,114 +138,111 @@ export default function PostDetail({ navigation, route }) {
 	}
 
 	//flatlist显示回复内容
-	return (
-		<View style={{ flex: 1 }}>
-
-			<View style={styles.flatlist}>
-
-				<FlatList
-					data={replies}
-					keyExtractor={this._keyExtractor}
-					renderItem={({ item }) => <View style={{ paddingBottom: 10 }}>
-						<Text style={styles.reply_user}>{item.floor_num}楼: {item.user_name}  {item.reply_layer ? <Text>回复  {item.reply_layer}</Text> : ""}  </Text>
-						<Text fontSize={10} >{item.time_stamp}</Text>
-						<Text style={styles.replies}>{item.reply_content}</Text>
-						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 25 }}>
-
-							<Button title='删除' onPress={() => {
-								if ((user_id.user_id == item.user_id) || (user_id.user_id == '管理员id')) {
-									reply_floor.floor_num = item.floor_num
-									fetch('/forum/reply/delete', {
-										method: 'POST',
-										headers: {
-											"Accept": "application/json",
-											"Content-Type": 'application/json',
-											"Connection": "close",
-										},
-										body: JSON.stringify(reply_floor),
-									}).then((response) => response.json())
-										.catch((error) => { console.error(error) })
-								}
-								else {
-									alert('无法删除非本人回复')
-								}
-							}} />
-							<View style={{ paddingLeft: 30 }}>
-								<Button title='回复' onPress={() => {
-									if (reply_content == '') {
-										alert('回复内容为空')
-									}
-									else {
-										reply_reply.reply_layer = item.user_name;
-										fetch('/forum/reply/create', {
+	if (isReady) {
+		return (
+			<View style={{ flex: 1 }}>
+				<View style={styles.flatlist}>
+					<FlatList
+						data={replies}
+						keyExtractor={_keyExtractor}
+						renderItem={({ item }) => <View style={{ paddingBottom: 10 }}>
+							<Text style={styles.reply_user}>{item.level}楼: {item.user_name}  {item.reference ? <Text>回复  {item.reference_name}</Text> : ""}  </Text>
+							<Text fontSize={10} >{item.time_stamp}</Text>
+							<Text style={styles.replies}>{item.content}</Text>
+							<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 25 }}>
+								<Button title='删除' onPress={() => {
+									if ((user_id.user_id == item.user_id) || (user_id.user_id == '管理员id')) {
+										reply_floor.floor_num = item.floor_num
+										fetch('/forum/reply/delete', {
 											method: 'POST',
 											headers: {
 												"Accept": "application/json",
 												"Content-Type": 'application/json',
 												"Connection": "close",
 											},
-											body: JSON.stringify(reply_reply),
+											body: JSON.stringify(reply_floor),
 										}).then((response) => response.json())
 											.catch((error) => { console.error(error) })
 									}
-
+									else {
+										alert('无法删除非本人回复')
+									}
 								}} />
+								<View style={{ paddingLeft: 30 }}>
+									<Button title='回复' onPress={() => {
+										if (reply_content == '') {
+											alert('回复内容为空')
+										}
+										else {
+											reply_reply.reply_layer = item.user_name;
+											fetch('/forum/reply/create', {
+												method: 'POST',
+												headers: {
+													"Accept": "application/json",
+													"Content-Type": 'application/json',
+													"Connection": "close",
+												},
+												body: JSON.stringify(reply_reply),
+											}).then((response) => response.json())
+												.catch((error) => { console.error(error) })
+										}
+
+									}} />
+								</View>
 							</View>
-						</View>
-					</View>}
-					ListHeaderComponent={this._header}
-					refreshing={refresh}
-					onRefresh={() => {
-						setRefresh(true);
-						fetch('/forum/post/detail', {
-							method: 'POST',
-							headers: {
-								"Accept": "application/json",
-								"Content-Type": 'application/json',
-								"Connection": "close",
-							},
-							body: JSON.stringify(post_id),
-						}).then((response) => {
-							return response.json();
-						}).then((json) => {
-							setPost_content(json.post)
-							setReplies(json.replies)
-						})
-							.catch((error) => { console.error(error) })
-						setRefresh(false);
-					}}              //下拉刷新
-				/>
-			</View>
+						</View>}
+						ListHeaderComponent={_header}
+						refreshing={refresh}
+						onRefresh={() => {
+							setRefresh(true);
+						}}              //下拉刷新
+					/>
+				</View>
 
+				<View style={styles.input}>
+					<TextInput style={{ justifyContent: 'flex-end' }}
+						multiline={true}
+						placeholder='输入回复内容'
+						onChangeText={reply_content => setReply_content(reply_content)}
+						value={reply_content}
+						/>
+					<View style={{ paddingRight: 10 }}>
+						<Button title='回复楼主' onPress={() => {
+							if (reply_content == '') {
+								alert('回复内容为空')
+							}
+							else {
+								let url = host + ':' + port + '/forum/reply/create'
+								fetch(url, {
+									method: 'POST',
+									headers: {
+										"Accept": "application/json",
+										"Content-Type": 'application/json',
+										"Connection": "close",
+									},
+									body: JSON.stringify({ username: username, user_id: user_id, content: reply_content, post_id: post_id, reference: 0, reference_id: 0, reference_name: '' ,level:post_content.reply_num+1}),
+								}).then((response) => response.json()).then((json) => {
+									if (json.state == 'Y') {
+										alert('回复成功')
+									}
+									else {
+										alert("回复失败")
+									}
+									setRefresh(true)
+								})
+									.catch((error) => { console.error(error) })
 
-			<View style={styles.input}>
-				<TextInput style={{ justifyContent: 'flex-end' }}
-					multiline={true}
-					placeholder='输入回复内容'
-					onChangeText={reply_content => setReply_content(reply_content)} />
-				<View style={{ paddingRight: 10 }}>
-					<Button title='回复楼主' onPress={() => {
-						if (reply_content == '') {
-							alert('回复内容为空')
-						}
-						else {
-							fetch('/forum/reply/create', {
-								method: 'POST',
-								headers: {
-									"Accept": "application/json",
-									"Content-Type": 'application/json',
-									"Connection": "close",
-								},
-								body: JSON.stringify(reply_post),
-							}).then((response) => response.json())
-								.catch((error) => { console.error(error) })
-						}
-					}} />
+							}
+						}} />
+					</View>
 				</View>
 			</View>
-		</View>
 
-	);
+		);
+	}
+	else {
+		return (<AppLoading />)
+	}
 }
 
 

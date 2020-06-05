@@ -157,12 +157,12 @@ class SearchPage extends React.Component {
     _renderItem = (item, index) => {
         return (
             <TouchableOpacity
-                onPress={(event) => { this.props.navigation.navigate('PostDetail', { post_id: item.post_id }) }}
+                onPress={(event) => { this.props.navigation.navigate('PostDetail', { post_id: item.id }) }}
                 activeOpacity={0.7}
             >
                 <View style={styles.post}>
                     <Text style={styles.postHeader}>
-                        <Text>{this._extraKeyWords(item.post_title)}</Text>
+                        <Text>{this._extraKeyWords(item.title)}</Text>
                     </Text>
                     <Text style={styles.postBody}>
                         <Text style={styles.poster}>{`${item.user_name}:`}</Text>

@@ -1,14 +1,15 @@
 import React, { Component, useState, useRef } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
-import { makeFetch, host, port, httpRequest } from './utls';
+import { makeFetch, host, port, httpRequest, formatDate } from './utls';
 import CardView from 'react-native-cardview';
 import Collapsible from 'react-native-collapsible';
 
 export default function MailCell({ data }) {
-    var name = data.name;
+    var name = data.user_name;
     var content = data.content;
-    var date = data.date;
+    var date = formatDate(data.update_date);
     const [isCollapsed, changeCollapsed] = useState(true)
+    console.log(data)
     return (
         <View>
             <CardView

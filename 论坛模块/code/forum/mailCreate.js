@@ -3,25 +3,30 @@ import { StyleSheet, Text, View, Keyboard, TextInput, Button, FlatList, Touchabl
 import { makeFetch, host, port, httpRequest } from './utls';
 import CardView from 'react-native-cardview';
 
-export async function sendMail(receiver, content, navigation) {
+export async function sendMail(userID, username, receiver, content, navigation) {
     console.log("sendmail")
     console.log(receiver, content)
     url = host + ':' + port + '/forum/mail/create'
-    data = { receiver: receiver, content: content }
-    response = await makeFetch(url, 'POST', data)
+    data = { receiver: receiver, content: content ,userID:userID, username:username}
+    console.log(url)
+    response = await makeFetch( url, 'POST', data)
     console.log(response)
     if (response['state'] == 'success') {
-        Alert.alert('Success', 'Create success')
+        Alert.alert('成功', '发送成功')
     }
     else {
-        Alert.alert('Error', 'Create failed')
+        Alert.alert('错误', '发送失败')
     }
-    navigation.navigate('mailList')
+    navigation.goBack();
 }
 
-export default function mailCreate({ navigation }) {
+export default function mailCreate({ navigation, route }) {
+    console.log('mailCreate')
+    console.log(route.params)
     const [receiver, changeReceiver] = useState('')
     const [content, changeContent] = useState('')
+    let username = route.params.username;
+    let userID = route.params.userID;
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -61,8 +66,7 @@ export default function mailCreate({ navigation }) {
                 </View>
                 <View style={styles.bottom}>
                     <Button title="Send" onPress={() => {
-                        //sendMail(receiver,content,navigation)
-                        Alert.alert('Info message', 'Create success')
+                        sendMail(userID, username, receiver,content,navigation)
                     }} />
                 </View>
             </TouchableOpacity>

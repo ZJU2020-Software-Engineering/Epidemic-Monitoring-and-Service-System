@@ -9,6 +9,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import { getPostDateAsync } from './utls';
 import UserPage from './user';
 import mailList from './mailList';
+import { interpolate } from 'react-native-reanimated';
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -108,24 +109,27 @@ class Home extends React.Component {
 	_renderItem = (item, index) => {
 		return (
 			<TouchableOpacity
-				onPress={(event) => { this.props.navigation.navigate('PostDetail', { post_id: item.post_id }) }}
+				onPress={(event) => { this.props.navigation.navigate('PostDetail', { post_id: item.id }) }}
 				activeOpacity={0.7}
 			>
 				<View style={styles.post}>
 					<Text style={styles.postHeader}>
-						{item.post_title}
+						{item.title}
 					</Text>
 					<Text style={styles.postBody}>
-						{item.post_type + ' ' +item.time_stamp + ' by ' + item.user_name}
+						{this._formatType(item.type) + ' ' +this._formatDateString(item.update_date) + ' by ' + item.user_name}
 					</Text>
 				</View>
 			</TouchableOpacity>
 		);
 	}
 
-	_formatDateString = (timestamp) => {
-		let time = new Date(timestamp);
-		return (`${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`);
+	_formatDateString = (str) => {
+		return str.split('T')[0]
+	}
+	_formatType = (str) => {
+		const type = ["普通","公告"];
+		return type[str]
 	}
 
 	_renderSeperator = () => {
@@ -250,9 +254,9 @@ class Home extends React.Component {
 	}
 }
 
-
-
 function HomePageTab({ navigation, route }) {
+	console.log('homepagetab')
+	console.log(route.params)
 	return (
 		<Tab.Navigator
 			initialRouteName="Home"
