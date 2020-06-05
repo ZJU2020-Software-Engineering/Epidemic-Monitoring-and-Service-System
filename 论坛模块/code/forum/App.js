@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity} from 'reac
 import { AsyncStorage } from 'react-native';
 import LoginPage from './login';
 import HomePage from './HomePage';
-import UserPage from './user';
 
 export const AuthContext = React.createContext();
 

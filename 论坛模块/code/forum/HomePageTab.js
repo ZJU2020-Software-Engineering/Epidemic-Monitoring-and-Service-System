@@ -8,7 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { getPostDateAsync } from './utls';
 import UserPage from './user';
-import {mailList} from './mail'
+import mailList from './mailList';
+
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -52,13 +53,13 @@ class Home extends React.Component {
 
 	_onFetch = async (page = 1, startFetch, abortFetch) => {
 		try {
-			let pageLimit = 10; //设置一页显示的条目数
+			let pageLimit = 20; //设置一页显示的条目数
 			let rowData = [];
 
 			rowData = await this._getData(this.state.selectMode, pageLimit);
 			//开始提取数据
 			console.log(`数据获取完毕-${page}`);
-			console.log(rowData);
+			//console.log(rowData);
 			startFetch(rowData, pageLimit);
 			if (!this.state.refreshed) this.setState({ refreshed: true });
 		} catch (err) {
@@ -72,7 +73,7 @@ class Home extends React.Component {
 		try {
 			let rowData = [];
 
-			rowData = await this._getData(this.state.selectMode, 5);
+			rowData = await this._getData(this.state.selectMode, 20);
 			console.log(rowData);
 			console.log(this.listView.state.dataSource);
 			let newData = rowData.concat(this.listView.state.dataSource);
@@ -112,19 +113,11 @@ class Home extends React.Component {
 			>
 				<View style={styles.post}>
 					<Text style={styles.postHeader}>
-						{`#${item.post_type}# ${item.post_title}`}
+						{item.post_title}
 					</Text>
-					<Text style={styles.postDate}>
-						{this._formatDateString(item.time_stamp)}
+					<Text style={styles.postBody}>
+						{item.post_type + ' ' +item.time_stamp + ' by ' + item.user_name}
 					</Text>
-					<Text style={styles.postContent}>
-						<Text style={styles.poster}>{`${item.user_name}:`}</Text>
-						{item.content}
-					</Text>
-					<View style={styles.postView}>
-						<Feather name='eye' color='black' size={styles.postView.height - 5} />
-						<Text style={{ height: styles.postView.height, paddingLeft: 5, fontSize: styles.postView.height - 5 }}>{item.views}</Text>
-					</View>
 				</View>
 			</TouchableOpacity>
 		);
@@ -216,7 +209,6 @@ class Home extends React.Component {
 		return (
 			<>
 				<View style={styles.select}>
-					<Text>{this.state.selectMode}</Text>
 					<ModalDropdown
 						defaultIndex={0}
 						defaultValue={'全部'}
@@ -264,7 +256,7 @@ function HomePageTab({ navigation, route }) {
 	return (
 		<Tab.Navigator
 			initialRouteName="Home"
-			activeColor="#ffffff"
+			activeColor="#484848"
 			inactiveColor='#D3D3D3'
 			shifting={true}
 			sceneAnimationEnabled={true}
@@ -275,11 +267,10 @@ function HomePageTab({ navigation, route }) {
 				component={Home}
 				options={{
 					tabBarLabel: '首页',
-					tabBarColor: '#1E90FF',
 					tabBarIcon: ({ focused, color }) => (
-						<Feather name='home' color={color} size={26} />
+						<Feather name='home' color={focused ? '#484848' : color} size={22} />
 					),
-					tabBarColor: '#1E90FF'
+					tabBarColor: '#FFFFFF'
 				}}
 				/* 这里将用户的信息传入到页面中 */
 				initialParams={route.params} />
@@ -290,7 +281,7 @@ function HomePageTab({ navigation, route }) {
 				options={{
 					tabBarLabel: '个人中心',
 					tabBarIcon: ({ color, focused }) => (
-						<Feather name="user" color={focused ? '#D3D3D3' : color} size={26} />
+						<Feather name="user" color={focused ? '#484848' : color} size={22} />
 					),
 					tabBarColor: '#FFFFFF',
 				}}
@@ -302,10 +293,10 @@ function HomePageTab({ navigation, route }) {
 				component={mailList}
 				options={{
 					tabBarLabel: '站内信',
-					tabBarIcon: ({ color }) => (
-						<Feather name="mail" color={color} size={26} />
+					tabBarIcon: ({ color, focused }) => (
+						<Feather  name="mail" color={focused ? '#484848' : color} size={22} />
 					),
-					tabBarColor: '#FF0000'
+					tabBarColor: '#FFFFFF'
 				}}
 				/* 这里将用户的信息传入到页面中 */
 				initialParams={route.params} />
@@ -356,43 +347,28 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontStyle: 'italic',
 		color: 'red',
-		backgroundColor: '#AEEEEE',
+		backgroundColor: '#FFFFFF',
 		height: 24,
 		textAlignVertical: 'center',
 		textAlign: 'center',
 	},
 	post: {
 		flexDirection: 'column',
-		height: 300,
-		backgroundColor: '#DCDCDC',
+		height: 85,
+		backgroundColor: '#FFFFFF',
 		paddingLeft: 10,
 		paddingRight: 10,
 	},
-	poster: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		fontStyle: 'italic',
-		color: '#1E90FF'
-	},
 	postHeader: {
 		height: 60,
-		fontSize: 36,
-		paddingTop: 20,
+		fontSize: 20,
+		fontWeight:"bold",
+		paddingBottom:10,
+		paddingTop:10,
 	},
-	postContent: {
-		fontSize: 24,
-		height: 180,
-	},
-	postDate: {
-		height: 20,
-		fontSize: 16,
-		textAlignVertical: 'center',
-	},
-	postView: {
-		height: 25,
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
+	postBody: {
+		height: 30,
+		fontSize: 12,
 	},
 	select: {  //下拉列表在homePage中的style
 		height: 18,
@@ -408,6 +384,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		marginTop: 2,
 	},
+	icon:{
+		margin:5
+	}
 });
 
 export default HomePageTab;

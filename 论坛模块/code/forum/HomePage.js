@@ -26,7 +26,7 @@ import SearchPage from "./SearchPage";
 import { getToken } from "./utls";
 import AddPost from "./addPost";
 import PostDetail from "./postDetail";
-import {mailDetail, mailCreate} from './mail';
+import mailCreate from './mailCreate';
 
 const Stack = createStackNavigator();
 
@@ -86,17 +86,13 @@ export default function HomePage() {
 					initialParams={{ username: username, userID: userID }}
 					component={PostDetail}
 				/>
-				<Stack.Screen 
-					name="PostPage" 
-					initialParams={{ username: username, userID: userID }} 
+				<Stack.Screen
+					name="PostPage"
+					initialParams={{ username: username, userID: userID }}
 					component={AddPost} />
-				<Stack.Screen 
-					name="mailDetail" 
-					initialParams={{ username: username, userID: userID }} 
-					component={mailDetail} />
-				<Stack.Screen 
-					name="mailCreate" 
-					initialParams={{ username: username, userID: userID }} 
+				<Stack.Screen
+					name="mailCreate"
+					initialParams={{ username: username, userID: userID }}
 					component={mailCreate} />
 			</Stack.Navigator>
 		</NavigationContainer>

@@ -8,23 +8,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 export default function PostDetail({ navigation, route }) {
 	const [refresh, setRefresh] = useState(false);
 	console.log(route.params)
-	let postID= route.params.post_id;
-	console.log(postID)
-	//模拟的数据
-	let user_id = { 'user_id': '123456' }
-	let post_id = { 'post_id': '20200504112233123456' };
+	let post_id = route.params.post_id;
+	let user_id = route.params.post_id;
 	const [post_content, setPost_content] = useState(null);
 	const [replies, setReplies] = useState(null);
 	const [reply_content, setReply_content] = useState('');
-	let reply_floor = { 'floor_num': '', 'post_id': '20200504112233123456' };
-	let reply_reply =
-		{ 'post_id': '20200504112233123456', 'reply_content': reply_content, 'reply_layer': '', 'user_id': '123456', 'user_name': '用户1' };
-	let reply_post =
-		{ 'post_id': '20200504112233123456', 'reply_content': reply_content, 'reply_layer': null, 'user_id': '123456', 'user_name': '用户1' };
+
 	_keyExtractor = (item, index) => item.floor_num;
 
 	//请求帖子详情的数据
-	/*
 	fetch('/forum/post/detail', {
 		method: 'POST',
 		headers: {
@@ -40,19 +32,8 @@ export default function PostDetail({ navigation, route }) {
 		setReplies(json.replies)
 	})
 		.catch((error) => { console.error(error) })
-		*/
 
-	//测试用的数据，实际链接后端时换成 post_content 和 replies
-	let post_contenttest = {
-		'title': '标题1', 'type': 'normal', 'user_id': '123456', 'user_name': '用户1', 'content': '帖子内容1', 'view_num': 1, 'reply_num': 2, 'floor_num': 3,
-		'favor_num': 0, 'dislike_num': 0, 'time_stamp': '2020-05-05 19:00:01'
-	};
-	let repliestest = [
-		{ 'floor_num': '1', 'reply_content': '回复1', 'reply_layer': null, 'user_id': '123456', 'user_name': '用户1', 'time_stamp': '2020-05-05 19:00:01' }
-		, { 'floor_num': '2', 'reply_content': '回复2', 'reply_layer': '用户1', 'user_id': '234567', 'user_name': '用户2', 'time_stamp': '2020-05-05 19:00:02' }
-		, { 'floor_num': '3', 'reply_content': '回复2', 'reply_layer': '用户1', 'user_id': '234567', 'user_name': '用户2', 'time_stamp': '2020-05-05 19:00:02' }
-		, { 'floor_num': '4', 'reply_content': '回复2', 'reply_layer': '用户1', 'user_id': '234567', 'user_name': '用户2', 'time_stamp': '2020-05-05 19:00:02' }
-		, { 'floor_num': '5', 'reply_content': '回复2', 'reply_layer': '用户1', 'user_id': '234567', 'user_name': '用户2', 'time_stamp': '2020-05-05 19:00:02' }]
+	console.log(post)
 
 	//flatlist头部组件帖子内容
 	_header = function () {
@@ -60,15 +41,15 @@ export default function PostDetail({ navigation, route }) {
 			<View style={{ flex: 1, flexDirection: 'column', paddingBottom: 20 }}>
 
 				<Text style={styles.title_text}>
-					{post_contenttest.title}
+					{post_content.title}
 				</Text>
 				<View style={styles.content_container}>
 					<Text style={styles.author_text}>
-						{post_contenttest.user_name}
+						{post_content.user_name}
 					</Text>
 					<View style={{ paddingRight: 25 }}>
 						<Button title='删除' onPress={() => {
-							if ((user_id.user_id == post_contenttest.user_id) || (user_id.user_id == '管理员id')) {
+							if ((user_id.user_id == post_content.user_id) || (user_id.user_id == '管理员id')) {
 								fetch('/forum/post/delete', {
 									method: 'POST',
 									headers: {
@@ -78,7 +59,7 @@ export default function PostDetail({ navigation, route }) {
 									},
 									body: JSON.stringify(post_id),
 								}).then((response) => response.json())
-								.catch((error) => { console.error(error) })
+									.catch((error) => { console.error(error) })
 								alert('删除帖子成功')
 								navigation.goBack()
 							}
@@ -90,9 +71,9 @@ export default function PostDetail({ navigation, route }) {
 					</View>
 				</View>
 				<Text style={styles.item}>
-					{post_contenttest.content}
+					{post_content.content}
 				</Text>
-				<View style={styles.butten_view}>
+				<View style={styles.button_view}>
 					<View style={{ padding: 15 }}>
 						<Button title='赞' onPress={() => {
 							fetch('/forum/post/favor', {
@@ -105,7 +86,7 @@ export default function PostDetail({ navigation, route }) {
 								body: JSON.stringify(post_id, user_id),
 							}).then((response) => response.json())
 								.then((json) => {
-									alert(json.messege)
+									alert(json.message)
 								})
 								.catch((error) => { console.error(error) })
 						}} />
@@ -122,7 +103,7 @@ export default function PostDetail({ navigation, route }) {
 								body: JSON.stringify(post_id, user_id),
 							}).then((response) => response.json())
 								.then((json) => {
-									alert(json.messege)
+									alert(json.message)
 								})
 								.catch((error) => { console.error(error) })
 						}} />
@@ -139,13 +120,13 @@ export default function PostDetail({ navigation, route }) {
 								body: JSON.stringify(post_id, user_id),
 							}).then((response) => response.json())
 								.then((json) => {
-									alert(json.messege)
+									alert(json.message)
 								})
 								.catch((error) => { console.error(error) })
 						}} />
 					</View>
 				</View>
-				<Text>{post_contenttest.time_stamp}  回复:{post_contenttest.reply_num}  赞:{post_contenttest.favor_num}  踩:{post_contenttest.dislike_num}</Text>
+				<Text>{post_content.time_stamp}  回复:{post_content.reply_num}  赞:{post_content.favor_num}  踩:{post_content.dislike_num}</Text>
 			</View>
 		)
 	}
@@ -157,7 +138,7 @@ export default function PostDetail({ navigation, route }) {
 			<View style={styles.flatlist}>
 
 				<FlatList
-					data={repliestest}
+					data={replies}
 					keyExtractor={this._keyExtractor}
 					renderItem={({ item }) => <View style={{ paddingBottom: 10 }}>
 						<Text style={styles.reply_user}>{item.floor_num}楼: {item.user_name}  {item.reply_layer ? <Text>回复  {item.reply_layer}</Text> : ""}  </Text>
@@ -189,7 +170,7 @@ export default function PostDetail({ navigation, route }) {
 										alert('回复内容为空')
 									}
 									else {
-									reply_reply.reply_layer = item.user_name;
+										reply_reply.reply_layer = item.user_name;
 										fetch('/forum/reply/create', {
 											method: 'POST',
 											headers: {
@@ -269,7 +250,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
-	buttun_delete: {
+	button_delete: {
 		paddingLeft: 100,
 	},
 	title_view: {
@@ -279,7 +260,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: '#27b5ee',
 	},
-	butten_view: {
+	button_view: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		paddingRight: 10,

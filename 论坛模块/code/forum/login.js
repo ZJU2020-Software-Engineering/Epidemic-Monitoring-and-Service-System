@@ -48,12 +48,13 @@ export default function LoginPage() {
 						console.log(username, password);
 						url = host + ":" + port + "/forum/login";
 						data = { username: username, password: password };
-						//response = await makeFetch(url, 'POST',data)
-						response = { state: "success", userID:'123' };
+						console.log(url,data)
+						response = await makeFetch(url, 'POST',data)
+						//response = { state: "success", userID: '123' };
 						console.log(response);
 						if (response["state"] == "success") {
 							let userID = response["userID"];
-							return signIn({ username, password, userID});
+							return signIn({ username, password, userID });
 						} else {
 							return Alert.alert("Error message", "Login failed");
 						}

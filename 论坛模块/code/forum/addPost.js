@@ -48,9 +48,15 @@ export default function AddPost({ navigation, route }) {
 					} else {
 						url = host + ":" + port + "/forum/post/create";
 						data = JSON.stringify(post_message)
-						response = await makeFetch(url, 'POST',data)
-						alert("创建帖子成功");
-						navigation.goBack();
+						response = await makeFetch(url, 'POST', data)
+						if (response.state == 'Y') {
+							alert("创建帖子成功");
+							navigation.goBack();
+						}
+						else {
+							alert("创建帖子失败");
+							navigation.goBack();
+						}
 					}
 				}}
 			/>
