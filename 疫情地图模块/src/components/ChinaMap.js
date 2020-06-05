@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ECharts } from "../module/react-native-echarts-wrapper";
-import {SegmentedControl} from "@ant-design/react-native";
+import {SegmentedControl, Modal, Button} from "@ant-design/react-native";
 import axios from 'axios'
 import time from './tools/time'
 import {server_config} from '../config'
- 
+import ChinaProvince from "./ChinaProvinces";
+import ProvinceDataTable from "./ProvinceDataTable";
+
 export default class ChinaMap extends Component {
     constructor(props){
         super(props);
-        this.state={'DataUpdate':true}
+        this.state={'DataUpdate':true, 'visible': false, 'prevClick': ''}
 
         this.addition = {
             "options": 
@@ -244,7 +246,7 @@ export default class ChinaMap extends Component {
             // "years": ["3.14", "3.15", "3.16", "3.18", "3.19"]
             // "years": []
         };
-        curDate = new Date(new Date().getTime() - 6*60*60*1000);
+        const curDate = new Date(new Date().getTime() - 6*60*60*1000);
         this.timeTable = [];
         for( i = 0 ; i < 5 ; i ++ ){
             this.timeTable[4-i] = time.formatDate(new Date(curDate.getTime() - i*24*60*60*1000), 'yyyy-MM-dd');
@@ -338,14 +340,14 @@ export default class ChinaMap extends Component {
                     // formatter: function(e, t, n) {
                     //     return .5 == e.value ? e.name + "：有疑似病例" : e.seriesName + "<br />" + e.name + "：" + e.value
                     // }
-              
+
                     formatter:function(e,t,n){
                         var html = '';
                         html+= .5 == e.value ? e.name + "：有疑似病例" : e.seriesName + "<br />" + e.name + "：" + e.value+ "<br />";
-                        html+='<button  οnclick="">详情</button>';      
+                        html+='再次点击查看详情';
                         return html;
                     },
-                    
+
                 },
                 
                 geo: {
@@ -612,7 +614,7 @@ export default class ChinaMap extends Component {
                     formatter:function(e,t,n){
                         var html = '';
                         html+= .5 == e.value ? e.name + "：有疑似病例" : e.seriesName + "<br />" + e.name + "：" + e.value+ "<br />";
-                        html+='<button  οnclick="">详情</button>';      
+                        html+='<button>详情</button>';
                         return html;
                     },
                     
@@ -775,26 +777,58 @@ export default class ChinaMap extends Component {
         }});
         
 
-      } 
-    //   CNDataUpdate(){ 
-    // }
+      }
 
-      render(){
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render(){
 
         return (
-            <View>
-                <SegmentedControl
-                    values={['现存', '新增', '累计']}
-                    onChange={e => {
-                        this.chart.setOption(this.options[e.nativeEvent.selectedSegmentIndex]);
-                    }}
-                    style={{ marginLeft: 50, marginRight: 50}}
-                />
-                <View style={{ height: 500 }} >
-                    <ECharts ref={this.onRef} option={this.options[0]} />
+                <View>
+                    <SegmentedControl
+                        values={['现存', '新增', '累计']}
+                        onChange={e => {
+                            this.chart.setOption(this.options[e.nativeEvent.selectedSegmentIndex]);
+                        }}
+                        style={{ marginLeft: 50, marginRight: 50}}
+                    />
+                    <View style={{ height: 500 }} >
+                        <ECharts
+                            ref={this.onRef}
+                            option={this.options[0]}
+                            onData={(e) => {
+                                if (!JSON.parse(e).data) return;
+                                const clickName = JSON.parse(e).data.name;
+                                if (this.state.prevClick && this.state.prevClick.length > 0 && this.state.prevClick === clickName) {
+                                    this.setState({ visible: true })
+                                }
+                                this.setState({ prevClick: clickName })
+                            }}
+                        />
+                    </View>
+                    <Modal
+                        title={this.state.prevClick}
+                        transparent
+                        onClose={this.onClose}
+                        maskClosable
+                        visible={this.state.visible}
+                        closable
+                        style={{ width: '90%', height: '75%' }}
+                    >
+                        <View style={{ paddingVertical: 20, minHeight: 800 }}>
+                            <ChinaProvince province={this.state.prevClick} />
+                            <ProvinceDataTable province={this.state.prevClick} />
+                            <Button type="primary" onPress={this.onClose}>
+                                关闭
+                            </Button>
+                        </View>
+                    </Modal>
                 </View>
-            </View>
         )
-      }
+    }
   
 }
