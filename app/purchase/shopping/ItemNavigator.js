@@ -4,7 +4,7 @@ import { createStackNavigator, HeaderBackground } from "react-navigation-stack";
 import {StoreDetailComponent} from './itemList';
 import {ItemDisplay} from './ItemDisplay';
 import HomeComponent from "./HomeComponent";
-// import PersonHome from "./PersonHome";
+import {OrderPage} from "./OrderPage";
 
 const ItemNavigator=createStackNavigator({
     // Person:{
@@ -28,6 +28,12 @@ const ItemNavigator=createStackNavigator({
         navigationOptions: {
             headerShown: true,
             headerTitle: "商品详情"
+        }
+    },
+    OrderPagePersonal:{
+        screen: OrderPage,
+        navigationOptions: {
+            headerShown: false
         }
     }
 });

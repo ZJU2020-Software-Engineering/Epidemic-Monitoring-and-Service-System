@@ -1,4 +1,4 @@
-const URL = 'http://10.180.83.83:4000';
+const URL = 'http://10.181.163.236:4000';
 
 import Axios from 'axios';
 
@@ -80,6 +80,18 @@ export async function GetMerchants(location){
             return response.data.message;
         }
     ).catch(function(error){
+        console.log(error);
+    });
+    return result;
+}
+
+export async function GetMerchantCategory(category) {
+    let data = {category: category};
+    let result = await instance.get('/request/merchant/selectMerchantCategory', {
+        params: data
+    }).then(function (response) {
+        return response.data.message;
+    }).catch(function (error) {
         console.log(error);
     });
     return result;
@@ -284,3 +296,15 @@ export async function GetMerchantInfo(m_id) {
 }
 
 
+export async function InsertOrder(orderinfo){
+    let result = await instance.post(
+        '/request/shoppingOrder/insert',orderinfo
+    ).then(
+        function(response){
+            return response.data.result;
+        }
+    ).catch(function (error) {
+        console.log(error);
+    });
+    return result;
+}

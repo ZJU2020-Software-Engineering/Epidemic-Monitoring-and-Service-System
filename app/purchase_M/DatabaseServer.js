@@ -218,14 +218,16 @@ app.get('/request/merchant/select', function selectMerchant(req, res) {
     var getObj = req.query;
     selectSQL = 'SELECT * FROM merchantuserinfo WHERE username = ?';
     selectParams = [getObj.account];
-    console.log(selectParams);
+    // console.log(selectParams);
     connection.query(selectSQL, selectParams, function (err, result) {
         if (err) {
+            // console.log('error');
             res.json({
                 result: 'N',
                 message: err.message
             });
         } else {
+            // console.log('success');
             res.json({
                 result: 'Y',
                 message: result

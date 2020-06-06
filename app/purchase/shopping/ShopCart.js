@@ -2,7 +2,8 @@ import React from 'react';
 import Cache from '../Cache';
 import {Icon} from 'react-native-elements';
 import { Tabs, WingBlank, WhiteSpace, List, Button, Flex } from '@ant-design/react-native';
-import { StyleSheet, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, ScrollView, Text, View, TouchableOpacity, Alert } from 'react-native';
+import {InsertOrder} from '../DatabaseClient';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -26,6 +27,16 @@ export default class ShopCart extends React.Component{
     } 
     componentWillUnmount() { this._navListener.remove(); }
     
+    getItemListToString() {
+        var string="";
+        // console.log(this.state.items);
+        for(index in this.state.items){
+            string+=( this.state.items[index].id+"*"+this.state.items[index].count+";\n");
+        }
+        return  string;
+    }
+
+
     render(){
         return(
             <ScrollView style={{ flex: 1 }}>
@@ -80,7 +91,27 @@ export default class ShopCart extends React.Component{
                         )
                     }
                 </List>
-                <Button onPress={()=>{}}>{this.state.sumPrice}  去结算</Button>
+                <Button onPress={()=>{
+                    var orderinfo={
+                        m_id: Cache.get("merchant id"),
+                        t_id: Cache.get("account"),
+                        item_list: this.getItemListToString(),
+                        total_price: this.state.sumPrice,
+                        payment: null,
+                    };
+                    InsertOrder(orderinfo).then(
+                        (response)=>{
+                            if(response=='Y'){
+                                Alert.alert('订单已生成');
+                                Cache.clearItems();
+                                this.setState({items:Cache.getItemList()})
+                            }
+                            else{
+                                Alert.alert('订单生成错误');
+                            }
+                        }
+                    )
+                }}>{this.state.sumPrice}  去结算</Button>
             </ScrollView>
 
         );

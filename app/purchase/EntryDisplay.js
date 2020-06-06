@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text} from 'react-native';
 import { Flex} from '@ant-design/react-native';
 import { Icon } from 'react-native-elements';
+import { Card } from 'react-native-paper';
 import Cache from './Cache';
 
 export class ShowBtnBlock{
@@ -38,14 +39,16 @@ export default class EntryDisplay extends React.Component{
         console.log(this.state.username);
     }
     CachePrepare(){
-        Cache.set('account','007');
-        Cache.set('user name','tester');
-        Cache.set('address','紫金港云峰7幢');
+        Cache.set('account','yang');
+        Cache.set('user name','yang');
+        Cache.set('address','上海');
+        Cache.set('merchant id', '1');
       }
 
     render(){
         this.CachePrepare();
         return(
+            <Card style={{ marginTop:60, padding:10,borderRadius: 15, elevation:3}}>
             <Flex>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }} onPress={()=>{console.log("navigating");this.props.navigation.navigate("Shops");}}>
                     {btns[0].render()}
@@ -57,6 +60,7 @@ export default class EntryDisplay extends React.Component{
                     {btns[2].render()}
                 </Flex.Item>   
             </Flex>
+            </Card>
         );
     }
 }

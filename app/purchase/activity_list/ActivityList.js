@@ -83,10 +83,10 @@ export default class SignedScreen extends React.Component{
         super(props);
         this.state={
                     // v_id: props.navigation.state.params.v_id, //////////////////  需要父页面传递的志愿者id
-					v_id:"02",
+					v_id:"03",
 					
 					act_name:"",
-					act_time:"",
+					act_tim3:"",
 					act_type:"",
 					
 					act_addr:"",

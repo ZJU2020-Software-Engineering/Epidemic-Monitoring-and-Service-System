@@ -11,7 +11,7 @@ export class HistoryOrder extends React.Component {
         super(props);
         let orders = []
         this.state = {
-            id: Cache.get('user name'),//props.navigation.state.params.id,
+            id: Cache.get('account'),//props.navigation.state.params.id,
             orders: orders
         };
     }

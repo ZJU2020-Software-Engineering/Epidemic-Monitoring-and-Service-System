@@ -19,7 +19,7 @@ export class UserHome extends React.Component{
     }
 
     componentDidMount() {
-        GetTenantInfo(this.state.userName).then((response)=>{console.log(response);this.successShow(response[0])});
+        GetTenantInfo(this.state.account).then((response)=>{console.log(response);this.successShow(response[0])});
     }
     successShow(response) {
         this.setState({

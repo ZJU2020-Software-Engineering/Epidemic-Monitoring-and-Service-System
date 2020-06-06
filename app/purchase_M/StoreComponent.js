@@ -8,7 +8,8 @@ import { GetMerchantInfo } from './DatabaseClient';
 export class StoreComponent extends Component{
     constructor(props){
         super(props);
-        let name = props.navigation.state.params.account.name;  
+        let name = props.navigation.state.params.account;  
+        console.log('name:' + name);
         this.state = {
             canChange: false,
             storeName: name,

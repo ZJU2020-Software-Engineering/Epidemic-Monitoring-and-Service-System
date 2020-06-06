@@ -51,7 +51,7 @@ export class ItemDisplay extends React.Component{
                         stock:detail.stock,
                         productionDate:detail.production_date,
                         shelfLife:detail.shelfLife,
-                        pic:"https://user-images.githubusercontent.com/37875411/81286757-28a9d600-9094-11ea-8f39-51c71772b768.jpg"
+                        pic:detail.imgs
                     }
                 });
             }

@@ -21,7 +21,7 @@ class ApplyStatus extends React.Component{
             this.setState(previousState => {
                 return { status: 2, isVolunteer: false};
             });
-        }, 10000);
+        }, 5000);
     }
 
     successShow(response){

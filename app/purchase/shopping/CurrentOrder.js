@@ -11,7 +11,7 @@ export class CurrentOrder extends React.Component {
         super(props);
         let orders = []
         this.state = {
-            t_id: Cache.get('user name'),//props.navigation.state.params.account.name,
+            t_id: Cache.get('account'),//props.navigation.state.params.account.name,
             orders: orders
         };
     }
@@ -45,7 +45,7 @@ export class CurrentOrder extends React.Component {
                         {this.state.orders.map((order) => {
                             return (
                                 <Item key={order[0]} extra={<Button // 这里是接口
-                                                        onPress={() => {this.props.navigation.navigate('OrderPageScreen', {id: order[0][0], stat: order[1]})}}>
+                                                        onPress={() => {this.props.navigation.navigate('OrderPagePersonal', {id: order[0][0], stat: order[1]})}}>
                                                         详细信息
                                                     </Button>}>
                                     {order[0]} 

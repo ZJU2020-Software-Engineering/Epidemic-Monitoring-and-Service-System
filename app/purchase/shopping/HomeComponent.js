@@ -7,7 +7,7 @@ import {GetMerchants} from '../DatabaseClient';
 
 let windowWidth = Dimensions.get('window').width;
 let windowheight = Dimensions.get('window').height;
- 
+  
 //filter((merchant)=>{return merchant.account!='01'&&merchant.account!='02'&&merchant.account!='03'&&merchant.account!='aa';}).
 var data11=GetMerchants('location').then(
     (merchants)=>{
@@ -15,7 +15,7 @@ var data11=GetMerchants('location').then(
         (item,index)=>{
             return {
                 key:index,
-                name:item.account,
+                name:item.username,
                 tag:'餐食',
                 time:'6:00-22:00',
                 addr:item.address,
@@ -269,15 +269,15 @@ class FirstRoute extends  Component{
         GetMerchants('test').then(
             (response)=>{
                 let result=response.map((item,index)=>{
-                    
+                    console.log(item.imgs);
                     return {
                         key:index,
-                        name:item.account,
+                        name:item.username,
                         tag:'餐食',
                         time:'6:00-22:00',
                         addr:item.address,
                         distance:'2km',
-                        img_path:require('../assets/nice_5.png')
+                        img_path:item.imgs
                     };
                 });
                 console.log('what');
@@ -309,6 +309,7 @@ class FirstRoute extends  Component{
      
     //列表的每一行
     renderItem({item,index}) {
+        console.log('item.img_path:'+item.img_path);
         return (
         <TouchableOpacity style={styles.touch}
             onPress={ () => this.props.navigation.navigate("StoreDetailScreen",{
@@ -318,7 +319,7 @@ class FirstRoute extends  Component{
         >
 
             <View style={styles.content}>  
-            <Image  style={styles.storeimg} source={item.img_path} />
+            <Image  style={styles.storeimg} source={{uri: item.img_path.toString()}} />
             <View style={styles.destext}>
                 <Text style={styles.t1}>{item.name}</Text>
                 <TextInput style={styles.tx} value={item.tag} editable={false} ></TextInput>

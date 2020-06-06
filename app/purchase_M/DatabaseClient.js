@@ -1,4 +1,4 @@
-const URL = 'http://10.181.129.63:4000';
+const URL = 'http://10.180.116.178:4000';
 
 import Axios from 'axios';
 
@@ -12,11 +12,14 @@ let instance = Axios.create({
 
 export async function GetMerchantInfo(userName) {
     let data = {account: userName};
+    console.log('account: ' + data.account);
     let result = await instance.get('/request/merchant/select', {
         params: data
     }).then(function (response) {
+        // console.log('success');
         return response.data.message;
     }).catch(function (error) {
+        // console.log('error');
         console.log(error);
     });
     return result;

@@ -3,77 +3,99 @@ import { Text, Image, View, StyleSheet, StatusBar, KeyboardAvoidingView } from '
 import * as Animatable from "react-native-animatable";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Cache from '../purchase_M/Cache';
+import { GetMerchantInfo } from './DatabaseClient';
 
-export function SplashComponent({navigation}) {
-    let name = Cache.get('username');
-    console.log(name);
-    return (
-        <KeyboardAvoidingView style={styles.container}>
-            <StatusBar barStyle="light-content"/>
 
-            <View style={styles.header}>
-                <Animatable.Image
-                    animation="bounceIn"
-                    duration={1500}
-                    source={require('./assets/logo.png')}
-                    style={styles.logo}
-                />
-                <Text style={styles.account}>{name}</Text>
-            </View>
-
-            <Animatable.View style={styles.footer} animation="bounceInUp" duration={1000}>
-                {/* <TouchableOpacity
-                    onPress={() => navigation.navigate("AccountScreen", {account: {name}})}
-                    style={styles.btnLogin}
-                >
-                    <Text style={styles.textLogin}>修改密码</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity> */}
-
-                <TouchableOpacity
-                    onPress={ () => navigation.navigate("StoreScreen", {account: {name}})}
-                    style={styles.btnNewUser}
-                >
-                    <Text style={styles.textLogin}>店铺信息</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ () => navigation.navigate("ConnectScreen", {account: {name}}) }
-                    style={styles.btnLogin}
-                >
-                    <Text style={styles.textLogin}>联系方式</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ () => navigation.navigate("PayScreen") }
-                    style={styles.btnNewUser}
-                >
-                    <Text style={styles.textLogin}>付款信息</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ () => navigation.navigate("CurrentOrderScreen", {account: {name}}) }
-                    style={styles.btnLogin}
-                >
-                    <Text style={styles.textLogin}>订单列表</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ () => navigation.navigate("ItemScreen", {account: {name}}) }
-                    style={styles.btnNewUser}
-                >
-                    <Text style={styles.textLogin}>商品列表</Text>
-                    <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
-                </TouchableOpacity>
-
-            </Animatable.View>
-        </KeyboardAvoidingView>
-    );
+let name = Cache.get('username');
+export class SplashComponent extends React.Component {
+    constructor(props){
+        super(props);
+    // console.log(name);
+        this.state={
+            storeName: name
+        }
+    }
+    // console.log(name);
+    componentDidMount() {
+        GetMerchantInfo(this.state.storeName).then((response)=>{this.successShow(response[0])});
+    }
+    successShow(response) {
+        // console.log(response);
+        this.setState({
+            img_uri: response.imgs
+        });
+    }
+    render(){
+        return (
+            <KeyboardAvoidingView style={styles.container}>
+                <StatusBar barStyle="light-content"/>
+    
+                <View style={styles.header}>
+                    <Animatable.Image
+                        animation="bounceIn"
+                        duration={1500}
+                        // source={require('./assets/logo.png')}
+                        source={{uri:this.state.img_uri}}
+                        style={styles.logo}
+                    />
+                    <Text style={styles.account}>{name}</Text>
+                </View>
+    
+                <Animatable.View style={styles.footer} animation="bounceInUp" duration={1000}>
+                    {/* <TouchableOpacity
+                        onPress={() => navigation.navigate("AccountScreen", {account: {name}})}
+                        style={styles.btnLogin}
+                    >
+                        <Text style={styles.textLogin}>修改密码</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity> */}
+    
+                    <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate("StoreScreen", {account: this.state.storeName})}
+                        style={styles.btnNewUser}
+                    >
+                        <Text style={styles.textLogin}>店铺信息</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate("ConnectScreen", {account: {name}}) }
+                        style={styles.btnLogin}
+                    >
+                        <Text style={styles.textLogin}>联系方式</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate("PayScreen") }
+                        style={styles.btnNewUser}
+                    >
+                        <Text style={styles.textLogin}>付款信息</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate("CurrentOrderScreen", {account: {name}}) }
+                        style={styles.btnLogin}
+                    >
+                        <Text style={styles.textLogin}>订单列表</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate("ItemScreen", {account: {name}}) }
+                        style={styles.btnNewUser}
+                    >
+                        <Text style={styles.textLogin}>商品列表</Text>
+                        <Image style={styles.arrow} source={require('./assets/cell_arrow.png')} />
+                    </TouchableOpacity>
+    
+                </Animatable.View>
+            </KeyboardAvoidingView>
+        );
+    }
 }
+
 
 var styles = StyleSheet.create({
     container: {
@@ -113,7 +135,7 @@ var styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingLeft: 0,
-        backgroundColor: "#2c3e50",
+        backgroundColor: "#6495ED",
         borderRadius: 20,
         flexDirection: 'row',
         
@@ -125,7 +147,7 @@ var styles = StyleSheet.create({
         height: 60,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f1c40f",
+        backgroundColor: "#2c3e50",
         borderRadius: 20,
         flexDirection: 'row',
 

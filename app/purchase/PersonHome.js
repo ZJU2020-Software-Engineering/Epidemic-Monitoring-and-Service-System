@@ -66,8 +66,15 @@ export default class PersonHome extends React.Component{
                     }} //个人中心
                 /> 
                 </View>
-        
-                <Card style={{ marginTop:60, borderRadius: 15, elevation:3}}>
+
+                <WhiteSpace/>
+                <WhiteSpace/>
+               
+                
+                
+                <EntryDisplay navigation={this.props.navigation}/>
+               
+                <Card style={{ marginTop:20, borderRadius: 15, elevation:3}}>
                     <Card.Title title={'浙江大学食堂就餐拥挤指数'}/>
                     <Card.Content>
                         <Time/>
@@ -75,9 +82,9 @@ export default class PersonHome extends React.Component{
                         <NumberDisplay />
                     </Card.Content>
                 </Card>
+                
                 <WhiteSpace/>
-                <WhiteSpace/>
-                <EntryDisplay navigation={this.props.navigation}/>
+                
             </ScrollView>
         );
     }

@@ -6,9 +6,10 @@ import Cache from './Cache';
 
 export default class App extends React.Component {
   CachePrepare(){
-    Cache.set('account','007');
-    Cache.set('user name','tester');
-    Cache.set('address','紫金港云峰7幢');
+    Cache.set('account','yang');
+    Cache.set('user name','yang');
+    Cache.set('address','上海');
+    Cache.set('merchant id', '1');
   }
 
   state = {

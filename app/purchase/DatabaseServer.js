@@ -2,7 +2,12 @@ var mysql = require('mysql');
 var experss = require('express');
 var bodyParser = require('body-parser');
 var dateFormat = require('dateformat');
+var distributor = require('./DatabaseIdDistributor');
 var now = new Date();
+
+var orderDistributor=new distributor.OrderIdDistributor();
+var volunteerDistributor= new distributor.VolunteerIdDistributor();
+// console.log(orderDistributor.getOrderID());
 
 var connection = mysql.createConnection({
     host: '182.92.243.158',
@@ -94,16 +99,18 @@ app.get('/request/tenant/describe', function describeTenant(req, res) {
 //=============tenant============================
 app.get('/request/tenant/selectid', function selectidTenant(req, res) {
     var getObj = req.query;
-    selectSQL = 'SELECT * FROM tenant WHERE id = ?';
+    selectSQL = 'SELECT * FROM tenant WHERE account = ?';
     selectParams = [getObj.id];
     console.log(selectParams);
     connection.query(selectSQL, selectParams, function (err, result) {
         if (err) {
+            console.log(err.message);
             res.json({
                 result: 'N',
                 message: err.message
             });
         } else {
+            // console.log(res);
             res.json({
                 result: 'Y',
                 message: result
@@ -114,7 +121,7 @@ app.get('/request/tenant/selectid', function selectidTenant(req, res) {
 
 app.post('/request/tenant/update', function UpdateTenant(req, res) {
     let getObj = req.body;
-    let updateSQL = "UPDATE tenant SET contact = ?, address = ? " + "WHERE id = ? ";
+    let updateSQL = "UPDATE tenant SET contact = ?, address = ? " + "WHERE account = ? ";
     let updateParams = [
         getObj.contact,
         getObj.address,
@@ -358,7 +365,7 @@ app.get('/request/merchant/select', function selectMerchant(req, res) {
 
 app.get('/request/merchant/list', function listMerchant(req, res) {
     //var getObj = req.query;
-    selectSQL = 'SELECT * FROM merchant';
+    selectSQL = 'SELECT * FROM merchantuserinfo';
     connection.query(selectSQL, function (err, result) {
         if (err) {
             res.json({
@@ -366,6 +373,7 @@ app.get('/request/merchant/list', function listMerchant(req, res) {
                 message: err.message
             });
         } else {
+            console.log(result);
             res.json({
                 result: 'Y',
                 message: result
@@ -377,22 +385,23 @@ app.get('/request/merchant/list', function listMerchant(req, res) {
 //=============================shoppingOrder==============================
 app.post('/request/shoppingOrder/insert', function insertOrder(req, res) {
     var getObj = req.body;
-    var insertSQL = "INSERT INTO shoppingOrder(id, m_id, t_id, item_list, total_price, v_id, stat, payment) " +
-        "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    var insertSQL = "INSERT INTO shoppingOrder(id, m_id, t_id, item_list, expected_time, order_time, total_price, v_id, stat, payment) " +
+        "VALUES(?, ?, ?, ?, date_add(NOW(), interval 2 hour), NOW(), ?, ?, ?, ?)";
     var insertParams = [
-        getObj.id,
+        orderDistributor.getOrderID(),
         getObj.m_id,
         getObj.t_id,
         getObj.item_list,
         getObj.total_price,
-        getObj.v_id,
-        getObj.stat,
+        volunteerDistributor.getVIDforOrder(),
+        "preparing",
         getObj.payment
     ];
     console.log(insertParams);
     connection.query(insertSQL, insertParams, function (err, result) {
         if (err) {
             console.log('Insert Error\n');
+            console.log(err.message);
             res.json({
                 result: 'N',
                 message: err.message
@@ -527,6 +536,7 @@ app.get('/request/shoppingOrder/selectmid', function selectmidOrder(req, res) {
     })
 });
 
+//用来将订单的状态设置为ready，即商家已经准备好了
 app.post('/request/shoppingOrder/updateStat', function UpdateStat(req, res) {
     let getObj = req.body;
     let updateSQL = "UPDATE shoppingOrder SET stat = \'ready\' WHERE id = ? ";
@@ -844,11 +854,32 @@ app.get('/request/merchant/selectMerchantInfo', function getMerchantInfo(req, re
     })
 })
 
+//////////////////////// 按类别获取商家信息
+app.get('/request/merchant/selectMerchantCategory', function getMerchantCategory(req, res) {
+    var getObj = req.query;
+    selectSQL = 'SELECT * FROM merchantuserinfo WHERE category = ?';
+    selectParams = [getObj.category];
+    console.log(selectParams);
+    connection.query(selectSQL, selectParams, function (err, result) {
+        if (err) {
+            res.json({
+                result: 'N',
+                message: err.message
+            });
+        } else {
+            res.json({
+                result: 'Y',
+                message: result
+            });
+        }
+    })
+})
+
 //////////////////////// 获取居民信息
 
 app.get('/request/tenant/selectTenantInfo', function getTenantInfo(req, res) {
     var getObj = req.query;
-    selectSQL = 'SELECT * FROM tenant WHERE id = ?';
+    selectSQL = 'SELECT * FROM tenant WHERE account = ?';
     selectParams = [getObj.t_id];
     console.log(selectParams)
     connection.query(selectSQL, selectParams, function (err, result) {

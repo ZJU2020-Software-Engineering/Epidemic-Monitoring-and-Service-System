@@ -29,14 +29,19 @@ export class StoreDetailComponent extends React.Component{
 
     //didMount函数在组件被挂载的时候执行一次
     componentDidMount(){
-       GetItems(this.props.navigation.state.params.merchantName).then(
+        var merchantID=Cache.get("merchant id");
+        if(this.props.navigation.state.params.merchantName!=merchantID){
+            Cache.clearItems();
+            Cache.set("merchant id",this.props.navigation.state.params.merchantName);
+        }
+        GetItems(this.props.navigation.state.params.merchantName).then(
             (response)=>{
                 let result=response.map((item,index)=>{
                     
                     return {
                         id:item.id,
                         price:item.payment,
-                        pic:'https://user-images.githubusercontent.com/37875411/81286757-28a9d600-9094-11ea-8f39-51c71772b768.jpg'
+                        pic:item.imgs
                     };
                 });
                 //利用setState来更新参数，将从服务器中得到的数据嵌入到state里
@@ -57,7 +62,7 @@ export class StoreDetailComponent extends React.Component{
                                     <Item wrap extra={
                                         <Button onPress={()=>{
                                             Cache.addItem(
-                                                {id:item.id,price:item.price,count:1,pic:'https://user-images.githubusercontent.com/37875411/81286757-28a9d600-9094-11ea-8f39-51c71772b768.jpg'
+                                                {id:item.id,price:item.price,count:1,pic:item.pic
                                             });
                                             console.log(Cache.storage);}
                                         }>
