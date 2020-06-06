@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { ShowNumBlock, ShowNumber, NumberTitle } from './NumberDisplay';
-import { WhiteSpace } from '@ant-design/react-native';
+import { WhiteSpace, Provider } from '@ant-design/react-native';
 import ChinaMap from "./ChinaMap";
 import ChinaDataTable from "./ChinaDataTable";
 import axios from 'axios'
@@ -82,15 +82,17 @@ export default class TotalDisplayChina extends Component {
     homeData[5]=new ShowNumBlock(this.state.CNtotalDeath,'死亡人数',this.state.CNtotalDeath_c,'black');
 
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <NumberTitle />
-        {ShowNumber(homeData)}
-            <WhiteSpace size="lg" />
-            <View style={{ height: 550 }}>
-                <ChinaMap />
-            </View>
+        <Provider>
+          <ScrollView style={{ flex: 1 }}>
+            <NumberTitle />
+            {ShowNumber(homeData)}
+                <WhiteSpace size="lg" />
+                <View style={{ height: 550 }}>
+                    <ChinaMap />
+                </View>
             <ChinaDataTable />
-      </ScrollView>
+          </ScrollView>
+        </Provider>
     );
   }
 }

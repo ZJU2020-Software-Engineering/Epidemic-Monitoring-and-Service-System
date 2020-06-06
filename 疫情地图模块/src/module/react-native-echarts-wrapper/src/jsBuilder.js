@@ -122,7 +122,16 @@ export const getJavascriptSource = props => {
               window.addEventListener('message', function(e) {
                 processMessage(e);
               });
-
+              
+              chart.on('click', function(param) {
+                var obj = {
+                type: 'event_clicked',
+                data: param.data
+                };
+    
+                sendData(JSON.stringify(obj));
+              });
+              
               ${props.additionalCode}
         `
 }

@@ -57,13 +57,43 @@ class ECharts extends Component {
             </script>
             <script src="https://gallery.echartsjs.com/dep/echarts/map/js/china.js"></script>
             <script src="https://gallery.echartsjs.com/dep/echarts/map/js/world.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/anhui.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/hunan.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/aomen.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/beijing.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/chongqing.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/fujian.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/guangdong.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/guizhou.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/yunnan.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/shanxi1.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/gansu.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/qinghai.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/taiwan.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/neimenggu.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/guangxi.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/zhejiang.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/xizang.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/xinjiang.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/tianjin.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/ningxia.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/jilin.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/shanxi.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/liaoning.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/hebei.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/henan.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/shanghai.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/jiangxi.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/sichuan.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/shandong.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/hubei.js"></script>
+            <script src="https://gallery.echartsjs.com/dep/echarts/map/js/province/heilongjiang.js"></script>
         </head>
 
         <body>
             <div id="main">
             </div>
         </body>
-
       </html>`;
   }
 
