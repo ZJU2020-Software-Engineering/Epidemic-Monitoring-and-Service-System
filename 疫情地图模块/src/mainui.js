@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Button, Flex, WhiteSpace, WingBlank, SegmentedControl, ListView } from '@ant-design/react-native';
-import Analysis from './components/dataAnalysis/dataAnalysis'
+import Analysis from './components/dataAnalysis/App'
 import TotalDisplayChina from "./components/TotalDisplayChina";
 import TotalDisplayWorld from "./components/TotalDisplayWorld";
 

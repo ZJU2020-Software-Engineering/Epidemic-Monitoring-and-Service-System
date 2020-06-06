@@ -14,8 +14,8 @@ export default class Map extends React.Component {
     _scroll;
     render(){
       return (
-        <ScrollView ref={(scroll)=>this._scroll = scroll}>
-        <View onLayout={event=>{this.cnlayoutY = event.nativeEvent.layout.y}}>
+        <ScrollView ref={(scroll)=>this._scroll = scroll} >
+        <View onLayout={event=>{this.cnlayoutY = event.nativeEvent.layout.y}} >
             <WingBlank style={{
                 marginTop: 50,   
                 flexDirection: 'row',
@@ -88,7 +88,6 @@ export default class Map extends React.Component {
 
         <View style={{ paddingTop: 10, paddingHorizontal: 10 }}>
             <Analysis/>  
-            {/* <View style={{ backgroundColor: '#ff9c6e', height: 1000 }} /> */}
         </View>
         
         <View style={{ paddingTop: 10, paddingHorizontal: 10,paddingBottom:30 }}>

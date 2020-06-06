@@ -18,6 +18,9 @@ export var server_config = {
         city:'city',//某市
         compare:'compare', //比较
         joinCountry:'joinCountry'
+    },
+    GetAnalysis:{
+        age:'request/map/Age/select'
     }
     
 

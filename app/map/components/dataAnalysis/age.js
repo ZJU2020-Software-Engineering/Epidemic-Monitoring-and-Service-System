@@ -95,8 +95,8 @@ export default class Age extends Component{
 					deathData[i].value=(deathData[i].value/deadSum*100).toFixed(2);
 					cureData[i].value=(cureData[i].value/cureSum*100).toFixed(2);
 				}
-				console.log(deathData);
-				console.log(cureData);
+				// console.log(deathData);
+				// console.log(cureData);
 		    });
 			/*.catch(function (error) {
 			    console.log(error);
