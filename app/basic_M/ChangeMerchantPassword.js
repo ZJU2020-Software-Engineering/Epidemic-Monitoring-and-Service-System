@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, Button,TouchableOpacity } from 'react-native';
 import { CheckBox,Image,Input} from 'react-native-elements';
 var axios = require('axios');
 
-const ip="http://localhost:8000"
+//const ip="http://localhost:8000"
+var ip=require('./ip')
 export default class ChangeMerchantPassword extends React.Component {
   
 
@@ -36,31 +37,51 @@ export default class ChangeMerchantPassword extends React.Component {
         var token={
          'token':this.state.token,
         } 
-     if(this.state.newpassword==this.state.confirmednewpassword){  
-             axios.post(ip+'/request/info/merchantUserInfo/changePassword',data, {headers:token}) 
-             .then((res) => {// alert(JSON.stringify(res.data));
-                    if(res.data.result=='N'){
-                     alert(res.data.message)
-                    }
-                    else if(res.data.result=='D')(
-                     alert(res.data.message)
-                     ) 
-                     else if(res.data.result=='L'){
-                      alert('令牌过期，请重新登录!') 
-                      const { navigate } = this.props.navigation;  
-                      navigate('Home');
-                     } 
-                     else{
-                       alert('修改成功!')
-                       const {navigate,goBack,state} = this.props.navigation;
-                        this.props.navigation.goBack();  
-                     }
-                     })
-             .catch((error) => { console.log(error) });
-         }
-     else{
-       alert('新密码和确认新密码应该相同!')
-     }    
+        if(this.state.newpassword<=0){
+            alert("请检查是否有未填项")
+        }
+        else if(this.state.newpassword==this.state.confirmednewpassword){  
+          axios.post(ip+'/request/info/merchantUserInfo/checkPassword',data, {headers:token}) 
+          .then((res) => { //alert(JSON.stringify(res.data));
+                 if(res.data.result=='N'){
+                  alert(res.data.message)
+                 }
+                 else if(res.data.result=='W')(
+                  alert(res.data.message)
+                  )  
+                  else if(res.data.result=='L'){
+
+                    alert('令牌过期，请重新登录!') 
+                    const { navigate } = this.props.navigation;  
+                    navigate('Home');
+                   }
+                  else{
+                        axios.post(ip+'/request/info/merchantUserInfo/changePassword',data, {headers:token}) 
+                        .then((res) => { //alert(JSON.stringify(res.data));
+                          if(res.data.result=='N'){
+                            alert(res.data.message)
+                          }
+                            else if(res.data.result=='L'){
+                              alert('令牌过期，请重新登录!') 
+                              const { navigate } = this.props.navigation;  
+                              navigate('Home');
+                            }
+                            else{
+                              alert('修改成功!')
+                              const {navigate,goBack,state} = this.props.navigation;
+                              this.props.navigation.goBack();  
+                            }
+                            })
+                          .catch((error) => { console.log(error) });
+                      
+                  }
+                  })
+          .catch((error) => { console.log(error) });
+
+            }
+        else{
+          alert('新密码和确认新密码应该相同!')
+        }    
 
  }
 
@@ -100,8 +121,8 @@ export default class ChangeMerchantPassword extends React.Component {
       <View style={styles.container}>
       
         <Input
-             placeholder="原密码"
-             label='原密码'
+             placeholder="旧密码"
+             label='旧密码'
              //leftIcon={{ type: 'font-awesome', name: 'address-book' }}
              style={styles}
              secureTextEntry={true}  
