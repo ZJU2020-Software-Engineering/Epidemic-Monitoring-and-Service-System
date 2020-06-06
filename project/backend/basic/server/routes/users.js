@@ -70,8 +70,8 @@ router.post('/personalUserInfo/insert', function insertPersonalUserInfo(req, res
     connection.query(insertSQL, insertParams, function (err, result) {
             if (err) {
                console.log('Insert Error\n');
-              console.log(err);
-               res.json({ result: 'N', message : err.message });
+               console.log(err);
+               res.json({ result: 'N', message : "用戶名已存在" });
             }
             else {
                console.log('Insert Success\n');
@@ -139,8 +139,8 @@ router.post('/merchantUserInfo/insert', function insertMerchantUserInfo(req, res
     connection.query(insertSQL, insertParams, function (err, result) {
             if (err) {
                console.log('Insert Error\n');
-              // console.log(err);
-               res.json({ result: 'N', message : err.message });
+               console.log(err);
+              res.json({ result: 'N', message : "用戶名已存在" });
             }
             else {
                console.log('Insert Success\n');
