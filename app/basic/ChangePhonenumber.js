@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Button,TouchableOpacity } from 'react-native';
 //import ViewPager from '@react-native-community/viewpager';
 import { CheckBox,Image,Input} from 'react-native-elements';
 var axios = require('axios');
-const ip="http://localhost:8000"
+//const ip="http://localhost:8000"
+var ip=require('./ip')
 export default class ChangePhonenumber extends React.Component {
   
 
@@ -28,6 +29,7 @@ export default class ChangePhonenumber extends React.Component {
         var token={
           'token':this.state.token,
          } 
+      if(this.state.phoneNumber.length>0){
      axios.post(ip+'/request/info/personalUserInfo/update', data,{headers:token}) 
      .then((res) => { //alert(JSON.stringify(res.data));
          if(res.data.result=='Y'){
@@ -46,6 +48,10 @@ export default class ChangePhonenumber extends React.Component {
             alert('修改失败!') 
              })
      .catch((error) => { console.log(error) });
+            }
+            else{
+              alert('请检查是否有未填项')
+            }
  } 
 
   render() {
