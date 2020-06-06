@@ -7,27 +7,11 @@ import Rose from './roseChart.js';
 import Worldline from './line.js';
 import WorldBar from './bar.js';
 import Age from './age.js';
-import {Sexdata,SexrenderCharts} from './sex.js';
-
-// export default class DataAnalysis extends React.Component{
-// 	render(){
-// 		return Analysis();
-// 	}
-// }
-export default function Analysis() {
+import Sex from './sex.js';
+export var axios = require('axios');
+ 
+export default function analysis() {
    
-  const initialLayout = { width: Dimensions.get('window').width };
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState(_.map(Sexdata, country => ({
-      key: country.countryKey,
-      title: country.countryName,
-  })));
-  
-  const renderScene = SceneMap(_.reduce(Sexdata, function(map, country) {
-      map[country.countryKey] = () => SexrenderCharts(country);
-      return map;
-  }, {}));
-  
   return (
      <ScrollView style={styles.SrollContainer}>
       	        <View style={{height: 50, flexDirection: 'row'}}>
@@ -36,20 +20,20 @@ export default function Analysis() {
       	                <Text style={{fontSize:20, fontWeight: 'bold',textAlignVertical:'center'}}> 全国无新增确诊天数</Text>
       	        </View>
       			<Rose />
+								
+				<View style={{height: 50,flexDirection: 'row',marginTop:0}}>
+				        <View style={{width: 15, height: 50, backgroundColor: '#FF8C00'}} />
+						<View style={{width: 20, height: 50, backgroundColor: "white"}} />
+				        <Text style={{fontSize:20, fontWeight: 'bold',textAlignVertical:'center'}}>新增确诊人数TOP10国家</Text>
+				</View>
+      			<WorldBar />
 				
 				<View style={styles.departline}>
 				        <View style={{width: 15, height: 50, backgroundColor: '#FF8C00'}} />
 						<View style={{width: 20, height: 50, backgroundColor: "white"}} />
 				        <Text style={{fontSize:20, fontWeight: 'bold',textAlignVertical:'center'}}>各国新增确诊人数</Text>
 				</View>
-      			<Worldline />
-				
-				<View style={styles.departline}>
-				        <View style={{width: 15, height: 50, backgroundColor: '#FF8C00'}} />
-						<View style={{width: 20, height: 50, backgroundColor: "white"}} />
-				        <Text style={{fontSize:20, fontWeight: 'bold',textAlignVertical:'center'}}>新增确诊人数TOP10国家</Text>
-				</View>
-      			<WorldBar />
+				<Worldline />
 				
       			<View style={styles.departline}>
       			        <View style={{width: 15, height: 50, backgroundColor: '#FF8C00'}} />
@@ -63,25 +47,8 @@ export default function Analysis() {
 						<View style={{width: 20, height: 50, backgroundColor: "white"}} />
 				        <Text style={{fontSize:20, fontWeight: 'bold',textAlignVertical:'center'}}>新冠肺炎病例性别比</Text>
 				</View>
-				<View style={{height:300}}>
-				   <TabView
-				       navigationState={{ index, routes }}
-				       renderScene={renderScene}
-				       onIndexChange={setIndex}
-				       initialLayout={initialLayout}					
-                       tabBarPosition='bottom'
-					   renderTabBar={props =>
-					      <TabBar
-					            {...props}
-					            style={{ backgroundColor: 'gray' }}
-                
-					                            //activeColor={'#4a79e0'}
-					                            //inactiveColor={'#666666'}
-					
-					      />
-				       }
-				   />
-				</View>
+				<Sex />
+				
       </ScrollView>
 	  
   );
