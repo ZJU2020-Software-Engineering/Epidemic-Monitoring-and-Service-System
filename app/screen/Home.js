@@ -4,7 +4,8 @@ import { StyleSheet, View,TouchableOpacity } from 'react-native';
 import { CheckBox,Image,Input,Text,Button} from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
 var axios = require('axios');
-const ip="http://localhost:8000"
+//const ip="http://localhost:8000"
+var ip=require('./ip')
 export default class Home extends React.Component {
 
   
@@ -30,16 +31,18 @@ export default class Home extends React.Component {
         axios.post(ip+'/users/personalUserInfo/login',data) 
         .then((res) => { //alert(JSON.stringify(res.data));
             if(res.data.result=='Y'){
-              alert("登陆成功")
+              //alert("登陆成功")
               this.setState({token:res.data.token})
               this.props.navigation.navigate( 'Tarbar',{username:this.state.username,token:res.data.token})
               //this.props.navigation.navigate( 'Profile',{username:this.state.username})
              }
             else if(res.data.result=='W'){
-              alert(res.data.message)
+              //alert(res.data.message)
+              alert("密码错误！")
             }
             else if(res.data.result=='No'){
-                alert(res.data.message)
+                //alert(res.data.message)
+                alert("用户不存在")
                }
             else{
               alert(res.data.message)
@@ -55,7 +58,7 @@ export default class Home extends React.Component {
       axios.post(ip+'/users/merchantuserInfo/login',data) 
       .then((res) => { //alert(JSON.stringify(res.data));
           if(res.data.result=='Y'){
-            alert("登录成功")
+            //alert("登录成功")
             this.props.navigation.navigate( 'TarbarMerchant',{username:this.state.username,token:res.data.token})
             //this.props.navigation.navigate( 'Profile',{username:this.state.username})
            }
@@ -126,8 +129,9 @@ export default class Home extends React.Component {
     return (
       <View style={styles.container}> 
        <View style={styles.columncontainer1}>  
-         <Text  style={ {fontSize:60}}> 欢迎!</Text>
-         <Text  style={ {fontSize:20}}> 疫情监测与服务系统</Text>
+         
+         <Text  style={ {fontSize:40}}> 疫情监测与服务系统</Text>
+         <Text  style={ {fontSize:20}}> Epidemic Monitoring and Service System</Text>
         </View>
 
           <View style={styles.columncontainer2}>
