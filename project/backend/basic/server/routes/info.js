@@ -4,10 +4,6 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var secretkey = 'secretkey';
 
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
 
 var http = require('http');
 var mysql = require('mysql');
@@ -138,29 +134,33 @@ router.post('/personalUserInfo/select', function selectPersonalUserInfo(req, res
             }
         })
 })
-router.post('/personalUserInfo/changePassword', function updatePersonalUserInfo(req, res) {
+router.post('/personalUserInfo/checkPassword', function updatePersonalUserInfo(req, res) {
     var getObj = req.body;
-    //var changevalue=getObj.changevalue;
-
     var selectSQL = 'SELECT *  FROM personalUserInfo WHERE username = ?';
     var selectParams = [getObj.username];
     connection.query(selectSQL, selectParams, function (err, result) {
             if (err) {
                 console.log('Select Error\n');
+                console.log(' err.message')
                 res.json({ result: 'N', message : err.message });
-                return
+                
             }
             else {
                 if(bcrypt.compareSync(getObj.oldpassword, result[0].password)){
-                    console.log("oldpassword = password")
+                    res.json({ result: 'Y', message : "旧密码正确"});
                 }
                 else{
-                    res.json({ result: 'D', message : "newpassword and confirmednewpassword should be the same!" });
-                    return
+                    res.json({ result: 'W', message : "旧密码输入错误" });
+                   
                 }
             }
         })   
 
+   
+})
+router.post('/personalUserInfo/changePassword', function updatePersonalUserInfo(req, res) {
+    var getObj = req.body;
+    
    updateSQL = 'UPDATE personalUserInfo SET password = ?, updateTime = ? WHERE username = ?';
    var nowTime = dateFormat(now, "isoDate");
    const hash = bcrypt.hashSync(getObj.newpassword, 5);
@@ -181,13 +181,13 @@ router.post('/personalUserInfo/changePassword', function updatePersonalUserInfo(
     connection.query(updateSQL, updateParams, function (err, result) {
             if (err) {
                 console.log('Update Error\n');
-                res.json({ result: 'N', message : err.message });
+                res.json({ result: 'N', message : "修改失败" });
                 console.log(err.message)
             }
             else {
                 //console.log(updateSQL)
                 console.log('Update Success\n');
-                res.json({ result: 'Y', message : 'Success' });
+                res.json({ result: 'Y', message : '修改成功' });
                 console.log(getObj.username)
             }
         })
@@ -263,29 +263,35 @@ router.post('/merchantUserInfo/select', function selectMerchantUserInfo(req, res
             }
         })
 })
-
-router.post('/merchantUserInfo/changePassword', function updatePersonalUserInfo(req, res) {
+router.post('/merchantUserInfo/checkPassword', function updatePersonalUserInfo(req, res) {
     var getObj = req.body;
     //var changevalue=getObj.changevalue;
 
     var selectSQL = 'SELECT *  FROM merchantUserInfo WHERE username = ?';
     var selectParams = [getObj.username];
     connection.query(selectSQL, selectParams, function (err, result) {
-            if (err) {
-                console.log('Select Error\n');
-                res.json({ result: 'N', message : err.message });
-                return
+        if (err) {
+            console.log('Select Error\n');
+            res.json({ result: 'N', message : err.message });
+            
+        }
+        else {
+            if(bcrypt.compareSync(getObj.oldpassword, result[0].password)){
+                res.json({ result: 'Y', message : "旧密码正确"});
             }
-            else {
-                if(bcrypt.compareSync(getObj.oldpassword, result[0].password)){
-                    console.log("oldpassword = password")
-                }
-                else{
-                    res.json({ result: 'D', message : "newpassword and confirmednewpassword should be the same!" });
-                    return
-                }
+            else{
+                res.json({ result: 'W', message : "旧密码输入错误" });
+               
             }
-        })   
+        }
+    })   
+
+   
+})
+
+router.post('/merchantUserInfo/changePassword', function updatePersonalUserInfo(req, res) {
+    var getObj = req.body;
+    //var changevalue=getObj.changevalue;
 
    updateSQL = 'UPDATE merchantUserInfo SET password = ? WHERE username = ?';
    //var nowTime = dateFormat(now, "isoDate");
@@ -305,18 +311,18 @@ router.post('/merchantUserInfo/changePassword', function updatePersonalUserInfo(
     ];
     console.log(getObj.attr);
     connection.query(updateSQL, updateParams, function (err, result) {
-            if (err) {
-                console.log('Update Error\n');
-                res.json({ result: 'N', message : err.message });
-                console.log(err.message)
-            }
-            else {
-                //console.log(updateSQL)
-                console.log('Update Success\n');
-                res.json({ result: 'Y', message : 'Success' });
-                console.log(getObj.username)
-            }
-        })
+        if (err) {
+            console.log('Update Error\n');
+            res.json({ result: 'N', message : "修改失败" });
+            console.log(err.message)
+        }
+        else {
+            //console.log(updateSQL)
+            console.log('Update Success\n');
+            res.json({ result: 'Y', message : '修改成功' });
+            console.log(getObj.username)
+        }
+    })
 })
 
 module.exports = router;
