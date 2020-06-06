@@ -412,33 +412,37 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
     }
     message = [];
     if( getObj.Return != "joinCity" && getObj.Return != "joinProvince"){
-        for( i = 0 ; i < 3 ; i ++ ){
-            connection.query(sltSql[i], sltSqlParams, function (err,result) {
-                console.log(result);
-                if (err) {
-                    console.log('Select Error ', err.message);
-                    connection.end();
-                    return res.json(
-                        {
-                            result: 'N', message: err.message
-                        });
-                }
-                else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return =="singleCity") message.push(result[0]);
-                    else message.push(result);
-                }
-            })
-        }
-        setTimeout(()=>{
+        promise = new Promise(function(resolve,reject){
+            message = [];
+            i = 0;
+            for( i = 0 ; i < 3 ; i ++ ){
+                connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                    if (err) {
+                        console.log('Select Error ', err.message);
+                        return res.json(
+                            {
+                                result: 'N', message: err.message
+                            });
+                    }
+                    else {
+                        if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                        else message.push(result);
+                        if( message.length == 3 )resolve(message)
+                    }
+                })
+            }
+        })
+        promise.then((m)=>{
+            console.log(m);
             return res.json({
                 result: 'Y', 
                 message:{
-                    newAddtion:message[0],
-                    total:message[1],
-                    extance:message[2]
+                    newAddtion:m[0],
+                    total:m[1],
+                    extance:m[2]
                 }
             });
-        },300)
+        })
     }
     else{
         connection.query(sltSql, sltSqlParams, function (err,result) {
@@ -504,34 +508,37 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
 		    var sltSqlParams = getObj.Countries;
     }
     message = [];
-    if( getObj.Return != "joinCountry" && getObj.Return != "topTen"&& getObj.Return != "topSeries" ){
-        for( i = 0 ; i < 3 ; i ++ ){
-            connection.query(sltSql[i], sltSqlParams, function (err,result) {
-                console.log(result);
-                if (err) {
-                    console.log('Select Error ', err.message);
-                    connection.end();
-                    return res.json(
-                        {
-                            result: 'N', message: err.message
-                        });
-                }
-                else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return == "singleCountry")message.push(result[0]);
-                    else message.push(result);
-                }
-            })
-        }
-        setTimeout(()=>{
+    if( getObj.Return != "joinCountry" && getObj.Return != "topTen" && getObj.Return != "topSeries" ){
+        promise = new Promise(function(resolve,reject){
+            i = 0;
+            for( i = 0 ; i < 3 ; i ++ ){
+                connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                    if (err) {
+                        console.log('Select Error ', err.message);
+                        return res.json(
+                            {
+                                result: 'N', message: err.message
+                            });
+                    }
+                    else {
+                        if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                        else message.push(result);
+                        if( message.length == 3 )resolve(message)
+                    }
+                })
+            }
+        })
+        promise.then((m)=>{
+            console.log(m);
             return res.json({
                 result: 'Y', 
                 message:{
-                    newAddtion:message[0],
-                    total:message[1],
-                    extance:message[2]
+                    newAddtion:m[0],
+                    total:m[1],
+                    extance:m[2]
                 }
             });
-        },500)
+        })
     }
     else{
         connection.query(sltSql, sltSqlParams, function (err,result) {
