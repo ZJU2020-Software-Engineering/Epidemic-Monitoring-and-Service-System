@@ -20,8 +20,8 @@ export default class Help extends React.Component {
     return (
       
       <View style={styles.container}>
-        <Text>欢迎!</Text> 
-        <Text>{this.state.username}</Text>     
+        <Text>有问题欢迎将问题发到以下信箱</Text> 
+        <Text>2020@zju.edu.cn</Text>     
       </View>
     );
   }
