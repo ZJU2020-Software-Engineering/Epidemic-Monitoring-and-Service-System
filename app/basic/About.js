@@ -20,8 +20,10 @@ export default class About extends React.Component {
     return (
       
       <View style={styles.container}>
-        <Text>欢迎!</Text> 
-        <Text>{this.state.username}</Text>     
+        <Text>Epidemic Monitoring and Service System (EMSS)  </Text>   
+        <Text> developed by Zju Software Engineering 2020 class </Text>   
+        <Text>疫情监测和服务系统</Text>   
+        <Text>由浙江大学2020学年软件工程课程同学开发</Text>    
       </View>
     );
   }
