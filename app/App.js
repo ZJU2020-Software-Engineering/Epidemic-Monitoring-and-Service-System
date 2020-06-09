@@ -9,6 +9,7 @@ import { createStackNavigator} from 'react-navigation-stack';
 import basicNavigator_M from './basic_M/basicNavigator_M'
 import basicNavigator from './basic/basicNavigator'
 import Map from './map/map'
+import forum from './forum/forumStack'
 
 const InfoStack = createStackNavigator( {
      Home: {
@@ -43,9 +44,8 @@ const InfoStack = createStackNavigator( {
     InfoStack,
     basicNavigator,
     basicNavigator_M,
-    Map
-
-    
+    Map,
+    forum
   },
   {
     initialRouteName: 'InfoStack'
