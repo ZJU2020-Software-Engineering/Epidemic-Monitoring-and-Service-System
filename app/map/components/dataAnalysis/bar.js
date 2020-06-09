@@ -58,17 +58,17 @@ export default class WorldBar extends Component {
     var today=dateTansfer(t);
 	//console.log(today);
 	axios
-        //  .post("http://192.168.1.7:8081/request/map/foreignMap/select",{"Return":"topTen","Data":today})
-        .post(`${server_config.backend_url}/${server_config.GetWorld.url}`,{"Return":`${server_config.GetWorld.top10}`,"Data":today})
+         .post(`${server_config.backend_url}/${server_config.GetWorld.url}`,{"Return":"topTen","Data":today})
          .then((res)=>{
             var data=res.data.message;
-    		console.log(data);
-    		for(var i=0;i<data.length;i++){
-				countries[i]=data[i].country;
-				num[i]=data[i].confirmedNumber;
-			}
-			// console.log(num);
-			console.log(countries);
+            // console.log('topten')
+            // console.log(data);
+            for(var i=0;i<data.length;i++){
+              countries[i]=data[i].country;
+              num[i]=data[i].confirmedNumber;
+		      	}
+            // console.log(num);
+            // console.log(countries);
         });
 	
 	return (

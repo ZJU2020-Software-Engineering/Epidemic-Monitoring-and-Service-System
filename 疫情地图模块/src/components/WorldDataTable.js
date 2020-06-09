@@ -15,7 +15,7 @@ var total_cure = new Array();
 var total_die = new Array();
 // get from back end
 var provinces_length = 215;
-var curDate = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000), 'yyyy-MM-dd');
+var curDate = time.formatDate(new Date(new Date().getTime()-6*60*60*1000), 'yyyy-MM-dd');
 var provinces = new Array();
 
 // for table view
@@ -36,7 +36,7 @@ export default class ChinaDataTable extends React.Component {
     .post(`${server_config.backend_url}/${server_config.GetWorld.url}`,{'Return':'joinCountry','Data':curDate}) 
     .then((res)=>{  
         if(res.data.result=='Y'){   
-          console.log('已更新世界各国信息')
+          // console.log('已更新世界各国信息')
             //console.log(res.data.message)  
             for (var i=0; i<res.data.message.length; i++) {
                 provinces[i] = res.data.message[i].country;

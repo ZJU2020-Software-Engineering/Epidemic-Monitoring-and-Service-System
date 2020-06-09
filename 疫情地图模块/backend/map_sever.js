@@ -389,8 +389,8 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
         case "compare":
             var sltSql = ['SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapGrandTotal  WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber, today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM chinaMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? and province = city) yesterday'];
             var curDate = new Date();
-            var today = time.formatDate(curDate, 'yyyy-MM-dd');
-            var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000), 'yyyy-MM-dd');
+            var today = time.formatDate(new Date(curDate.getTime()-6*60*60*1000), 'yyyy-MM-dd');
+            var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000-6*60*60*1000), 'yyyy-MM-dd');
             var sltSqlParams = [today,yesterday];
             break;
         case "joinCity":
@@ -412,37 +412,53 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
     }
     message = [];
     if( getObj.Return != "joinCity" && getObj.Return != "joinProvince"){
-        for( i = 0 ; i < 3 ; i ++ ){
-            connection.query(sltSql[i], sltSqlParams, function (err,result) {
-                console.log(result);
-                if (err) {
-                    console.log('Select Error ', err.message);
-                    connection.end();
-                    return res.json(
-                        {
-                            result: 'N', message: err.message
-                        });
-                }
-                else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return =="singleCity") message.push(result[0]);
-                    else message.push(result);
-                }
-            })
-        }
-        setTimeout(()=>{
+        promise = new Promise(function(resolve,reject){
+            message = [];
+            i = 0;
+            // console.log(sltSql)
+            // console.log(sltSqlParams)
+            // console.log(getObj.Return)
+            // console.log("sum data:")
+            for( i = 0 ; i < 3 ; i ++ ){
+                connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                    if (err) {
+                        console.log('Select Error ', err.message);
+                        return res.json(
+                            {
+                                result: 'N', message: err.message
+                            });
+                    }
+                    else {
+                        if( getObj.Return == 'sum' || getObj.Return == 'compare' ){
+                            message.push(result[0]);
+                            // console.log(message)
+                        }
+                        else message.push(result);
+                        if( message.length == 3 ){
+                            resolve(message);
+                            // console.log("国内数据")
+                            // console.log(message)
+                        }
+                        
+                    }
+                })
+            }
+        })
+        promise.then((m)=>{
+            // console.log(m);
             return res.json({
                 result: 'Y', 
                 message:{
-                    newAddtion:message[0],
-                    total:message[1],
-                    extance:message[2]
+                    newAddtion:m[0],
+                    total:m[1],
+                    extance:m[2]
                 }
             });
-        },300)
+        })
     }
     else{
         connection.query(sltSql, sltSqlParams, function (err,result) {
-            console.log(result);
+            // console.log(result);
             if (err) {
                 console.log('Select Error ', err.message);
                 connection.end();
@@ -452,6 +468,7 @@ app.post('/request/map/chinaMap/select', function selectChina(req, res) {
                     });
             }
             else{
+                // console.log(result)
                 return res.json({
                     result: 'Y', 
                     message: result
@@ -470,7 +487,7 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
             'SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll,  SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?',
             'SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?'];
             var sltSqlParams = [getObj.Data];
-            console.log(sltSqlParams);
+            // console.log(sltSqlParams);
             break;
         case "country":
             var sltSql = ['SELECT country, confirmedNumber, deathToll,  cureNumber, suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ? ',
@@ -487,8 +504,8 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
         case "compare":
             var sltSql = ['SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapNewAddtion WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber,  today.deathToll - yesterday.deathToll AS deathToll,  today.cureNumber - yesterday.cureNumber AS cureNumber,  today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal  WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(deathToll) AS deathToll, SUM(cureNumber) AS cureNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapGrandTotal WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday','SELECT  today.confirmedNumber - yesterday.confirmedNumber AS confirmedNumber, today.suspectedNumber - yesterday.suspectedNumber AS suspectedNumber FROM (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) today, (SELECT SUM(confirmedNumber) AS confirmedNumber, SUM(suspectedNumber) AS suspectedNumber FROM foreignMapExisting WHERE DATE_FORMAT(date,"%Y-%m-%d") = ?) yesterday'];
             var curDate = new Date();
-            var today = time.formatDate(curDate, 'yyyy-MM-dd');
-            var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000), 'yyyy-MM-dd');
+            var today = time.formatDate(new Date(curDate.getTime()- 6*60*60*1000), 'yyyy-MM-dd');
+            var yesterday = time.formatDate(new Date(curDate.getTime()-24*60*60*1000-6*60*60*1000), 'yyyy-MM-dd');
             var sltSqlParams = [today,yesterday];
             break;
         case "joinCountry":
@@ -499,43 +516,51 @@ app.post('/request/map/foreignMap/select', function selectForeign(req,res){
             var sltSql = 'Select country, confirmedNumber from foreignMapNewAddtion where DATE_FORMAT(date,"%Y-%m-%d") = ? order by -confirmedNumber limit 10';
             var sltSqlParams = [getObj.Data];
 			break;
-		case "topSeries":
-		    var sltSql = 'Select date, country, confirmedNumber from foreignMapNewAddtion where country= ? or country= ? or country=? or country=? or country=? order by date';
-		    var sltSqlParams = getObj.Countries;
+        case "topSeries":
+            var sltSql = 'Select DATE_FORMAT(date,"%Y-%m-%d") as date, country, confirmedNumber from (Select distinct country from foreignMapExisting where DATE_FORMAT(date,"%Y-%m-%d") = "2020-06-04" order by -confirmedNumber limit 5) as a natural join foreignMapNewAddtion as b where a.country = b.country order by country,date;';
+            var sltSqlParams = [getObj.Data];
     }
     message = [];
-    if( getObj.Return != "joinCountry" && getObj.Return != "topTen"&& getObj.Return != "topSeries" ){
-        for( i = 0 ; i < 3 ; i ++ ){
-            connection.query(sltSql[i], sltSqlParams, function (err,result) {
-                console.log(result);
-                if (err) {
-                    console.log('Select Error ', err.message);
-                    connection.end();
-                    return res.json(
-                        {
-                            result: 'N', message: err.message
-                        });
-                }
-                else {
-                    if( getObj.Return == 'sum' || getObj.Return == 'compare'|| getObj.Return == "singleCountry")message.push(result[0]);
-                    else message.push(result);
-                }
+    if( getObj.Return != "joinCountry" && getObj.Return != "topTen" && getObj.Return != "topSeries" ){
+        promise = new Promise(function(resolve,reject){
+            i = 0;
+            for( i = 0 ; i < 3 ; i ++ ){
+                connection.query(sltSql[i], sltSqlParams, function (err,result) {
+                    if (err) {
+                        console.log('Select Error ', err.message);
+                        return res.json(
+                            {
+                                result: 'N', message: err.message
+                            });
+                    }
+                    else {
+                        if( getObj.Return == 'sum' || getObj.Return == 'compare' )message.push(result[0]);
+                        else message.push(result);
+                        if( message.length == 3 )resolve(message)
+                    }
+                })
+            }
             })
-        }
-        setTimeout(()=>{
+        promise.then((m)=>{
+            // console.log(m);
             return res.json({
                 result: 'Y', 
                 message:{
-                    newAddtion:message[0],
-                    total:message[1],
-                    extance:message[2]
+                    newAddtion:m[0],
+                    total:m[1],
+                    extance:m[2]
                 }
             });
-        },500)
+        })
     }
     else{
         connection.query(sltSql, sltSqlParams, function (err,result) {
-            console.log(result);
+            if(getObj.Return=='topTen'){
+                console.log('topten:')
+                console.log(result);
+
+            }
+                
             if (err) {
                 console.log('Select Error ', err.message);
                 connection.end();
@@ -569,7 +594,7 @@ app.post('/request/map/Age/select', function selectAge(req, res) {
                 return;
             }
             else {
-                console.log(result);
+                // console.log(result);
                 if (result){
                 	res.json(
                 	    {
@@ -602,7 +627,7 @@ app.post('/request/map/Gender/select', function selectGender(req, res) {
                 return;
             }
             else {
-                console.log(result);
+                // console.log(result);
 				if (result){
                 	res.json(
                 	    {

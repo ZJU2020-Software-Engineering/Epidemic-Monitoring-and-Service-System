@@ -4,8 +4,12 @@ import { StyleSheet, View,TouchableOpacity } from 'react-native';
 import { CheckBox,Image,Input,Text,Button} from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
 var axios = require('axios');
+<<<<<<< Updated upstream
 //const ip="http://localhost:8000"
 var ip=require('./ip')
+=======
+const ip="http://192.168.31.78:8000"
+>>>>>>> Stashed changes
 export default class Home extends React.Component {
 
   

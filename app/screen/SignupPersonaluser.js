@@ -3,7 +3,12 @@ import { StyleSheet, Text, View,ScrollView,TouchableOpacity , Picker } from 'rea
 
 import { Input,CheckBox,Button } from 'react-native-elements';
 var axios = require('axios');
+<<<<<<< Updated upstream
 var ip=require('./ip')
+=======
+const ip="http://192.168.31.78:8000"
+
+>>>>>>> Stashed changes
 
 export default class SignupPersonaluser extends React.Component {
 

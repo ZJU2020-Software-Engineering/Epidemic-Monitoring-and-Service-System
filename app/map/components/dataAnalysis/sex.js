@@ -81,7 +81,7 @@ export default class Sex extends Component{
 	
 	render(){		
 		axios
-		     .post("http://192.168.1.7:8081/request/map/Gender/select",{})
+		     .post(`${server_config.backend_url}/${server_config.GetAnalysis.gender}`,{})
 		     .then((res)=>{
 		        var data=res.data.message[0];
 				//console.log(data);
@@ -89,8 +89,8 @@ export default class Sex extends Component{
 				confirmed[1].value=100-confirmed[0].value;
 				deadth[0].value=data.deathRatio;
 				deadth[1].value=100-deadth[0].value;
-				console.log(confirmed);
-				console.log(deadth);
+				// console.log(confirmed);
+				// console.log(deadth);
 		    });
 
 			

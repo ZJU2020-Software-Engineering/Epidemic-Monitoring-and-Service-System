@@ -3,8 +3,13 @@ import { StyleSheet, Text, View, Button,ScrollView,TouchableOpacity  , Picker} f
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input,CheckBox } from 'react-native-elements';
 var axios = require('axios');
+<<<<<<< Updated upstream
 //const ip="http://localhost:8000"
 var ip=require('./ip')
+=======
+const ip="http://192.168.31.78:8000"
+
+>>>>>>> Stashed changes
 export default class Feed extends React.Component {
 
    constructor(props){

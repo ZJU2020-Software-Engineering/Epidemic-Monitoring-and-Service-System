@@ -1,5 +1,5 @@
 export var server_config = {
-    backend_url: 'http://192.168.43.226:8081',
+    backend_url: 'http://192.168.31.78:8081',
     GetChina:{
         // 获取国内数据
         url:'request/map/chinaMap/select',
@@ -18,7 +18,12 @@ export var server_config = {
         city:'city',//某市
         compare:'compare', //比较
         joinCountry:'joinCountry'
+    },
+    GetAnalysis:{
+        //数据分析的接口
+        age:'request/map/Age/select',
+        gender:'request/map/Gender/select',
+        line:'topSeries'
     }
-    
 
 }

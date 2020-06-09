@@ -1,5 +1,6 @@
 export var year;
 export default function dateTansfer(date){
+	date = new Date(date.getTime())
 	var s="";
 	year=date.getFullYear();
 	s+=year+'-';

@@ -8,6 +8,7 @@ import Worldline from './line.js';
 import WorldBar from './bar.js';
 import Age from './age.js';
 import Sex from './sex.js';
+
 export var axios = require('axios');
  
 export default function analysis() {

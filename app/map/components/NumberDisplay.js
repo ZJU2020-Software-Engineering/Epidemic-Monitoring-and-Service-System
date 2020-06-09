@@ -29,8 +29,8 @@ export class ShowNumBlock{
       <Tag>{this.title}</Tag>
       <Flex> 
         <Text style={{color : '#828282'}}>昨日</Text>
-        {/* <Text style={{color : this.color}}>{this.sign()}{this.increasement}</Text> */}
-        <Text style={{color : this.color}}>{this.increasement}</Text>
+        <Text style={{color : this.color}}>{this.sign()}{this.increasement}</Text>
+        {/* <Text style={{color : this.color}}>{this.increasement}</Text> */}
       </Flex>
     </View>
     );
@@ -74,6 +74,38 @@ export function ShowNumber(numbers) {
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
               {numbers[5].render()}
             </Flex.Item>
+          </Flex>
+        </WingBlank>
+      </View>
+  );
+}
+export function ShowNumber_world(numbers) {
+  return (
+      <View>
+        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
+          <Flex>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[0].render()}
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[1].render()}
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[2].render()}
+            </Flex.Item>
+          </Flex>
+        </WingBlank>
+        <WingBlank style={{ marginTop: 10, marginBottom: 20 }}>
+          <Flex>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[3].render()}
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[4].render()}
+            </Flex.Item>
+            {/* <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              {numbers[5].render()}
+            </Flex.Item> */}
           </Flex>
         </WingBlank>
       </View>

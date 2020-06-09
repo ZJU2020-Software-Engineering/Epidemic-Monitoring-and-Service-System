@@ -2,7 +2,7 @@ import React ,{ Component } from 'react';
 import { View } from 'react-native';
 import { ECharts } from "react-native-echarts-wrapper";
 import {axios} from './App.js'
-
+import {server_config} from '../../config'
 
 var deathData=[];
 var cureData=[];
@@ -78,7 +78,7 @@ export default class Age extends Component{
 	};
 	render(){		
 		axios
-		     .post("http://192.168.1.7:8081/request/map/Age/select",{})
+		     .post(`${server_config.backend_url}/${server_config.GetAnalysis.age}`,{})
 		     .then((res)=>{
 		        var data=res.data.message;
 				var deadSum=0;
@@ -94,8 +94,8 @@ export default class Age extends Component{
 					deathData[i].value=(deathData[i].value/deadSum*100).toFixed(2);
 					cureData[i].value=(cureData[i].value/cureSum*100).toFixed(2);
 				}
-				console.log(deathData);
-				console.log(cureData);
+				// console.log(deathData);
+				// console.log(cureData);
 		    });
 			/*.catch(function (error) {
 			    console.log(error);

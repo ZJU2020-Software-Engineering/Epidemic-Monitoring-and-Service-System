@@ -78,8 +78,7 @@ export default class Age extends Component{
 	};
 	render(){		
 		axios
-			//  .post("http://192.168.1.7:8081/request/map/Age/select",{})
-			.post(`${server_config.backend_url}/${server_config.GetAnalysis.age}`,{})
+		     .post(`${server_config.backend_url}/${server_config.GetAnalysis.age}`,{})
 		     .then((res)=>{
 		        var data=res.data.message;
 				var deadSum=0;

@@ -30,15 +30,15 @@ export default class TotalDisplayChina extends Component {
     } 
 
     var yesterday = time.formatDate(new Date(new Date().getTime() - 24*6*60*60*1000), 'yyyy-MM-dd');
-    var today = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000), 'yyyy-MM-dd');
+    var today = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000 - 60*60*1000*24*4), 'yyyy-MM-dd');
     
       axios
       .post(`${server_config.backend_url}/${server_config.GetChina.url}`,{'Return':`${server_config.GetChina.sum}`,'Data':today})
       .then((res)=>{
         if(res.data.result=='Y'){
           result = res.data.message
-          console.log('已更新今日国内总计')
-          console.log(res.data.message)
+          // console.log('已更新今日国内总计')
+          // console.log(res.data.message)
           this.setState({
             'CNtotalDiagnosis':result.total.confirmedNumber,
             'CNextanceDiagnosis':result.extance.confirmedNumber,
@@ -55,8 +55,8 @@ export default class TotalDisplayChina extends Component {
       .then((res)=>{
         if(res.data.result=='Y'){
         result = res.data.message
-        console.log('已更新昨日国内总计')
-        console.log(res.data.message)
+        // console.log('已更新昨日国内总计')
+        // console.log(res.data.message)
           this.setState({
           'CNtotalDiagnosis_c':result.total.confirmedNumber,
           'CNextanceDiagnosis_c':result.extance.confirmedNumber,

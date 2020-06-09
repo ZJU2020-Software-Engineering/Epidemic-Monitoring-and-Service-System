@@ -310,7 +310,7 @@ function convertData1() {
             //graphicData[0].children.push(curCircle)
             graphicData[0].children.push(curChild);
         }
-        console.log(i, sourceData[i]["name"], curRadius, curR, curPositions);
+        // console.log(i, sourceData[i]["name"], curRadius, curR, curPositions);
     }
     for (var m = 0; m < 14; m++) {
         var cur_total_text = graphic_total_Text[m];
