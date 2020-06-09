@@ -1,5 +1,5 @@
 import React from 'react';
-import Cache from './Cache';
+import Cache from '../screen/Cache';
 import {Icon} from 'react-native-elements';
 import { Tabs, WingBlank, WhiteSpace, List, Button, Flex, Modal, Provider } from '@ant-design/react-native';
 import { StyleSheet, Image, ScrollView, Text, View, TextInput, Alert, Dimensions} from 'react-native';

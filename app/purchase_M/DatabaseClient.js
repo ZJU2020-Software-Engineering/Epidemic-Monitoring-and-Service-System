@@ -1,4 +1,4 @@
-const URL = 'http://10.180.116.178:4000';
+const URL = 'http://182.92.243.158:8002';
 
 import Axios from 'axios';
 

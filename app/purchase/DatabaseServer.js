@@ -560,10 +560,6 @@ app.post('/request/shoppingOrder/updateStat', function UpdateStat(req, res) {
     })
 });
 
-var server = app.listen(4000, function () {
-    console.log("Server open on ", server.address());
-})
-
 //==========================志愿者模块的内容==================================
 
 app.get('/request/personaluserinfo/select', function selectUser(req, res) {
@@ -914,3 +910,7 @@ app.post('/request/sqlall', function sqlall(req, res) {
 })
 
 
+
+var server = app.listen(8002, function () {
+    console.log("Server open on ", server.address());
+})
