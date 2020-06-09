@@ -39,3 +39,16 @@
 取消永久运行：
 
 `forever stop [servername].js`
+
+
+
+## 其他问题
+
+1.使用pip工具
+
+`py -m pip install [PackageName] -U pip` 
+
+2.使用python运行
+
+`py [FileName].py`
+
