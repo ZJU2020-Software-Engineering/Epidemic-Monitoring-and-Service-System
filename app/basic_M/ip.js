@@ -1,2 +1,1 @@
-
-module.exports="http://192.168.0.12:8000"; 
+module.exports="http://182.92.243.158:8000";
