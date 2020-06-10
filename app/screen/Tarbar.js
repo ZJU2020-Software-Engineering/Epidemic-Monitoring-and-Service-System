@@ -22,7 +22,8 @@ export default class TabBar  extends React.Component{
         this.state = {
           selectedTab: 'Otherpage',
            //selectedTab: 'Profile',
-            //username:this.props.navigation.getParam( 'username', 'No username provided'),
+          username:this.props.navigation.getParam( 'username', 'No username provided'),
+          token:this.props.navigation.getParam( 'token', 'No token provided'),
             
         };
         navigation = this.props.navigation;
