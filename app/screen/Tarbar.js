@@ -12,6 +12,8 @@ import TabNavigator from 'react-native-tab-navigator'
 import Profile from '../basic/Profile';
 import PersonHome from '../purchase/PersonHome';
 import Map from '../map/map'
+import forumHome from '../forum/Home';
+
 var navigation = null;
 export default class TabBar  extends React.Component{
     
@@ -46,10 +48,10 @@ export default class TabBar  extends React.Component{
     return (
       <View style={styles.container}>
         <TabNavigator>
-
           {this._renderTabarItems('个人中心',require('../assets/mine.jpg'),require('../assets/mine.jpg'),Profile)}
           {this._renderTabarItems('志愿采购', require('../assets/shopping.png'),require('../assets/shopping.png'), PersonHome)}
           {this._renderTabarItems('疫情地图',require('../assets/map.png'),require('../assets/map.png'), Map)}
+          {this._renderTabarItems('论坛',require('../assets/shopping.png'),require('../assets/shopping.png'), forumHome)}
         </TabNavigator>
       </View>
     );

@@ -10,7 +10,7 @@ import TabNavigator from 'react-native-tab-navigator';
 
 import ProfileMerchant from '../basic_M/ProfileMerchant';
 import {SplashComponent} from '../purchase_M/SplashComponent';
-import Cache from '../purchase_M/Cache';
+import Cache from './Cache';
 
 var navigation = null;
 
@@ -42,7 +42,7 @@ export default class TarBarMerchant extends React.Component{
   }
 
     render() {
-      Cache.set('username', this.state.username);
+      // Cache.set('username', this.state.username);
     return (
       <View style={styles.container}>
         <TabNavigator>

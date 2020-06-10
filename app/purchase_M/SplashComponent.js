@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Image, View, StyleSheet, StatusBar, KeyboardAvoidingView } from 'react-native'
 import * as Animatable from "react-native-animatable";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Cache from '../purchase_M/Cache';
+import Cache from '../screen/Cache';
 import { GetMerchantInfo } from './DatabaseClient';
 
 

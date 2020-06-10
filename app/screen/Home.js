@@ -3,13 +3,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View,TouchableOpacity } from 'react-native';
 import { CheckBox,Image,Input,Text,Button} from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
+import Cache from './Cache';
 var axios = require('axios');
-<<<<<<< Updated upstream
 //const ip="http://localhost:8000"
 var ip=require('./ip')
-=======
-const ip="http://192.168.31.78:8000"
->>>>>>> Stashed changes
 export default class Home extends React.Component {
 
   
@@ -37,6 +34,7 @@ export default class Home extends React.Component {
             if(res.data.result=='Y'){
               //alert("登陆成功")
               this.setState({token:res.data.token})
+              Cache.set('account',this.state.username);//Cache在这里有用来，用来设置用户的账号
               this.props.navigation.navigate( 'Tarbar',{username:this.state.username,token:res.data.token})
               //this.props.navigation.navigate( 'Profile',{username:this.state.username})
              }
@@ -63,6 +61,7 @@ export default class Home extends React.Component {
       .then((res) => { //alert(JSON.stringify(res.data));
           if(res.data.result=='Y'){
             //alert("登录成功")
+            Cache.set('account',this.state.username);//Cache在这里有用来，用来设置用户的账号
             this.props.navigation.navigate( 'TarbarMerchant',{username:this.state.username,token:res.data.token})
             //this.props.navigation.navigate( 'Profile',{username:this.state.username})
            }

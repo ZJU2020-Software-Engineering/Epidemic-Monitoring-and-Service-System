@@ -117,7 +117,7 @@ export default class HomeComponent extends Component{
             
             
             // v_id: props.navigation.state.params.v_id, //////////////////  需要父页面传递的志愿者id
-            v_id:"01",
+            v_id:"1",
             
             
           };
@@ -133,6 +133,8 @@ export default class HomeComponent extends Component{
              
             var i;
             i = 0;
+            console.log('hh');
+            console.log(response);
             for(i=0;i<response.length;i++)
             {
                 

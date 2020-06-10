@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { Tabs, WingBlank, WhiteSpace, List, Button, Flex } from '@ant-design/react-native';
 import {ItemDisplay} from './ItemDisplay';
-import Cache from '../Cache';
+import Cache from '../../screen/Cache';
 import {GetItems} from '../DatabaseClient';
 
 var items=[{

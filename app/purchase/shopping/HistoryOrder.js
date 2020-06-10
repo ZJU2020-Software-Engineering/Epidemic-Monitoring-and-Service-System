@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { List, WhiteSpace, WingBlank } from '@ant-design/react-native';
 import { GetHistoryOrderList_tenant } from '../DatabaseClient';
-import Cache from '../Cache';
+import Cache from '../../screen/Cache';
 
 const Item = List.Item;
 

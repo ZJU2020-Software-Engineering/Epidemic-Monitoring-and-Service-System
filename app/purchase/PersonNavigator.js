@@ -5,7 +5,7 @@ import PersonHome from "./PersonHome";
 import ShoppingNavigator from './shopping/ShoppingNavigator';
 import {UserHome} from './UserHome';
 import ApplyNavigator from './ApplyNavigator';
-import Cache from './Cache';
+import Cache from '../screen/Cache';
 import VolunteerModule from './VolunteerModule';
 import Tarbar from '../screen/Tarbar';
 

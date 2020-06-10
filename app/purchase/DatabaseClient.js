@@ -1,4 +1,4 @@
-const URL = 'http://10.181.163.236:4000';
+const URL = 'http://182.92.243.158:8002';
 
 import Axios from 'axios';
 
@@ -120,6 +120,7 @@ export async function GetUserInfo(username) {
         console.log(error);
         console.log('Hello, world2');
     });
+    // console.log(result);
     return result;
 }
 
@@ -225,6 +226,7 @@ export async function GetOrderToSend(v_id) {
     let result = await instance.get('/request/shoppingOrder/selectToSendOrder', {
         params: data
     }).then(function (response) {
+        // console.log(response.data);
         return response.data.message;
     }).catch(function (error) {
         console.log(error);

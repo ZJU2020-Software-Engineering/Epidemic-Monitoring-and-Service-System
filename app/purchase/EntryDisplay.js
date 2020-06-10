@@ -3,7 +3,9 @@ import { View, Text} from 'react-native';
 import { Flex} from '@ant-design/react-native';
 import { Icon } from 'react-native-elements';
 import { Card } from 'react-native-paper';
-import Cache from './Cache';
+import {GetUserInfo} from './DatabaseClient';
+// import Cache from './Cache';
+import Cache from '../screen/Cache';
 
 export class ShowBtnBlock{
     constructor(title,name){
@@ -39,14 +41,31 @@ export default class EntryDisplay extends React.Component{
         console.log(this.state.username);
     }
     CachePrepare(){
-        Cache.set('account','yang');
-        Cache.set('user name','yang');
+        Cache.set('account','3170104174');
+        Cache.set('user name','蒋皓俊');
         Cache.set('address','上海');
         Cache.set('merchant id', '1');
-      }
+    }
 
+    componentDidMount(){
+        console.log(Cache.get('account'));
+        GetUserInfo(Cache.get('account')).then(
+            (result)=>{
+                
+                Cache.set('user name','匿名');
+                Cache.set('address','未知');
+                Cache.set('merchant id', '1');
+                Cache.set('user name',result[0].name);
+                Cache.set('address',result[0].address);
+                Cache.set('merchant id', '1');
+                console.log(result[0]);
+                
+            }
+        )
+    }
+    
     render(){
-        this.CachePrepare();
+        // this.CachePrepare();
         return(
             <Card style={{ marginTop:60, padding:10,borderRadius: 15, elevation:3}}>
             <Flex>
