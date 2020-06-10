@@ -125,10 +125,10 @@ export class UserHome extends React.Component{
                             var check=this.checkContact(this.state.contact);
                             console.log(check);
                             if(check){
-                                let result=await UpdateTenant({contact:this.state.contact, address:this.state.address, userName:this.state.userName});
+                                let result=await UpdateTenant({contact:this.state.contact, address:this.state.address, userName:this.state.account});
                                 if(result=='Y'){
                                     this.setState({saveBtnShow:false});
-                                    GetTenantInfo(this.state.userName).then((response)=>{console.log(response);this.successShow(response[0])});
+                                    GetTenantInfo(this.state.account).then((response)=>{console.log(response);this.successShow(response[0])});
                                     Modal.alert('修改成功', '修改成功', [
                                         {
                                             text: '确认',
