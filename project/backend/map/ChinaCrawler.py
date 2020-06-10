@@ -7,7 +7,7 @@ import re
 import json
 import datetime
 import socket
-import copy
+
 
 class ChinaCrawler:
     def __init__(self):
@@ -63,10 +63,10 @@ class ChinaCrawler:
                     "Data": self.date,
                     "Province": area[ 'provinceShortName'],
                     "City": area[  'provinceShortName'],
-                    "increaseDiagnosis":-10000,
-                    "increaseDeath":-10000,
-                    "increaseCure":-10000,
-                    "increaseSuspected":-10000,
+                    "increaseDiagnosis":0,
+                    "increaseDeath":0,
+                    "increaseCure":0,
+                    "increaseSuspected":0,
                     "totalDiagnosis":area['confirmedCount'],
                     "totalDeath":area['deadCount'],
                     "totalCure":area[ 'curedCount'],
@@ -83,10 +83,10 @@ class ChinaCrawler:
                     "Data": self.date,
                     "Province": area['provinceShortName'],
                     "City": area['provinceShortName'],
-                    "increaseDiagnosis": -10000,
-                    "increaseDeath": -10000,
-                    "increaseCure": -10000,
-                    "increaseSuspected": -10000,
+                    "increaseDiagnosis": 0,
+                    "increaseDeath": 0,
+                    "increaseCure": 0,
+                    "increaseSuspected": 0,
                     "totalDiagnosis": area['confirmedCount'],
                     "totalDeath": area['deadCount'],
                     "totalCure": area['curedCount'],
@@ -117,7 +117,7 @@ class ChinaCrawler:
                     }
                     #北京卫健委未明确大部分治愈与死亡病例的分区归属，因此北京市下辖分区的现存确诊暂无法获取
                     if t["Province"]=="北京":
-                        t["extanceDiagnosis"]=-10000
+                        t["extanceDiagnosis"]=0
 
                     self.ChinaMap.append(t)
         #print(self.ChinaMap)
@@ -144,7 +144,7 @@ class ChinaCrawler:
 
             # 每日新增数目
             data = (json.dumps(LastQuery, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
+            checkres = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/select',
                                      data=data, headers=headers)
             last=json.loads(checkres.content)
             print(last['result'], last['message'])
@@ -159,7 +159,7 @@ class ChinaCrawler:
 
             #查询数据是否存在
             data = (json.dumps(checkQuery, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/select',
+            checkres = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/select',
                                      data=data, headers=headers)
             result = json.loads(checkres.content)
             print(result)
@@ -172,12 +172,12 @@ class ChinaCrawler:
             if result['result'] == 'Y' and 'total' in result['message'].keys() and result['message']['total']!=None:
                 # update
                 print("update total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
             else:
                 # insert
                 print("insert total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/insert', data=city.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
@@ -187,12 +187,12 @@ class ChinaCrawler:
             if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message']['newAddtion']!=None:
                 # update
                 print("update increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
             else:
                 # insert
                 print("insert increase")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/insert', data=city.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
@@ -202,12 +202,12 @@ class ChinaCrawler:
             if result['result'] == 'Y' and 'extance' in result['message'].keys() and result['message']['extance']!= None:
                 # update
                 print("update")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/update', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/update', data=city.encode('utf-8'),
                                     headers=headers)
             else:
                 # insert
                 print("insert")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/chinaMap/insert', data=city.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/chinaMap/insert', data=city.encode('utf-8'),
                                     headers=headers)
             print(res.text)
 
@@ -242,13 +242,13 @@ class ChinaCrawler:
             print(age)
             # data = age.encode('utf-8')
             # 查询是否存在
-            res = requests.post(url='http://127.0.0.1:8081/request/map/Age/select', data={}, headers=headers)
+            res = requests.post(url='http://182.92.243.158:8001/request/map/Age/select', data={}, headers=headers)
             ageData=json.loads(res.content)
             # 更新/插入
             if ageData['result']=='Y' and ageData['message']!=None:
-                res = requests.post(url='http://127.0.0.1:8081/request/map/Age/update', data=age, headers=headers)
+                res = requests.post(url='http://182.92.243.158:8001/request/map/Age/update', data=age, headers=headers)
             elif ageData['result']=='N' and ageData['message']=='empty':
-                res = requests.post(url='http://127.0.0.1:8081/request/map/Age/insert', data=age, headers=headers)
+                res = requests.post(url='http://182.92.243.158:8001/request/map/Age/insert', data=age, headers=headers)
             print(res.text)
 
     # 提交性别数据
@@ -265,13 +265,13 @@ class ChinaCrawler:
         print("sex:")
 
         # 查询是否存在
-        res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/select', data={}, headers=headers)
+        res = requests.post(url='http://182.92.243.158:8001/request/map/Gender/select', data={}, headers=headers)
         sexData = json.loads(res.content)
         # 更新/插入
         if sexData['result'] == 'Y' and sexData['message'] != None:
-            res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/update', data=sex, headers=headers)
+            res = requests.post(url='http://182.92.243.158:8001/request/map/Gender/update', data=sex, headers=headers)
         elif sexData['result'] == 'N' and sexData['message'] == 'empty':
-            res = requests.post(url='http://127.0.0.1:8081/request/map/Gender/insert', data=sex, headers=headers)
+            res = requests.post(url='http://182.92.243.158:8001/request/map/Gender/insert', data=sex, headers=headers)
         print(res.text)
 
 
