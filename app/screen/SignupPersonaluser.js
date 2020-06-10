@@ -3,12 +3,7 @@ import { StyleSheet, Text, View,ScrollView,TouchableOpacity , Picker } from 'rea
 
 import { Input,CheckBox,Button } from 'react-native-elements';
 var axios = require('axios');
-<<<<<<< Updated upstream
 var ip=require('./ip')
-=======
-const ip="http://192.168.31.78:8000"
-
->>>>>>> Stashed changes
 
 export default class SignupPersonaluser extends React.Component {
 
@@ -168,7 +163,7 @@ export default class SignupPersonaluser extends React.Component {
              style={styles}
              onChangeText={value => this.address=value}
         />
-//          <Text 
+{/* //          <Text 
 //               style={{alignSelf:'flex-start',marginStart:7,color:'#86939E',fontSize: 16,fontWeight:'bold',textAlign: 'center'}}> 地址</Text>
 //         <Picker
 //               mode="dropdown"
@@ -214,14 +209,14 @@ export default class SignupPersonaluser extends React.Component {
 //               <Picker.Item label="香港" value="香港" />
 //               <Picker.Item label="澳门" value="澳门" />
 //               <Picker.Item label="台湾" value="台湾" />
-//             </Picker>
+//             </Picker> */}
          <Input
              placeholder="邮箱"
              label='邮箱'
              style={styles}
              onChangeText={value => this.email=value}
         />
-//          <Text 
+{/* //          <Text 
 //               style={{alignSelf:'flex-start',marginStart:7,color:'#86939E',fontSize: 16,fontWeight:'bold',textAlign: 'center'}}> 健康状态</Text>
 //         <Picker
 //               mode="dropdown"
@@ -254,7 +249,7 @@ export default class SignupPersonaluser extends React.Component {
 //               <Picker.Item label="绿码" value="绿码" />
 //               <Picker.Item label="黄码" value="黄码" />
 //               <Picker.Item label="红码" value="红码" />
-//             </Picker>
+//             </Picker> */}
         <TouchableOpacity style={styles.button}  onPress={ this.signup} >
               <Text style={styles.buttonText}> 注册 </Text>
         </TouchableOpacity>           

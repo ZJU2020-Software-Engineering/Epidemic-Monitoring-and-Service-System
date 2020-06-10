@@ -3,13 +3,8 @@ import { StyleSheet, Text, View, Button,ScrollView,TouchableOpacity  , Picker} f
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input,CheckBox } from 'react-native-elements';
 var axios = require('axios');
-<<<<<<< Updated upstream
 //const ip="http://localhost:8000"
 var ip=require('./ip')
-=======
-const ip="http://192.168.31.78:8000"
-
->>>>>>> Stashed changes
 export default class Feed extends React.Component {
 
    constructor(props){
@@ -143,7 +138,7 @@ export default class Feed extends React.Component {
              style={styles}
              onChangeText={value => this.address=value}
         />
-//          <Text 
+{/* //          <Text 
 //               style={{alignSelf:'flex-start',marginStart:7,color:'#86939E',fontSize: 16,fontWeight:'bold',textAlign: 'center'}}> 地址</Text>
 //         <Picker
 //               mode="dropdown"
@@ -189,7 +184,7 @@ export default class Feed extends React.Component {
 //               <Picker.Item label="香港" value="香港" />
 //               <Picker.Item label="澳门" value="澳门" />
 //               <Picker.Item label="台湾" value="台湾" />
-//             </Picker>
+//             </Picker> */}
         <Input
              placeholder="邮箱"
              label='邮箱'
