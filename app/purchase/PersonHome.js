@@ -5,6 +5,8 @@ import { WhiteSpace,Flex } from '@ant-design/react-native';
 import NumberDisplay from './NumberDisplay';
 import EntryDisplay from './EntryDisplay';
 import { Icon } from 'react-native-elements';
+import {GetUserInfo} from './DatabaseClient';
+import Cache from '../screen/Cache';
 
 class Time extends React.Component{
     constructor(props){
@@ -50,25 +52,59 @@ function p(s) {
 export default class PersonHome extends React.Component{
     constructor(props){
         super(props);
+        
     }
+    componentDidMount(){
+        console.log(Cache.get('account'));
+        GetUserInfo(Cache.get('account')).then(
+            (result)=>{
+                
+                Cache.set('user name','匿名');
+                Cache.set('address','未知');
+                Cache.set('merchant id', '1');
+                Cache.set('user name',result[0].name);
+                Cache.set('address',result[0].address);
+                Cache.set('merchant id', '1');
+                console.log(result[0]);
+                
+            }
+        );
+        this.render();
+    }
+    
     
     render(){
         console.log(this.props.navigation);
         return (
             <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight, paddingLeft:10, paddingRight:10, backgroundColor:'rgba(0,0,0,0)'}}>
-                <View style={{position:'absolute',right:20,top:20}}>
-                <Icon 
-                    name='person'
-                    color='#2096F3'
-                    size= '35' 
-                    onPress={()=>{
-                        this.props.navigation.navigate('PersonInfo');
-                    }} //个人中心
-                /> 
-                </View>
+                <Card style={{ marginTop:20, padding:10,borderRadius: 15, elevation:3}}>
+                <Flex>
+                    <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }} onPress={()=>{console.log(this.props.navigation);this.props.navigation.navigate("Shops");}}>
+                    <View alignItems='left' style={{textAlign : 'left'}}>
+                        <WhiteSpace />
+                        <Text>用户名：{Cache.get("user name")}</Text>
+                        <WhiteSpace />
+                        <Text>账号：{Cache.get("account")}</Text> 
+                    </View>
+                    </Flex.Item>
+                    <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }} onPress={()=>{console.log(this.props.navigation);this.props.navigation.navigate("Shops");}}>
+                        <View alignItems='center' style={{textAlign : 'center'}}>
+                            <Icon 
+                                name='person'
+                                color='#2096F3'
+                                size= '35' 
+                                onPress={()=>{
+                                    this.props.navigation.navigate('PersonInfo');
+                                }} //个人中心
+                            /> 
+                        </View>
+                    </Flex.Item>
+                    
+                </Flex>
+                </Card>
 
-                <WhiteSpace/>
-                <WhiteSpace/>
+                {/* <WhiteSpace/>
+                <WhiteSpace/> */}
                
                 
                 

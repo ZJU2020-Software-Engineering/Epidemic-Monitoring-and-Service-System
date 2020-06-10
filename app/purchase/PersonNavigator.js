@@ -16,8 +16,7 @@ const PersonNavigator=createStackNavigator({
     Tarbar: {
         screen: Tarbar,
         navigationOptions: {  
-            headerTitle: 'Epidemic-Monitoring-and-Service-System', 
-            headerBackTitle:null 
+            headerShown: false, 
         }
     }, 
     Person:{
