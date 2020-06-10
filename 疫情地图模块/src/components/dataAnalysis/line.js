@@ -114,7 +114,7 @@ export default class Worldline extends Component {
       };
     constructor(props){
         super(props);
-        var today = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000 - 60*60*1000*24*1), 'yyyy-MM-dd');
+        var today = time.formatDate(new Date(new Date().getTime() - 6*60*60*1000), 'yyyy-MM-dd');
         console.log('开始构造')
         axios
         .post(`${server_config.backend_url}/${server_config.GetWorld.url}`,{"Return":`${server_config.GetAnalysis.line}`,"Data":today})

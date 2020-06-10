@@ -1,5 +1,5 @@
 export var server_config = {
-    backend_url: 'http://192.168.31.78:8081',
+    backend_url: 'http://182.92.243.158:8001',
     GetChina:{
         // 获取国内数据
         url:'request/map/chinaMap/select',
