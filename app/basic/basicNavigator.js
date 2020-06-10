@@ -18,7 +18,7 @@ const basicNavigator = createStackNavigator( {
     screen: Tarbar,
     navigationOptions: {  
         headerTitle: '疫情监测与服务系统', 
-        headerBackTitle:null 
+        header:null
     }
   }, 
     Profile: {
