@@ -19,8 +19,7 @@ export const PurchaseNavigator_M = createStackNavigator ({
     Default: {
         screen: TarbarMerchant,
         navigationOptions: {  
-            headerTitle: 'Epidemic-Monitoring-and-Service-System', 
-            headerBackTitle:null 
+            headerShown: false
         }
     },
     Back: {
