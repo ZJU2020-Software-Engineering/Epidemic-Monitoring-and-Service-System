@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const bcrypt = require('bcrypt');
+
 var jwt = require('jsonwebtoken');
 var secretkey = 'secretkey';
 
@@ -71,7 +72,7 @@ router.post('/personalUserInfo/insert', function insertPersonalUserInfo(req, res
             if (err) {
                console.log('Insert Error\n');
                console.log(err);
-               res.json({ result: 'N', message : "用戶名已存在" });
+               res.json({ result: 'N', message : err.message });
             }
             else {
                console.log('Insert Success\n');
@@ -140,7 +141,7 @@ router.post('/merchantUserInfo/insert', function insertMerchantUserInfo(req, res
             if (err) {
                console.log('Insert Error\n');
                console.log(err);
-              res.json({ result: 'N', message : "用戶名已存在" });
+              res.json({ result: 'N', message : err.message });
             }
             else {
                console.log('Insert Success\n');
