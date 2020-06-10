@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native'
+import { StyleSheet, ScrollView, Text, View } from 'react-native'
 import { Card } from 'react-native-paper';
 import { Flex } from '@ant-design/react-native';
 import { Feather } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ export default function Home({ navigation }) {
     let username = navigation.getParam('username', 'Can not get username');
     console.log(username)
     return (
-        <View>
+        <View style={styles.container}>
             <Card style={{ marginTop: 25, padding: 10, borderRadius: 15, elevation: 3 }}>
                 <Flex>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}
@@ -58,3 +58,10 @@ export default function Home({ navigation }) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        paddingLeft:10,
+        paddingRight:10
+    },
+});
