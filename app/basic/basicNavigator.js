@@ -57,6 +57,30 @@ const basicNavigator = createStackNavigator( {
           headerTitle: '修改密码',  
       }
     },
+      DailyReportScreen: {
+        screen: DailyReportScreen,
+        navigationOptions: {
+          headerTitle: '每日打卡',
+        }
+    },
+      HealthCodeScreen: {
+        screen: HealthCodeScreen,
+        navigationOptions: {
+          headerTitle: '健康码',
+        }
+    },
+      ScannerScreen: {
+        screen: ScannerScreen,
+        navigationOptions: {
+          headerTitle: '扫描器',
+        }
+    },
+      ReminderScreen: {
+        screen: ReminderScreen,
+        navigationOptions: {
+          headerTitle: '打卡提醒',
+        }
+    },
      About: {
       screen:  About,
       navigationOptions: {  
