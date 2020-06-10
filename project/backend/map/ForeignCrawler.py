@@ -1,14 +1,9 @@
-from bs4 import BeautifulSoup
 import requests
-import random
-from user import user
-import re
 import json
 import datetime
 import socket
-import copy
 import time
-from selenium import webdriver
+
 from CountryList import Countrylist
 class ForeignCrawler:
     def __init__(self):
@@ -66,16 +61,16 @@ class ForeignCrawler:
             self.ForeignMap.append({
                 "Data": self.date,
                 "Country": name,
-                "increaseDiagnosis": -10000,
-                "increaseDeath": -10000,
-                "increaseCure": -10000,
-                "increaseSuspected": -10000,
+                "increaseDiagnosis": 0,
+                "increaseDeath": 0,
+                "increaseCure": 0,
+                "increaseSuspected": 0,
                 "totalDiagnosis": item["attributes"]["Confirmed"],
                 "totalDeath": item["attributes"]['Deaths'],
                 "totalCure": item["attributes"]['Recovered'],
-                "totalSuspected": -10000,
+                "totalSuspected": 0,
                 "extanceDiagnosis": item["attributes"]['Active'],
-                "extanceSuspected": -10000,
+                "extanceSuspected": 0,
                 "Return": None
             })
         # print(self.ForeignMap)
@@ -103,25 +98,27 @@ class ForeignCrawler:
             # 每日新增数目
             # Diagnosis
             data = (json.dumps(LastQuery, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
+            checkres = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/select',
                                      data=data, headers=headers)
             last = json.loads(checkres.content)
             print(last['result'], last['message'])
 
-            if last['result'] == 'Y' and 'extance' in last['message'].keys() and last['message']['extance']!=None:
+            if last['result'] == 'Y' and 'extance' in last['message'].keys() and last['message']['extance']!=None and item['extanceDiagnosis']!=None:
                 item['increaseDiagnosis']=item['extanceDiagnosis']-last['message']['extance']['confirmedNumber']
+                print("increaseDiagnosis:", item['increaseDiagnosis'])
             if last['result'] == 'Y' and 'total' in last['message'].keys() and last['message']['total'] != None:
-                item['increaseDeath'] = item['totalDeath'] - last['message']['total']['deathToll']
-                item['increaseCure'] = item['totalCure'] - last['message']['total']['cureNumber']
-            print("increaseDiagnosis:", item['increaseDiagnosis'])
-            print("increaseDeath:", item['increaseDeath'])
-            print("increaseCure:", item['increaseCure'])
-
+                if item['totalDeath']!=None and last['message']['total']['deathToll']!=None:
+                   item['increaseDeath'] = item['totalDeath'] - last['message']['total']['deathToll']
+                   print("increaseDeath:", item['increaseDeath'])
+                if item['totalCure']!=None and last['message']['total']['cureNumber']!=None:
+                   item['increaseCure'] = item['totalCure'] - last['message']['total']['cureNumber']
+                   print("increaseCure:", item['increaseCure'])
+            
             print(item)
 
             # 查询数据是否存在
             data = (json.dumps(checkQuery, ensure_ascii=False)).encode('utf-8')
-            checkres = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/select',
+            checkres = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/select',
                                      data=data, headers=headers)
             result = json.loads(checkres.content)
 
@@ -131,12 +128,12 @@ class ForeignCrawler:
             if result['result'] == 'Y' and 'total' in result['message'].keys() and result['message']['total']!=None:
                 # update
                 print("update total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/update', data=country.encode('utf-8'),
                                     headers=headers)
             else:
                 # insert
                 print("insert total")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/insert',
                                     data=country.encode('utf-8'),
                                     headers=headers)
             print(res.text)
@@ -144,22 +141,20 @@ class ForeignCrawler:
             # increase
             item["Return"] = 'newAddtion'
             country = json.dumps(item, ensure_ascii=False)
-            #存在有意义的新增数据
-            if item["increaseDiagnosis"]!=-10000 or item["increaseCure"]!=-10000 or item["increaseDeath"]!=-10000:
-                if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message'][
-                    'newAddtion'] != None:
-                    # update
-                    print("update increase")
-                    res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update',
-                                        data=country.encode('utf-8'),
-                                        headers=headers)
-                else:
-                    # insert
-                    print("insert increase")
-                    res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
-                                        data=country.encode('utf-8'),
-                                        headers=headers)
-                print(res.text)
+            if result['result'] == 'Y' and 'newAddtion' in result['message'].keys() and result['message'][
+                'newAddtion'] != None:
+                # update
+                print("update increase")
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/update',
+                                    data=country.encode('utf-8'),
+                                    headers=headers)
+            else:
+                # insert
+                print("insert increase")
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/insert',
+                                    data=country.encode('utf-8'),
+                                    headers=headers)
+            print(res.text)
 
             # exsisting
             item["Return"] = 'extance'
@@ -167,12 +162,12 @@ class ForeignCrawler:
             if result['result'] == 'Y' and 'extance' in result['message'].keys() and result['message']['extance'] != None:
                 # update
                 print("update existance")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/update', data=country.encode('utf-8'),
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/update', data=country.encode('utf-8'),
                                     headers=headers)
             else:
                 # insert
                 print("insert")
-                res = requests.post(url='http://127.0.0.1:8081/request/map/foreignMap/insert',
+                res = requests.post(url='http://182.92.243.158:8001/request/map/foreignMap/insert',
                                     data=country.encode('utf-8'),
                                     headers=headers)
             print(res.text)
@@ -184,5 +179,10 @@ class ForeignCrawler:
         with open('foreignFile.json', 'w', encoding='utf-8') as json_file:
                 json_file.write(foreignFile)
         """
+
+
+
+
+
 
 
