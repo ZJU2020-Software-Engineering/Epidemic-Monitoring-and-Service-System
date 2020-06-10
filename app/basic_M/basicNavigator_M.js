@@ -19,6 +19,7 @@ const basicNavigator_M = createStackNavigator( {
     screen: TarbarMerchant,
     navigationOptions: {  
         headerTitle: '疫情检测与服务系统',  
+        header:null
     }
   },
 
