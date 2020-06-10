@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native";
 
 export var host = "http://10.181.177.227";
-export var port = 3000;
+export var port = 8003;
 
 export function randomString(len) {
 	len = len || 32;
@@ -121,7 +121,6 @@ async function searchPostDataAsync(keyWords, postNum){
             })
         }
         ).then((response)=>{
-            console.log(response)
             if(response.ok) return response.json()
             else reject(response.status)
         })

@@ -1,7 +1,6 @@
 import React, { Component, useState, useRef } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { View, StyleSheet, Text, TouchableOpacity, FlatList, } from 'react-native';
-import HomePageList from './HomeListView'
 import { Feather } from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button'
 import { useNavigation } from '@react-navigation/native';

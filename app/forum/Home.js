@@ -16,6 +16,8 @@ function MyTar({ title, name }) {
 
 export default function Home({ navigation }) {
     console.log('Home')
+    let username = navigation.getParam('username', 'Can not get username');
+    console.log(username)
     return (
         <View>
             <Card style={{ marginTop: 25, padding: 10, borderRadius: 15, elevation: 3 }}>
@@ -23,28 +25,28 @@ export default function Home({ navigation }) {
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}
                         onPress={() => {
                             console.log("navigating to CreatePost");
-                            navigation.navigate("CreatePost", { username: 'abc', userID: '2' });
+                            navigation.navigate("CreatePost", { username: username, userID: '2' });
                         }}>
                         <MyTar title="新建" name="plus" />
                     </Flex.Item>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}
                         onPress={() => {
                             console.log("navigating to Search");
-                            navigation.navigate("Search", { username: 'abc', userID: '2' })
+                            navigation.navigate("Search", { username:username, userID: '2' })
                         }}>
                         <MyTar title="搜索" name="search" />
                     </Flex.Item>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}
                         onPress={() => {
                             console.log("navigating to Mail");
-                            navigation.navigate("Mail", { username: 'abc', userID: '2' })
+                            navigation.navigate("Mail", { username: username, userID: '2' })
                         }}>
                         <MyTar title="私信" name="mail" />
                     </Flex.Item>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}
                         onPress={() => {
                             console.log("navigating to User");
-                            navigation.navigate("User", { username: 'abc', userID: '2' })
+                            navigation.navigate("User", { username: username, userID: '2' })
                         }}>
                         <MyTar title="个人中心" name="user" />
                     </Flex.Item>

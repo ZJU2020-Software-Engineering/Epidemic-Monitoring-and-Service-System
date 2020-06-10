@@ -1,7 +1,6 @@
 import React, { Component, useState, useRef } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import { AppLoading } from 'expo';
-import { AuthContext } from './App';
 import { getToken } from './utls';
 
 
@@ -12,7 +11,6 @@ export default function UserPage({ navigation }) {
 	return (
 		<View style={styles.container}>
 			<Text>username: {user_name}</Text>
-			<Button title="返回首页" onPress={()=>navigation.navigate('Home')}></Button>
 		</View>
 	)
 

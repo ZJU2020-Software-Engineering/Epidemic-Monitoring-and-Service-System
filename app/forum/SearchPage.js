@@ -157,7 +157,7 @@ class SearchPage extends React.Component {
     _renderItem = (item, index) => {
         return (
             <TouchableOpacity
-                onPress={(event) => { this.props.navigation.navigate('PostDetail', { post_id: item.id }) }}
+                onPress={(event) => { this.props.navigation.navigate('Detail', { post_id: item.id }) }}
                 activeOpacity={0.7}
             >
                 <View style={styles.post}>
@@ -218,7 +218,7 @@ class SearchPage extends React.Component {
                 <View>
                     <UltimateListView
                         ref={(ref) => this.listView = ref}
-                        keyExtractor={(item, index) => `${item.post_id}-${index}`}
+                        keyExtractor={(item, index) => { console.log(`${item.id}-${index}`); return `${item.id}-${index}` ;}}
                         getItemLayout={(data, index) => ({
                             length: styles.post.height,
                             offset: (styles.post.height + 1) * index,
@@ -257,24 +257,24 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         textAlign: 'center',
     },
-	post: {
-		flexDirection: 'column',
-		height: 100,
-		backgroundColor: '#FFFFFF',
-		paddingLeft: 10,
-		paddingRight: 10,
-	},
-	postHeader: {
-		height: 50,
-		fontSize: 20,
-		fontWeight:"bold",
-		paddingBottom:10,
-		paddingTop:10,
-	},
-	postBody: {
-		height: 30,
-		fontSize: 12,
-	},
+    post: {
+        flexDirection: 'column',
+        height: 100,
+        backgroundColor: '#FFFFFF',
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    postHeader: {
+        height: 50,
+        fontSize: 20,
+        fontWeight: "bold",
+        paddingBottom: 10,
+        paddingTop: 10,
+    },
+    postBody: {
+        height: 30,
+        fontSize: 12,
+    },
     pageTail: {
         fontSize: 12
     },
