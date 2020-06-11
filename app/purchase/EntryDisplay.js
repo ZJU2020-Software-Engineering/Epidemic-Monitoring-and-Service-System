@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text} from 'react-native';
 import { Flex} from '@ant-design/react-native';
-import { Icon } from 'react-native-elements';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-paper';
 // import Cache from './Cache';
 import Cache from '../screen/Cache';
@@ -14,10 +14,7 @@ export class ShowBtnBlock{
     render(){
       return (
       <View alignItems='center' style={{textAlign : 'center'}}>
-            <Icon 
-                name={this.name} 
-                color='#2096F3'
-                size= '35' />
+            <MaterialIcons name={this.name} size={35} color="#2096F3" ></MaterialIcons>
             <Text style={{fontSize:15, color:'#828282'}}>{this.title}</Text>
       </View>
       );

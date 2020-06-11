@@ -4,7 +4,7 @@ import { Card } from 'react-native-paper';
 import { WhiteSpace,Flex } from '@ant-design/react-native';
 import NumberDisplay from './NumberDisplay';
 import EntryDisplay from './EntryDisplay';
-import { Icon } from 'react-native-elements';
+import { Octicons } from '@expo/vector-icons';
 import {GetUserInfo} from './DatabaseClient';
 import Cache from '../screen/Cache';
 
@@ -52,7 +52,9 @@ function p(s) {
 export default class PersonHome extends React.Component{
     constructor(props){
         super(props);
-        
+        this.state={
+            fresh:false,
+        }
     }
     componentDidMount(){
         console.log(Cache.get('account'));
@@ -64,12 +66,12 @@ export default class PersonHome extends React.Component{
                 Cache.set('merchant id', '1');
                 Cache.set('user name',result[0].name);
                 Cache.set('address',result[0].address);
-                Cache.set('merchant id', '1');
                 console.log(result[0]);
                 
             }
         );
-        this.render();
+        this.setState({fresh:true,});
+        // this.render();
     }
     
     
@@ -80,7 +82,7 @@ export default class PersonHome extends React.Component{
                 <Card style={{ marginTop:20, padding:10,borderRadius: 15, elevation:3}}>
                 <Flex>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }} onPress={()=>{console.log(this.props.navigation);this.props.navigation.navigate("Shops");}}>
-                    <View alignItems='left' style={{textAlign : 'left'}}>
+                    <View  style={{textAlign : 'left', alignItems: 'flex-start'}}>
                         <WhiteSpace />
                         <Text>用户名：{Cache.get("user name")}</Text>
                         <WhiteSpace />
@@ -89,14 +91,11 @@ export default class PersonHome extends React.Component{
                     </Flex.Item>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }} onPress={()=>{console.log(this.props.navigation);this.props.navigation.navigate("Shops");}}>
                         <View alignItems='center' style={{textAlign : 'center'}}>
-                            <Icon 
-                                name='person'
-                                color='#2096F3'
-                                size= '35' 
+                            <Octicons name="person" size={35} color="#2096F3" 
                                 onPress={()=>{
                                     this.props.navigation.navigate('PersonInfo');
-                                }} //个人中心
-                            /> 
+                                }} 
+                            />
                         </View>
                     </Flex.Item>
                     
