@@ -13,6 +13,7 @@ import Profile from '../basic/Profile';
 import PersonHome from '../purchase/PersonHome';
 import Map from '../map/map'
 import forumHome from '../forum/Home';
+import Daily from '../daily/daily'
 
 var navigation = null;
 export default class TabBar  extends React.Component{
@@ -53,6 +54,7 @@ export default class TabBar  extends React.Component{
           {this._renderTabarItems('志愿采购', require('../assets/shopping.png'),require('../assets/shopping.png'), PersonHome)}
           {this._renderTabarItems('疫情地图',require('../assets/map.png'),require('../assets/map.png'), Map)}
           {this._renderTabarItems('论坛',require('../assets/shopping.png'),require('../assets/shopping.png'), forumHome)}
+          {this._renderTabarItems('健康打卡',require('../assets/dailylogo.png'),require('../assets/dailylogo.png'), Daily)}
         </TabNavigator>
       </View>
     );
