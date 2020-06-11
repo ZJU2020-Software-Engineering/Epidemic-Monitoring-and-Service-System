@@ -12,6 +12,7 @@ import PersonNavigator from './purchase/PersonNavigator'
 import {PurchaseNavigator_M} from './purchase_M/RootStack'
 import Map from './map/map'
 import forum from './forum/forumStack'
+import Daily from './daily/daily'
 
 const InfoStack = createStackNavigator( {
      Home: {
