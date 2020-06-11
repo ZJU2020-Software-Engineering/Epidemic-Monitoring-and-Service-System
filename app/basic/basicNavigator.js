@@ -7,10 +7,6 @@ import ChangeAddress from './ChangeAddress'
 import ChangePassword from './ChangePassword'
 import About from './About'
 import Help from './Help'
-import DailyReportScreen from './DailyReportScreen'
-import HealthCodeScreen from './HealthCodeScreen'
-import ScannerScreen from './ScannerScreen'
-import ReminderScreen from './ReminderScreen'
 /////////
 import Tarbar from '../screen/Tarbar'
 //////////
@@ -60,30 +56,6 @@ const basicNavigator = createStackNavigator( {
       navigationOptions: {  
           headerTitle: '修改密码',  
       }
-    },
-      DailyReportScreen: {
-        screen: DailyReportScreen,
-        navigationOptions: {
-          headerTitle: '每日打卡',
-        }
-    },
-      HealthCodeScreen: {
-        screen: HealthCodeScreen,
-        navigationOptions: {
-          headerTitle: '健康码',
-        }
-    },
-      ScannerScreen: {
-        screen: ScannerScreen,
-        navigationOptions: {
-          headerTitle: '扫描器',
-        }
-    },
-      ReminderScreen: {
-        screen: ReminderScreen,
-        navigationOptions: {
-          headerTitle: '打卡提醒',
-        }
     },
      About: {
       screen:  About,
