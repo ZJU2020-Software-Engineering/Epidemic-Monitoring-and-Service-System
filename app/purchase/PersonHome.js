@@ -3,6 +3,7 @@ import { ScrollView,StatusBar,Text,View} from 'react-native'
 import { Card } from 'react-native-paper';
 import { WhiteSpace,Flex } from '@ant-design/react-native';
 import NumberDisplay from './NumberDisplay';
+import TrashDisplay from './TrashDisplay';
 import EntryDisplay from './EntryDisplay';
 import { Octicons } from '@expo/vector-icons';
 import {GetUserInfo} from './DatabaseClient';
@@ -120,6 +121,12 @@ export default class PersonHome extends React.Component{
                 
                 <WhiteSpace/>
                 
+                <Card style={{ marginTop:20, borderRadius: 15, elevation:3}}>
+                    <Card.Content>
+                        <TrashDisplay />
+                    </Card.Content>
+                </Card>
+
             </ScrollView>
         );
     }
