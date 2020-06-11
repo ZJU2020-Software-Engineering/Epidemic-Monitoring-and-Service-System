@@ -32,13 +32,25 @@
 
 测试运行本模块的后端代码。
 
-测试无问题后，永久运行：
+测试无问题后，使用`pm2`工具对后端项目进行部署（已执行 `npm install -g pm2` ）：
 
-`forever start [servername].js`
+`pm2 start [servername].js`
 
-取消永久运行：
+查看所有已启动项目：
 
-`forever stop [servername].js`
+`pm2 list` 其中`Name`为项目名
+
+重启：
+
+`pm2 restart [Name]`
+
+停止：
+
+`pm2 stop [Name]`
+
+删除：
+
+`pm2 delete [Name]`
 
 
 
