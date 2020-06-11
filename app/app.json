@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "my-new-project",
-    "slug": "my-new-project",
+    "name": "疫情监测与服务系统",
+    "slug": "Epidemic monitoring and service system",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -15,14 +15,19 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "sdkVersion": "37.0.0",
     "updates": {
       "fallbackToCacheTimeout": 0
+    },
+    "android":{
+      "package":"edu.zju.cs"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "edu.zju.cs"
     },
     "description": ""
   }

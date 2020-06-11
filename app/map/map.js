@@ -14,6 +14,7 @@ export default class Map extends React.Component {
     _scroll;
     render(){
       return (
+          <View style={{"backgroundColor": "#ffffff"}}>
         <ScrollView ref={(scroll)=>this._scroll = scroll} >
         <View onLayout={event=>{this.cnlayoutY = event.nativeEvent.layout.y}} >
             <WingBlank style={{
@@ -95,6 +96,7 @@ export default class Map extends React.Component {
         </View>
 
         </ScrollView>
+        </View>
       );
     }
   }
