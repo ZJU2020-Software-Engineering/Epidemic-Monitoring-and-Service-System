@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View,TouchableOpacity } from 'react-native';
 import { CheckBox,Image,Input,Text,Button} from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
+import {GetUserInfo} from '../purchase/DatabaseClient';
 import Cache from './Cache';
 var axios = require('axios');
 //const ip="http://localhost:8000"
@@ -35,6 +36,13 @@ export default class Home extends React.Component {
               //alert("登陆成功")
               this.setState({token:res.data.token})
               Cache.set('account',this.state.username);//Cache在这里有用来，用来设置用户的账号
+              GetUserInfo(this.state.username).then(
+                (result)=>{
+                    Cache.set('merchant id', '1');
+                    Cache.set('user name',result[0].name);
+                    Cache.set('address',result[0].address);
+                }
+              );
               this.props.navigation.navigate( 'Tarbar',{username:this.state.username,token:res.data.token})
               //this.props.navigation.navigate( 'Profile',{username:this.state.username})
              }
