@@ -7,6 +7,10 @@ import ChangeAddress from './ChangeAddress'
 import ChangePassword from './ChangePassword'
 import About from './About'
 import Help from './Help'
+import DailyReportScreen from './DailyReportScreen'
+import HealthCodeScreen from './HealthCodeScreen'
+import ScannerScreen from './ScannerScreen'
+import ReminderScreen from './ReminderScreen'
 /////////
 import Tarbar from '../screen/Tarbar'
 //////////

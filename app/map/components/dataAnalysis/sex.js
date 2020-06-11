@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Dimensions } from 'react-native'
 import { ECharts } from "react-native-echarts-wrapper";
-import {axios} from './App.js';
 import {server_config} from '../../config'
 
+var axios = require('axios');
 var confirmed=[{name:'男性', value:0 }, 
 	           {name:'女性', value:0 }];
 var deadth=[{name:'男性', value:0 }, 

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { ECharts } from "react-native-echarts-wrapper";
-import {axios} from './App.js'
+
 import dateTansfer,{year} from './date.js';
 import {server_config} from '../../config'
 
+var axios = require('axios');
 var t=new Date();
 var today=dateTansfer(t);
 //获取现存确诊人数最多的五个国家

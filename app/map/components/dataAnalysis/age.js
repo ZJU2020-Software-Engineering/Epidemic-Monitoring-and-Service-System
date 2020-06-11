@@ -1,9 +1,9 @@
 import React ,{ Component } from 'react';
 import { View } from 'react-native';
 import { ECharts } from "react-native-echarts-wrapper";
-import {axios} from './App.js'
 import {server_config} from '../../config'
 
+var axios = require('axios');
 var deathData=[];
 var cureData=[];
 export default class Age extends Component{
