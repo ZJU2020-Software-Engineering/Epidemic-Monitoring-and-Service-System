@@ -1,6 +1,6 @@
 import React from 'react';
 import Cache from '../../screen/Cache';
-import {Icon} from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs, WingBlank, WhiteSpace, List, Button, Flex } from '@ant-design/react-native';
 import { StyleSheet, Image, ScrollView, Text, View, TouchableOpacity, Alert } from 'react-native';
 import {InsertOrder} from '../DatabaseClient';
@@ -55,23 +55,23 @@ export default class ShopCart extends React.Component{
                                                 <Text style={styles.price}>￥{item.price}</Text>
                                             </View>
                                             <WingBlank style={{ marginBottom: 5, flexDirection: 'row', alignItems:'center' }}>
-                                                <Icon name='ios-remove-circle' type='ionicon' onPress={()=>{
+                                                <Ionicons name="ios-remove-circle" size={24} color="black" onPress={()=>{
                                                             Cache.itemNoPlus(item.id,-1);
                                                             this.setState({
                                                                 sumPrice:Cache.countPrice(),
                                                                 items:Cache.getItemList(),
                                                             })
-                                                        }}></Icon>
+                                                        }}></Ionicons>
+                                                
                                                 
                                                 <WingBlank ><Text>{Cache.getItemNo(item.id)}</Text></WingBlank>
-                                                <Icon name='ios-add-circle' type='ionicon' onPress={()=>{
+                                                <Ionicons name="ios-add-circle" size={24} color="black" onPress={()=>{
                                                             Cache.itemNoPlus(item.id,1);
                                                             this.setState({
                                                                 sumPrice:Cache.countPrice(),
                                                                 items:Cache.getItemList(),
                                                             });
-                                                            console.log(this.state.sumPrice);
-                                                        }}></Icon>
+                                                        }}></Ionicons>
                                             </WingBlank>
                                             {/* <Flex style={styles.cartExtra}>
                                                 <Flex.Item>
