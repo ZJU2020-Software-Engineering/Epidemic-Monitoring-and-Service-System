@@ -4,6 +4,7 @@ import { fetch } from "whatwg-fetch";
 import QRCode from 'react-native-qrcode-svg';
 import * as WebBrowser from 'expo-web-browser';
 import { Icon, Button } from '@ant-design/react-native';
+import Cache from '../screen/Cache';
 
 const devWidth =  Dimensions.get('window').width;
 const devHeight =  Dimensions.get('window').height;
@@ -34,8 +35,6 @@ function wait(timeout) {
 
 //TODO: 今天没打卡的情况
 export default function HealthCodeScreen({navigation, route}) {
-  //const { username } = route.params;
-    const username = "test";
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -64,7 +63,7 @@ export default function HealthCodeScreen({navigation, route}) {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                'username':username,
+                'username':Cache.get('account'),
               })
         })
         .then((res) => {
@@ -161,7 +160,7 @@ export default function HealthCodeScreen({navigation, route}) {
 
         <View style={styles.shadowContainer}>
           <View style={{marginTop: 20, justifyContent: 'flex-start', flexDirection: 'row'}}>
-                      <Text style={{ color: '#444', fontSize: 22, flex: 2, paddingLeft: 30 }}>{username}</Text>
+                      <Text style={{ color: '#444', fontSize: 22, flex: 2, paddingLeft: 30 }}>{Cache.get('account')}</Text>
             <Text style={{color: '#444', fontSize: 22, flex: 3, paddingRight:30}}>{new Date().Format('MM月dd日 HH:mm:ss')}</Text>
           </View>
           <View style={{marginTop: devHeight/16}}>
