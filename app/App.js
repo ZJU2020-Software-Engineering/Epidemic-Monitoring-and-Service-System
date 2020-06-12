@@ -15,7 +15,7 @@ import forum from './forum/forumStack'
 import Daily from './daily/daily'
 
 const InfoStack = createStackNavigator( {
-     Home: {
+     LoginHome: {
       screen: Home,
       navigationOptions: {  
           headerTitle: '登录页',  
