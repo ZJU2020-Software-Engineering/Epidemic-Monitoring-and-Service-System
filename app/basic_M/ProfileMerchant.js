@@ -179,7 +179,7 @@ export default class ProfileMerchant extends React.Component {
 
 
               </View>
-              <Text  style={ {fontSize:'12'}}> </Text>
+              <Text  style={ {fontSize:12}}> </Text>
               <ListItem
                   Component={TouchableScale}
                   friction={90} 
@@ -197,7 +197,7 @@ export default class ProfileMerchant extends React.Component {
                   rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:'20'}}
                   onPress={  () => this.props.navigation.navigate( 'ChangeMerchantPassword',{username:this.state.username,token:this.state.token,})}
               />
-             <Text  style={ {fontSize:'12'}}> </Text>
+             <Text  style={ {fontSize:12}}> </Text>
               <ListItem
                   Component={TouchableScale}
                   friction={90} 
@@ -215,7 +215,7 @@ export default class ProfileMerchant extends React.Component {
                   rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
                   onPress={  () => this.props.navigation.navigate( 'About',{username:this.state.username,token:this.state.token,})}
               />
-             <Text  style={ {fontSize:'12'}}> </Text>
+             <Text  style={ {fontSize:12}}> </Text>
               <ListItem
                   Component={TouchableScale}
                   friction={90} 
@@ -234,7 +234,7 @@ export default class ProfileMerchant extends React.Component {
                   rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
                   onPress={  () => this.props.navigation.navigate( 'Help',{username:this.state.username,token:this.state.token,})}
               />
-              <Text  style={ {fontSize:'12'}}> </Text>
+              <Text  style={ {fontSize:12}}> </Text>
               <ListItem
                   Component={TouchableScale}
                   friction={90} 
