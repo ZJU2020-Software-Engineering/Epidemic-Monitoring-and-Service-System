@@ -21,7 +21,7 @@ export default class TabBar  extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-          selectedTab: 'Map',
+          selectedTab: '疫情地图',
            //selectedTab: 'Profile',
           username:this.props.navigation.getParam( 'username', 'No username provided'),
           token:this.props.navigation.getParam( 'token', 'No token provided'),
