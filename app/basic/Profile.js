@@ -110,7 +110,7 @@ export default class Profile extends React.Component {
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   subtitleStyle={{ color: 'white' }}
                   subtitle="  用户名"
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',color: 'white' ,size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',color: 'white' ,size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeName',{
                                username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -150,7 +150,7 @@ export default class Profile extends React.Component {
                   title={'  电话'}
                   bottomDivider
                   rightTitle={this.state.phoneNumber+ "  "  }
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                 
                   onPress={()=>this.props.navigation.navigate('ChangePhonenumber',{
                                 username:this.state.username,token:this.state.token,
@@ -170,7 +170,7 @@ export default class Profile extends React.Component {
                   title={'  邮箱'}
                   bottomDivider
                   rightTitle={this.state.email+"  "}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeEmail',{
                                 username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -189,7 +189,7 @@ export default class Profile extends React.Component {
                   title={'  地址'}
                   bottomDivider
                   rightTitle={this.state.address+"  "}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeAddress',{
                                 username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -236,7 +236,7 @@ export default class Profile extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'lock',color: 'white' }}
                   title=" 修改密码"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'ChangePassword',{username:this.state.username,token:this.state.token,})}
               />
              <Text  style={ {fontSize: 12}}> </Text>
@@ -254,7 +254,7 @@ export default class Profile extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'tasks',color: 'white' }}
                   title=" 关于"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'About',{username:this.state.username,token:this.state.token,})}
               />
              <Text  style={ {fontSize: 12}}> </Text>
@@ -273,7 +273,7 @@ export default class Profile extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
                   title=" 帮助"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'Help',{username:this.state.username,token:this.state.token,})}
               />
              <Text  style={ {fontSize: 12}}> </Text>
