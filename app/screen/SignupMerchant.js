@@ -46,10 +46,11 @@ export default class Feed extends React.Component {
     //http 請求
     var passwordpatt = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
     var areacodepatt = new RegExp(/^(\d{3,4}-)\d{7,8}$/);
+    var emailpatt = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/);
                       if(this.collectionInformation.length < 40){
                         if(this.category.length < 20){
                           if(this.corporateIdentity.length < 20){
-                            if(this.email.length < 40){
+                            if(emailpatt.test(this.email)){
                               if(this.address.length < 20){
                                 if(this.phoneNumber.length < 20){
                                   if(this.businessLicense.length < 20){
@@ -89,7 +90,7 @@ export default class Feed extends React.Component {
                                   else alert("营业执照过长")}
                                 else alert("电话号码格式错误")}
                               else alert("地址过长")}
-                            else alert("电子邮件过长")}
+                            else alert("电子邮件格式错误")}
                           else alert("法人身份信息过长")}
                         else alert("经营品类过长")}
                       else alert("收款信息过长")    
