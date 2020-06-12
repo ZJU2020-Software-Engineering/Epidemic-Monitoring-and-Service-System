@@ -19,6 +19,7 @@ const InfoStack = createStackNavigator( {
       screen: Home,
       navigationOptions: {  
           headerTitle: '登录页',  
+          header:null
       }
     },
     Signup: {
