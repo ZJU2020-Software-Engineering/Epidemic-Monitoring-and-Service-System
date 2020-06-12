@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button,ScrollView } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import Cache from '../screen/Cache';
 import { ListItem } from 'react-native-elements'
 var axios = require('axios');
 //const ip="http://localhost:8000"
@@ -13,7 +13,8 @@ export default class ProfileMerchant extends React.Component {
   constructor(props){
         super(props)
         this.state = ({
-          username :this.props.navigation.getParam( 'username', 'No username provided' ),
+          //username :this.props.navigation.getParam( 'username', 'No username provided' ),
+          username :Cache.get('account'),
           token :this.props.navigation.getParam( 'token', 'No username provided' ),
           name:'name',
           phoneNumber:'phoneNumber',
