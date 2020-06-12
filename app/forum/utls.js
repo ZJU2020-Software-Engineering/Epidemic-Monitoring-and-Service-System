@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native";
 
-//export var host = "http://10.181.177.227";
-export var host = "http://10.181.248.190" 
+export var host = "http://182.92.243.158";
+//export var host = "http://10.181.248.190" 
 export var port = 8003;
 
 export function randomString(len) {
@@ -71,7 +71,7 @@ export async function httpRequest(url, method, data) {
 }
 
 export async function getToken() {
-	let value = await AsyncStorage.getItem("userToken");
+	let value = await AsyncStorage.getItem("username");
 	if (value !== null) {
 		console.log("get success");
 		console.log(value);
@@ -80,6 +80,11 @@ export async function getToken() {
 		console.log("error");
 		return null;
 	}
+}
+
+export async function setToken(username) {
+	await AsyncStorage.setItem("username",username);
+	return 'success'
 }
 
 const postListUrl = host + ":" + port + "/forum/post/list/";
