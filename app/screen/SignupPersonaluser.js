@@ -55,7 +55,9 @@ export default class SignupPersonaluser extends React.Component {
     }
     //http 請求
     var passwordpatt = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
-                      if(this.email.length < 50){
+    var emailpatt = new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/)
+    
+                      if(emailpatt.test(this.email)){
                         if(this.address.length < 50){
                           if(this.phoneNumber.length == 11){
                             if(this.identityCardNumber.length == 18){
@@ -97,7 +99,7 @@ export default class SignupPersonaluser extends React.Component {
                             else alert("证件号码格式错误")}
                           else alert("手机号码格式错误")}
                         else alert("地址过长")}
-                      else alert("电子邮件过长")
+                      else alert("电子邮件格式错误")
                     
   }
     
