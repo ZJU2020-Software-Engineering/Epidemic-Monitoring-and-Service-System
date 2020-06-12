@@ -19,7 +19,7 @@ export default class TarBarMerchant extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedTab: 'SplashComponent',
+            selectedTab: '志愿采购模块',
             username:this.props.navigation.getParam( 'username', 'No username provided'),
             token:this.props.navigation.getParam( 'token', 'No token provided'),
         };
