@@ -76,7 +76,7 @@ export default class SignupPersonaluser extends React.Component {
                                                           }
                                                           else{
                                                             alert("注册成功")
-                                                            this.props.navigation.navigate( 'Home')
+                                                            this.props.navigation.navigate( 'LoginHome')
                                                           }
                                                                     })
                                                       .catch((error) => {});
