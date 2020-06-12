@@ -1,6 +1,7 @@
 import { AsyncStorage } from "react-native";
 
-export var host = "http://182.92.243.158";
+//export var host = "http://10.181.177.227";
+export var host = "http://10.181.248.190" 
 export var port = 8003;
 
 export function randomString(len) {

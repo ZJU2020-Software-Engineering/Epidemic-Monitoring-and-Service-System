@@ -44,7 +44,7 @@ export default function Post({ navigation }) {
 					data={data}
 					renderItem={({ item }) => (
 						<TouchableOpacity
-							onPress={(event) => { navigation.navigate('Detail', { post_id: item.id }) }}
+							onPress={(event) => { navigation.navigate('PostDetail', { post_id: item.id }) }}
 							activeOpacity={0.7}
 						>
 							<View style={styles.post}>

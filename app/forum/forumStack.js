@@ -7,7 +7,8 @@ import PostDetail from "./postDetail";
 import mailCreate from './mailCreate';
 import mailList from './mailList';
 import UserPage from './user';
-import Tarbar from '../screen/Tarbar'
+import Tarbar from '../screen/Tarbar';
+import TestPage from './test';
 
 const ForumStack = createStackNavigator({
     Tarbar: {
@@ -53,10 +54,16 @@ const ForumStack = createStackNavigator({
             headerTitle: '搜索',
         }            
     },
-    Detail:{
+    PostDetail:{
         screen:PostDetail,
         navigationOptions: {
             headerTitle: '详情',
+        }            
+    },
+    Test:{
+        screen:TestPage,
+        navigationOptions: {
+            headerTitle: '测试',
         }            
     }
 })

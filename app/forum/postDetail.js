@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { host, port } from "./utls";
 import { AppLoading } from 'expo';
+import ImgCell from './ImgCell'
 
 
 export default function PostDetail({ navigation}) {
@@ -59,6 +60,7 @@ export default function PostDetail({ navigation}) {
 				<Text style={styles.item}>
 					{post_content.content}
 				</Text>
+				<ImgCell url={host + ":" + port + '/public/' + post_content.img_url} />
 				<View style={styles.button_view}>
 					<View style={{ padding: 15 }}>
 
