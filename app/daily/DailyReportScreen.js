@@ -9,7 +9,9 @@ export default class DailyReportScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //token: this.props.navigation.getParam('token', 'No token provided'),
+            //username: this.props.navigation.getParam('token', 'No token provided'),
+            username:'test',
+            address:'',
             nowdate: new Date(),
             name: 0,
             temperature: 0,
@@ -19,18 +21,22 @@ export default class DailyReportScreen extends React.Component {
             iscontact: 2,
             issymptom: 2,
             hcode: 1,
+            alimentarycannal: 0,
+            chestdistress: 0,
+            cough: 0,
+
         };
     }
     submit = () => {
         if (!this.state.nowdate || !this.state.name || !this.state.temperature) alert("请完善问题 Please complete problem");
         else {
-            fetch('http://localhost:8004/request/clock/clockIn/insert', {
+            fetch('http://182.92.243.158:8004/request/clock/clockIn/insert', {
                 method: 'POST',
                 mode: 'cors',
                 body: {
-                    token:this.state.token,
+                    username:this.state.username,
                     date: this.state.nowdate,
-                    username: this.state.name,
+                    name: this.state.name,
                     temperature: this.state.temperature,
                     confirmed: this.state.isdiagnose,
                     quarantined: this.state.isquar,
@@ -38,6 +44,10 @@ export default class DailyReportScreen extends React.Component {
                     contacted: this.state.iscontact,
                     infected: this.state.issymptom,
                     hcode: this.state.hcode,
+                    alimentarycannal: this.state.alimentarycannal,
+                    chestdistress: this.state.chestdistress,
+                    cough: this.state.cough,
+
                 },
                 headers: {
                     Accept: 'application/json',
@@ -201,6 +211,87 @@ export default class DailyReportScreen extends React.Component {
                                 </RadioItem>
                             <WhiteSpace />
                             <WhiteSpace />
+                                {(this.state.issymptom != 2) && (
+                                    <View>
+                                        <Text style={{ paddingLeft: 10, fontSize: 18 }}>腹泻 Alimentary cannal or not</Text>
+                                        <RadioItem
+                                            checked={this.state.alimentarycannal === 1}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ alimentarycannal: 1 });
+                                                }
+                                            }}
+                                        >
+                                            是 Yes
+                                        </RadioItem>
+                                        <RadioItem
+                                            checked={this.state.alimentarycannal === 2}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ alimentarycannal: 2 });
+                                                }
+                                            }}
+                                        >
+                                            否 No
+                                        </RadioItem>
+                                        <WhiteSpace />
+                                        <WhiteSpace />
+                                    </View>
+                                )}
+                                {(this.state.issymptom != 2) && (
+                                    <View>
+                                        <Text style={{ paddingLeft: 10, fontSize: 18 }}>胸闷 Chest distress or not</Text>
+                                        <RadioItem
+                                            checked={this.state.chestdistress === 1}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ chestdistress: 1 });
+                                                }
+                                            }}
+                                        >
+                                            是 Yes
+                                        </RadioItem>
+                                        <RadioItem
+                                            checked={this.state.chestdistress === 2}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ chestdistress: 2 });
+                                                }
+                                            }}
+                                        >
+                                            否 No
+                                        </RadioItem>
+                                        <WhiteSpace />
+                                        <WhiteSpace />
+                                    </View>
+                                )}
+                                {(this.state.issymptom != 2) && (
+                                    <View>
+                                        <Text style={{ paddingLeft: 10, fontSize: 18 }}>咳嗽 cough or not</Text>
+                                        <RadioItem
+                                            checked={this.state.cough === 1}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ cough: 1 });
+                                                }
+                                            }}
+                                        >
+                                            是 Yes
+                                        </RadioItem>
+                                        <RadioItem
+                                            checked={this.state.cough === 2}
+                                            onChange={event => {
+                                                if (event.target.checked) {
+                                                    this.setState({ cough: 2 });
+                                                }
+                                            }}
+                                        >
+                                            否 No
+                                        </RadioItem>
+                                        <WhiteSpace />
+                                        <WhiteSpace />
+                                    </View>
+                                )}
                             <Text style={{paddingLeft: 10, fontSize: 18}}>9. 健康码状态 Healthy code state </Text>
                             <RadioItem
                                 checked={this.state.hcode === 1}

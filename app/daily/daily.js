@@ -20,7 +20,9 @@ import ReminderScreen from './ReminderScreen';
 
 const Stack = createStackNavigator();
 
-export default function daily() {
+export default function daily({ route, navigation }) {
+  //const { username } = route.params;
+  //const  username = 'test';
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   //const [initialNavigationState, setInitialNavigationState] = React.useState();
 
@@ -62,6 +64,8 @@ export default function daily() {
   if (!isLoadingComplete) {
     return null;
   } else {
+      //navigation.navigate('DailyReportScreen', { username: username });
+      //navigation.navigate('HealthCodeScreen', { username: username });
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="HealthCode">

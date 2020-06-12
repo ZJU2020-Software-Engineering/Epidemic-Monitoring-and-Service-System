@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button } from '@ant-design/react-native';
 
-export default function ScannerScreen() {
+export default function ScannerScreen({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -16,7 +16,7 @@ export default function ScannerScreen() {
 
   function getUserinfo(qrsess) {
     fetch(
-        'http://localhost:8004/request/clock/qrcode/scan',
+        'http://182.92.243.158:8004/request/clock/qrcode/scan',
         {
             method: 'POST',
             mode: 'cors',
@@ -25,9 +25,7 @@ export default function ScannerScreen() {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                  //这里需要sessionid，但尚未获得基础信息组的登录实现方式
                   'qrsession': qrsess,
-                'sessionid': this.props.navigation.getParam('token', 'No token provided')
               })
         })
         .then((res) => {

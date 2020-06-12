@@ -34,7 +34,8 @@ function wait(timeout) {
 
 //TODO: 今天没打卡的情况
 export default function HealthCodeScreen({navigation, route}) {
-
+  //const { username } = route.params;
+    const username = "test";
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -45,13 +46,16 @@ export default function HealthCodeScreen({navigation, route}) {
 
   const [loading, setLoading] = useState(true);
   const [codeContent, setCodeContent] = useState('none');
-  const [qrcColor, setQRCColor] = useState('#639e60');
+  const [qrcColor, setQRCColor] = useState('#7f8c8d');
   const [err, setErr] = useState(false);
+  const [nRepo, setNRepo] = useState(false);
 
   function getHealthcode() {
+    setErr(false);
     setLoading(true);
+    setQRCColor('#7f8c8d')
     fetch(
-        'http://localhost:8004/request/clock/qrcode/get',
+        'http://182.92.243.158/request/clock/qrcode/get',
         {
             method: 'POST',
             mode: 'cors',
@@ -60,21 +64,27 @@ export default function HealthCodeScreen({navigation, route}) {
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                  //这里本来只需要sessionid即可，由于尚未获得基础信息组的登录实现方式，故暂时使用username
-                'username':"qqq" ,
-                'sessionid':"eee"
+                'username':username,
               })
         })
         .then((res) => {
             return res.json();
         })
         .then(data => {
-            setCodeContent(data.message.qrsession);
-            if(data.message.state == 2) setQRCColor('#c0392b');
-            else if(data.message.state == 1) setQRCColor('#e67e22');
-            setLoading(false);
-            setRefreshing(false);
-            return;
+            console.log(data);
+            if(data.result == 'E'){setErr(true); return;}
+            else{
+              setLoading(false);
+              setRefreshing(false);
+              if(data.result == 'Z'){setNRepo(true); return;}
+              else{
+                setCodeContent(data.message.qrsession);
+                if(data.message.state == 2) setQRCColor('#c0392b');
+                else if(data.message.state == 1) setQRCColor('#e67e22');
+                else if(data.message.state == 0) setQRCColor('#639e60');
+                return;
+              }
+            }
         })
         .catch(e => { console.log(e); setErr(true); return; })
   }
@@ -151,7 +161,7 @@ export default function HealthCodeScreen({navigation, route}) {
 
         <View style={styles.shadowContainer}>
           <View style={{marginTop: 20, justifyContent: 'flex-start', flexDirection: 'row'}}>
-            <Text style={{color: '#444', fontSize: 22, flex: 2, paddingLeft: 30}}>王小明</Text>
+                      <Text style={{ color: '#444', fontSize: 22, flex: 2, paddingLeft: 30 }}>{username}</Text>
             <Text style={{color: '#444', fontSize: 22, flex: 3, paddingRight:30}}>{new Date().Format('MM月dd日 HH:mm:ss')}</Text>
           </View>
           <View style={{marginTop: devHeight/16}}>
@@ -160,10 +170,19 @@ export default function HealthCodeScreen({navigation, route}) {
                   网络错误，无法获取用户信息
                 </Text>
                 ) : (
-                loading ? (
-                <Text style={{fontSize: 20, marginTop:67, marginBottom:70}}>
-                  加载中，请稍候
-                </Text>) : (<QRCode value={codeContent} color={qrcColor} size={160} />)
+                  loading ? (
+                  <Text style={{fontSize: 20, marginTop:67, marginBottom:70}}>
+                    加载中，请稍候
+                  </Text>
+                  ) : (
+                    nRepo ? (
+                    <Text style={{fontSize: 20, marginTop:67, marginBottom:70}}>
+                      尚未上报每日健康状况
+                    </Text>
+                    ) : (
+                    <QRCode value={codeContent} color={qrcColor} size={160} />)
+                  )
+
             )}
           </View>
           <View style={{marginTop: 40, marginBottom: 20, justifyContent: 'center', alignItems: "center", flexDirection: 'row'}}>
@@ -179,11 +198,13 @@ export default function HealthCodeScreen({navigation, route}) {
             </View>
           </View>
         </View>
+
+        <View style={styles.shadowContainer2}>
+          <Text style={{color: '#2f95dc', fontSize: 21, textAlignVertical:'center',}}>下拉屏幕刷新健康码</Text>
+        </View>
       </ScrollView>
 
-      <View style={styles.shadowContainer2}>
-        <Text style={{color: '#2f95dc', fontSize: 21, textAlignVertical:'center',}}>下拉屏幕刷新健康码</Text>
-      </View>
+
 
     </SafeAreaView>
   );
