@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Button, WhiteSpace, List, Provider, InputItem, DatePicker, Radio } from '@ant-design/react-native';
 import { fetch } from 'whatwg-fetch';
-import moment from 'moment';
+import Cache from '../screen/Cache';
+
 const RadioItem = Radio.RadioItem;
 
 export default class DailyReportScreen extends React.Component {
@@ -10,7 +11,7 @@ export default class DailyReportScreen extends React.Component {
         super(props);
         this.state = {
             //username: this.props.navigation.getParam('token', 'No token provided'),
-            username:'test',
+            username: Cache.get('account'),
             address:'',
             nowdate: new Date(),
             name: 0,
@@ -21,7 +22,7 @@ export default class DailyReportScreen extends React.Component {
             iscontact: 2,
             issymptom: 2,
             hcode: 1,
-            suspected: 0,
+            suspected: 1,
             alimentarycannal: 0,
             chestdistress: 0,
             cough: 0,

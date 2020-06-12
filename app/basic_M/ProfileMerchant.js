@@ -78,7 +78,7 @@ export default class ProfileMerchant extends React.Component {
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   subtitleStyle={{ color: 'white' }}
                   subtitle="  用户名"
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:20}}
                   //onPress={  () => this.props.navigation.navigate( 'ChangeMerchantName',{username:this.state.username})}
                    onPress={()=>this.props.navigation.navigate('ChangeMerchantName',{
                                 username:this.state.username,token:this.state.token,
@@ -99,7 +99,7 @@ export default class ProfileMerchant extends React.Component {
                   title={'  电话'}
                   bottomDivider
                   rightTitle={this.state.phoneNumber+"  "}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeMerchantPhonenumber',{
                                 username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -118,7 +118,7 @@ export default class ProfileMerchant extends React.Component {
                   title={'  邮箱'}
                   bottomDivider
                   rightTitle={this.state.email+" "}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeMerchantEmail',{
                                 username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -156,7 +156,7 @@ export default class ProfileMerchant extends React.Component {
                   title={'  经营品类'}
                   bottomDivider
                   rightTitle={this.state.category+"  "}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',size:20}}
                   onPress={()=>this.props.navigation.navigate('ChangeMerchantCategory',{
                                 username:this.state.username,token:this.state.token,
                                callback: (data)=>{
@@ -195,7 +195,7 @@ export default class ProfileMerchant extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'lock',color: 'white' }}
                   title=" 修改密码"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'pencil',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'ChangeMerchantPassword',{username:this.state.username,token:this.state.token,})}
               />
              <Text  style={ {fontSize:12}}> </Text>
@@ -213,7 +213,7 @@ export default class ProfileMerchant extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'tasks',color: 'white' }}
                   title=" 关于"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'About',{username:this.state.username,token:this.state.token,})}
               />
              <Text  style={ {fontSize:12}}> </Text>
@@ -232,7 +232,7 @@ export default class ProfileMerchant extends React.Component {
                   leftIcon={{ type: 'font-awesome', name: 'question-circle' ,color: 'white'}}
                   title=" 帮助"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:'20'}}
+                  rightIcon={{ type: 'font-awesome', name: 'chevron-right',color:'white',size:20}}
                   onPress={  () => this.props.navigation.navigate( 'Help',{username:this.state.username,token:this.state.token,})}
               />
               <Text  style={ {fontSize:12}}> </Text>
@@ -253,7 +253,7 @@ export default class ProfileMerchant extends React.Component {
                   title="  注销"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   //chevron={{ color: '#796edb'}}
-                  onPress={  () => this.props.navigation.navigate( 'Home')}
+                  onPress={  () => this.props.navigation.navigate( 'LoginHome')}
               />
               </View>
              </ScrollView>  
