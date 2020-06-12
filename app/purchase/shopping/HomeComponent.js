@@ -4,6 +4,8 @@ import * as Animatable from "react-native-animatable";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {SceneMap, TabView,TabBar} from "react-native-tab-view";
 import {GetMerchants} from '../DatabaseClient';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 let windowWidth = Dimensions.get('window').width;
 let windowheight = Dimensions.get('window').height;
@@ -166,22 +168,30 @@ var data3 = [
 
 export default class HomeComponent extends Component{
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        
         this.state = {
             index: 0,
-            routes:[
+            fontloaded:false,
+            routes: [
                 { key: 'first', title: '餐饮外卖' },
                 { key: 'second', title: '日常用品' },
-                { key:'third', title: '医疗用品' },
+                { key: 'third', title: '医疗用品' },
             
 
             ],
         };
     }
-    
-    render(){
+    componentDidMount() {
+        Font.loadAsync(
+            'PingFangSC-Regular',
+            require('../../assets/PingFangSC-Regular.ttf')).then(() => this.setState({ fontloaded: true}))
+    }
+
+    render() {
+        if (!this.state.fontloaded) {
+            return <AppLoading/>
+        }
     return (
         <ScrollView>
         
