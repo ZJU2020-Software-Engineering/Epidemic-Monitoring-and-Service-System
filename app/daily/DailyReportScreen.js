@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Button, WhiteSpace, List, Provider, InputItem, DatePicker, Radio } from '@ant-design/react-native';
 import { fetch } from 'whatwg-fetch';
-
+import moment from 'moment';
 const RadioItem = Radio.RadioItem;
 
 export default class DailyReportScreen extends React.Component {
@@ -17,10 +17,11 @@ export default class DailyReportScreen extends React.Component {
             temperature: 0,
             isdiagnose: 2,
             isquar: 2,
-            quardate: 0,
+            quardate: '2020-01-01',
             iscontact: 2,
             issymptom: 2,
             hcode: 1,
+            suspected: 0,
             alimentarycannal: 0,
             chestdistress: 0,
             cough: 0,
@@ -30,10 +31,10 @@ export default class DailyReportScreen extends React.Component {
     submit = () => {
         if (!this.state.nowdate || !this.state.name || !this.state.temperature) alert("请完善问题 Please complete problem");
         else {
-            fetch('http://182.92.243.158:8004/request/clock/clockIn/insert', {
+            fetch('http://182.92.243.158:8004/request/clockIn', {
                 method: 'POST',
                 mode: 'cors',
-                body: {
+                body: JSON.stringify({
                     username:this.state.username,
                     date: this.state.nowdate,
                     name: this.state.name,
@@ -41,14 +42,14 @@ export default class DailyReportScreen extends React.Component {
                     confirmed: this.state.isdiagnose,
                     quarantined: this.state.isquar,
                     quarantineDate: this.state.quardate,
+                    suspected:this.state.suspected,
                     contacted: this.state.iscontact,
                     infected: this.state.issymptom,
-                    hcode: this.state.hcode,
                     alimentarycannal: this.state.alimentarycannal,
                     chestdistress: this.state.chestdistress,
                     cough: this.state.cough,
 
-                },
+                }),
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ export default class DailyReportScreen extends React.Component {
                                 title='打卡日期'
                                 extra='请选择'
                                 disabled={true}
-                                onChange={value => (this.setState({ nowdate: value }))}
+                                    onChange={value => (this.setState({ nowdate: value.substring(0, 10) }))}
                             >
                                 <List.Item arrow="horizontal">Select Date</List.Item>
                             </DatePicker>
@@ -149,22 +150,45 @@ export default class DailyReportScreen extends React.Component {
                             <WhiteSpace />
                             {(this.state.isquar != 2) && (
                             <View>
-                                    <Text style={{ paddingLeft: 10, fontSize: 18 }}>6. 开始隔离日期 Start quarantine date</Text>
+                                    <Text style={{ paddingLeft: 10, fontSize: 18 }}>开始隔离日期 Start quarantine date</Text>
                               <DatePicker
-                                  defaultDate={new Date()}
+                                  defaultDate={this.state.quardate}
                                   mode="date"
                                   value={this.state.quardate}
                                   minDate={new Date(2019, 1, 1)}
                                   maxDate={new Date(2022, 1, 1)}
                                   format="YYYY-MM-DD"
-                                  onChange={ value => (this.setState({ quardate: value })) }
+                                            onChange={value => (this.setState({ quardate: value.substring(0, 10) })) }
                               >
                               <List.Item arrow="horizontal">Select Date</List.Item>
                               </DatePicker>
                                     <WhiteSpace />
                                     <WhiteSpace />
                             </View>
-                            )}
+                                )}
+                                <Text style={{ paddingLeft: 10, fontSize: 18 }}>6. 是否疑似 suspected or not</Text>
+                                <RadioItem
+                                    checked={this.state.suspected === 1}
+                                    onChange={event => {
+                                        if (event.target.checked) {
+                                            this.setState({ suspected: 1 });
+                                        }
+                                    }}
+                                >
+                                    是 Yes
+                                </RadioItem>
+                                <RadioItem
+                                    checked={this.state.suspected === 2}
+                                    onChange={event => {
+                                        if (event.target.checked) {
+                                            this.setState({ suspected: 2 });
+                                        }
+                                    }}
+                                >
+                                    否 No
+                                </RadioItem>
+                                <WhiteSpace />
+                                <WhiteSpace />
                             <Text style={{ paddingLeft: 10, fontSize: 18 }}>7. 是否接触过患者或疑似患者 Contact with patients</Text>
                             <RadioItem
                                 checked={this.state.iscontact === 1}

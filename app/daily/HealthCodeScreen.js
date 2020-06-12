@@ -55,7 +55,7 @@ export default function HealthCodeScreen({navigation, route}) {
     setLoading(true);
     setQRCColor('#7f8c8d')
     fetch(
-        'http://182.92.243.158/request/clock/qrcode/get',
+        'http://182.92.243.158:8004/request/clock/qrcode/get',
         {
             method: 'POST',
             mode: 'cors',
