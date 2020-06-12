@@ -50,7 +50,8 @@ const InfoStack = createStackNavigator( {
     Map,
     PersonNavigator,
     PurchaseNavigator_M,
-    forum
+    forum,
+    Daily
   },
   {
     initialRouteName: 'InfoStack'
