@@ -157,11 +157,10 @@ export default function HealthCodeScreen({navigation, route}) {
 
           </View>
         </View>
-
         <View style={styles.shadowContainer}>
           <View style={{marginTop: 20, justifyContent: 'flex-start', flexDirection: 'row'}}>
-                      <Text style={{ color: '#444', fontSize: 22, flex: 2, paddingLeft: 30 }}>{Cache.get('account')}</Text>
-            <Text style={{color: '#444', fontSize: 22, flex: 3, paddingRight:30}}>{new Date().Format('MM月dd日 HH:mm:ss')}</Text>
+                      <Text style={{ color: '#444', fontSize: 22, flex: 2, paddingLeft: 15 }}>{Cache.get('account')}</Text>
+            <Text style={{color: '#444', fontSize: 22, flex: 3, paddingRight:5}}>{new Date().Format('MM月dd日 HH:mm:ss')}</Text>
           </View>
           <View style={{marginTop: devHeight/16}}>
             {err ? (
