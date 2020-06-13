@@ -294,7 +294,7 @@ export default class Profile extends React.Component {
                   title="  注销"
                   titleStyle={{ color: 'white', fontWeight: 'bold' }}
                   //chevron={{ color: '#796edb'}}
-                  onPress={  () => this.props.navigation.navigate( ' LoginHome')}
+                  onPress={  () => this.props.navigation.navigate( 'LoginHome')}
               />
              </View>
              </ScrollView>  
