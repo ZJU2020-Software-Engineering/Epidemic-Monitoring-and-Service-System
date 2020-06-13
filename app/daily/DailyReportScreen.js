@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView,Alert } from 'react-native';
 import { Button, WhiteSpace, List, Provider, InputItem, DatePicker, Radio } from '@ant-design/react-native';
 import { fetch } from 'whatwg-fetch';
 import Cache from '../screen/Cache';
@@ -10,11 +10,9 @@ export default class DailyReportScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            //username: this.props.navigation.getParam('token', 'No token provided'),
             username: Cache.get('account'),
-            address:'',
             nowdate: new Date(),
-            name: 0,
+            name: '',
             temperature: 0,
             isdiagnose: 2,
             isquar: 2,
@@ -22,7 +20,7 @@ export default class DailyReportScreen extends React.Component {
             iscontact: 2,
             issymptom: 2,
             hcode: 1,
-            suspected: 1,
+            suspected: 2,
             alimentarycannal: 0,
             chestdistress: 0,
             cough: 0,
@@ -30,7 +28,7 @@ export default class DailyReportScreen extends React.Component {
         };
     }
     submit = () => {
-        if (!this.state.nowdate || !this.state.name || !this.state.temperature) alert("请完善问题 Please complete problem");
+        if (!this.state.nowdate || !this.state.name || !this.state.temperature) Alert.alert("提示","请完善问题 Please complete problem");
         else {
             fetch('http://182.92.243.158:8004/request/clockIn', {
                 method: 'POST',
@@ -58,17 +56,18 @@ export default class DailyReportScreen extends React.Component {
             }).catch(e => {
                 console.log('submit failed');
             });
-            alert('提交成功 Submit successfully');
+            Alert.alert('提交成功 Submit successfully');
         }
-    };
-    render() {
+    }
 
+    render() {
         return (
             <Provider>
                 <View style={{backgroundColor: '#fff'}}>
                 <View style={{marginHorizontal: 7, marginVertical: 5}}>
                     <ScrollView >
                         <List>
+                            <WhiteSpace />
                             <WhiteSpace />
                             <WhiteSpace />
                             <Text style={{paddingLeft: 10, fontSize: 18}}>1. 今日日期 Today's date</Text>
@@ -87,10 +86,12 @@ export default class DailyReportScreen extends React.Component {
                             <WhiteSpace />
                             <WhiteSpace />
                             <Text style={{paddingLeft: 10, fontSize: 18}}>2. 姓名 Name</Text>
-                            <InputItem
-                                clear
-                                value={this.state.name}
-                                onChange={value => (this.setState({ name: value }))}
+                                <InputItem
+                                    defaultValue={this.state.name}
+                                    value={this.state.name}
+                                    onChange={value => (
+                                        this.setState({ name: value })
+                                    )}
                             />
                             <WhiteSpace />
                             <WhiteSpace />

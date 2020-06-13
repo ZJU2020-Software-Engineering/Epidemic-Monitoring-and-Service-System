@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet,Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button } from '@ant-design/react-native';
 
@@ -33,16 +33,16 @@ export default function ScannerScreen({navigation}) {
         })
         .then(data => {
             console.log(data);
-            if(data.result == 'timeout') alert('过期的健康码，请对方刷新后重试！');
-            else if(data.result == 'none') alert('无二维码信息！');
-            else if(data.result == 'forbidden') alert('无权限获取信息！');
-            else if(data.result == 'N') alert('服务器未知错误！');
+            if(data.result == 'timeout') Alert.alert('错误','过期的健康码，请对方刷新后重试！');
+            else if(data.result == 'none') Alert.alert('错误','无二维码信息！');
+            else if(data.result == 'forbidden') Alert.alert('错误','无权限获取信息！');
+            else if(data.result == 'N') Alert.alert('错误','服务器未知错误！');
             else if(data.result == 'Y'){
               navigation.navigate('Chart', data.message);
             }
             return;
         })
-        .catch(e => { console.log(e); alert('网络错误！请检查网络连接'); return; })
+        .catch(e => { console.log(e); Alert.alert('网络错误！请检查网络连接'); return; })
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
