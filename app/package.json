@@ -17,7 +17,7 @@
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
     "@react-navigation/web": "~1.0.0-alpha.9",
-    "aws-sdk": "^2.678.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "dateformat": "^3.0.3",
