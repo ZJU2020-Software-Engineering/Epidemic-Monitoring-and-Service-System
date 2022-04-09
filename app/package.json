@@ -29,7 +29,7 @@
     "expo-linear-gradient": "~8.1.0",
     "expo-permissions": "^8.1.0",
     "expo-web-browser": "~8.1.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "mysql": "^2.18.1",
     "prop-types": "^15.7.2",
     "react": "~16.9.0",
